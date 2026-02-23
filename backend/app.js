@@ -1,0 +1,42 @@
+const express = require('express');
+const logger = require('./middlewares/logger');
+require('dotenv').config();
+const { connectToDB } = require('./config/db');
+
+// function Connnection To Database
+connectToDB();
+
+// Init App
+const app = express();
+
+app.use(express.json());
+
+//Apply Middlewares
+app.use(logger);
+
+//Routers
+app.use('/api/', require('./routes/book'));
+app.use('/api/', require('./routes/authers'));
+app.use('/api/', require('./routes/auth'));
+app.use('/api/', require('./routes/user'));
+
+//Error Handler Middlewares
+app.use((req, res, next) => {
+  const error = new Error(`Not Found - ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+});
+
+app.use((err, req, res, next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  console.log(err);
+  res.status(statusCode).json({ message: err.message });
+});
+
+// Running Server
+port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(
+    `Server is running in ${process.env.NODE_ENV} mode on port ${port}`,
+  );
+});
