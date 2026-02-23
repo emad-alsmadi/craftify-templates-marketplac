@@ -6,12 +6,74 @@ const {
 } = require('../models/Book');
 
 const getAllBooks = asyncHandler(async (req, res) => {
-  const bookList = await Book.find();
-  res.status(200).json(bookList);
+  const {
+    q,
+    minPrice,
+    maxPrice,
+    author,
+    page = 1,
+    limit = 10,
+    sort = 'createdAt',
+  } = req.query;
+
+  // Build query
+  const query = {};
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+  if (author) {
+    query.author = author;
+  }
+  if (q) {
+    query.$or = [
+      { title: { $regex: q, $options: 'i' } },
+      { description: { $regex: q, $options: 'i' } },
+    ];
+  }
+
+  // Build sort
+  const sortObj = {};
+  sort.split(',').forEach((field) => {
+    const direction = field.startsWith('-') ? -1 : 1;
+    const fieldName = field.replace(/^-/, '');
+    sortObj[fieldName] = direction;
+  });
+
+  const pageNum = Math.max(1, parseInt(page, 10));
+  const limitNum = Math.max(1, parseInt(limit, 10));
+  const skip = (pageNum - 1) * limitNum;
+
+  const [books, total] = await Promise.all([
+    Book.find(query)
+      .populate('author', ['name', 'country', 'bio'])
+      .sort(sortObj)
+      .skip(skip)
+      .limit(limitNum)
+      .lean(),
+    Book.countDocuments(query),
+  ]);
+
+  const pages = Math.ceil(total / limitNum);
+
+  res.status(200).json({
+    data: books,
+    meta: {
+      total,
+      page: pageNum,
+      pages,
+      limit: limitNum,
+    },
+  });
 });
 
 const getBookById = asyncHandler(async (req, res) => {
-  const book = await Book.findById(req.params.id);
+  const book = await Book.findById(req.params.id).populate('author', [
+    'name',
+    'country',
+    'bio',
+  ]);
   if (book) {
     res.status(200).json(book);
   } else {
