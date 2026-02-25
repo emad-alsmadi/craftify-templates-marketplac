@@ -7,7 +7,13 @@ const {
 } = require('../models/User');
 
 /**
- * Register new user
+ * Register a new user.
+ *
+ * @route POST /api/auth/register
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON response containing created user fields and JWT token
  */
 const registerUser = asyncHandler(async (req, res) => {
   if (!req.body) {
@@ -36,7 +42,13 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 /**
- * Login user
+ * Login a user and return a JWT.
+ *
+ * @route POST /api/auth/login
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON response containing user fields and JWT token
  */
 const loginUser = asyncHandler(async (req, res) => {
   if (!req.body) {
@@ -64,7 +76,24 @@ const loginUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'User is Login', ...other, token });
 });
 
+/**
+ * Logout endpoint (stateless).
+ *
+ * Note: JWT is stored client-side; logout is performed by the frontend by clearing
+ * auth cookies. This endpoint exists for API completeness.
+ *
+ * @route POST /api/auth/logout
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON confirmation message
+ */
+const logoutUser = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: 'Logged out' });
+});
+
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
 };

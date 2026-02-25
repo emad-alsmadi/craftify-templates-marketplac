@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { verfiyToken } = require('../middlewares/verfiyToken');
-const { checkRolePermission } = require('../middlewares/checkRolePermission');
 
-const { registerUser, loginUser } = require('../controllers/auth.controller');
+const {
+  registerUser,
+  loginUser,
+  logoutUser,
+} = require('../controllers/auth.controller');
 
 /**
  * @desc Register New User
@@ -22,16 +24,11 @@ router.post('/auth/register', registerUser);
 router.post('/auth/login', loginUser);
 
 /**
- * @desc Get current user profile
- * @route /api/auth/profile
- * @method Get
- * @access private
+ * @desc Logout User
+ * @route /api/auth/logout
+ * @method Post
+ * @access public
  */
-router.get('/auth/profile', verfiyToken, (req, res) => {
-  res.status(200).json({
-    user: req.user,
-    permissions: req.userPermissions || [],
-  });
-});
+router.post('/auth/logout', logoutUser);
 
 module.exports = router;

@@ -26,7 +26,7 @@ const verfiyTokenAndAuthorization = (req, res, next) => {
   verfiyToken(req, res, () => {
     const userId = req.user?.id ?? req.user?._id;
     const paramId = req.params?.id;
-    const isAdmin = req.user?.roles?.includes('admin');    
+    const isAdmin = req.user?.roles?.includes('admin');
 
     if (String(userId) === String(paramId) || isAdmin) {
       next();
