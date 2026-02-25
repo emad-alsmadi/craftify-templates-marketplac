@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('./middlewares/logger');
+const cors = require('cors');
 require('dotenv').config();
 const { connectToDB } = require('./config/db');
 
@@ -11,6 +12,13 @@ const app = express();
 
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+);
+
 //Apply Middlewares
 app.use(logger);
 
@@ -18,7 +26,9 @@ app.use(logger);
 app.use('/api/', require('./routes/book'));
 app.use('/api/', require('./routes/authers'));
 app.use('/api/', require('./routes/auth'));
-app.use('/api/', require('./routes/user'));
+app.use('/api/', require('./routes/profile'));
+app.use('/api/', require('./routes/users'));
+app.use('/api/', require('./routes/password'));
 
 //Error Handler Middlewares
 app.use((req, res, next) => {
