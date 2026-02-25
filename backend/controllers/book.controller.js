@@ -5,6 +5,22 @@ const {
   validateUpdateBook,
 } = require('../models/Book');
 
+/**
+ * Get all books with filtering, sorting and pagination.
+ *
+ * Supported query params:
+ * - q: search term in title/description
+ * - minPrice/maxPrice: price range
+ * - author: author id
+ * - page/limit: pagination
+ * - sort: comma-separated fields, prefix with '-' for desc
+ *
+ * @route GET /api/books
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON containing data and meta
+ */
 const getAllBooks = asyncHandler(async (req, res) => {
   const {
     q,
@@ -12,7 +28,7 @@ const getAllBooks = asyncHandler(async (req, res) => {
     maxPrice,
     author,
     page = 1,
-    limit = 10,
+    limit = 3,
     sort = 'createdAt',
   } = req.query;
 
@@ -68,6 +84,15 @@ const getAllBooks = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * Get a single book by id.
+ *
+ * @route GET /api/books/:id
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON book document
+ */
 const getBookById = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id).populate('author', [
     'name',
@@ -81,6 +106,15 @@ const getBookById = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * Create a new book.
+ *
+ * @route POST /api/books
+ * @access Private (typically admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON created book document
+ */
 const createBook = asyncHandler(async (req, res) => {
   const error = validateCreateBook(req.body);
   if (error) {
@@ -97,6 +131,15 @@ const createBook = asyncHandler(async (req, res) => {
   res.status(201).json(result);
 });
 
+/**
+ * Update a book by id.
+ *
+ * @route PUT /api/books/:id
+ * @access Private (typically admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON updated book document
+ */
 const updateBook = asyncHandler(async (req, res) => {
   const error = validateUpdateBook(req.body);
   if (error) {
@@ -120,6 +163,15 @@ const updateBook = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * Delete a book by id.
+ *
+ * @route DELETE /api/books/:id
+ * @access Private (typically admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON confirmation message
+ */
 const deleteBook = asyncHandler(async (req, res) => {
   const book = await Book.findByIdAndDelete(req.params.id);
   if (book) {

@@ -1,12 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
-const {
-  User,
-  validateUpdateUser,
-} = require('../models/User');
+const { User, validateUpdateUser } = require('../models/User');
 
 /**
- * Get all users
+ * Get all users.
+ *
+ * @route GET /api/users
+ * @access Private (admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON array of users (password excluded)
  */
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-password');
@@ -14,7 +17,13 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 /**
- * Get user by ID
+ * Get user by id.
+ *
+ * @route GET /api/users/:id
+ * @access Private (admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON user document (password excluded)
  */
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password');
@@ -26,7 +35,13 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 /**
- * Update user
+ * Update user by id.
+ *
+ * @route PUT /api/users/:id
+ * @access Private (admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON updated user
  */
 const updateUser = asyncHandler(async (req, res) => {
   const { error } = validateUpdateUser(req.body);
@@ -47,7 +62,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     req.params.id,
     { $set: update },
-    { new: true }
+    { new: true },
   ).select('-password');
 
   if (!updatedUser) {
@@ -58,7 +73,13 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 /**
- * Delete user
+ * Delete user by id.
+ *
+ * @route DELETE /api/users/:id
+ * @access Private (admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON confirmation message
  */
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndDelete(req.params.id);

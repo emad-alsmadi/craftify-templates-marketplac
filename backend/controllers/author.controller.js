@@ -5,11 +5,29 @@ const {
   validateUpdateAuther,
 } = require('../models/Auther');
 
+/**
+ * Get all authors.
+ *
+ * @route GET /api/authers
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON array of authors
+ */
 const getAllAuthers = asyncHandler(async (req, res) => {
   const autherList = await Auther.find();
   res.status(200).json(autherList);
 });
 
+/**
+ * Get author by id.
+ *
+ * @route GET /api/authers/:id
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON author document
+ */
 const getAutherById = asyncHandler(async (req, res) => {
   const auther = await Auther.findById(req.params.id);
   if (auther) {
@@ -19,6 +37,15 @@ const getAutherById = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * Create a new author.
+ *
+ * @route POST /api/authers
+ * @access Private (typically admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON created author document
+ */
 const createAuther = asyncHandler(async (req, res) => {
   const error = validateCreateAuther(req.body);
   if (error) {
@@ -34,6 +61,15 @@ const createAuther = asyncHandler(async (req, res) => {
   res.status(201).json(result);
 });
 
+/**
+ * Update an author by id.
+ *
+ * @route PUT /api/authers/:id
+ * @access Private (typically admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON updated author document
+ */
 const updateAuther = asyncHandler(async (req, res) => {
   const error = validateUpdateAuther(req.body);
   if (error) {
@@ -57,6 +93,15 @@ const updateAuther = asyncHandler(async (req, res) => {
   res.status(200).json(auther);
 });
 
+/**
+ * Delete an author by id.
+ *
+ * @route DELETE /api/authers/:id
+ * @access Private (typically admin)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON confirmation message
+ */
 const deleteAuther = asyncHandler(async (req, res) => {
   const auther = await Auther.findByIdAndDelete(req.params.id);
   if (auther) {
