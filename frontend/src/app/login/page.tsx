@@ -1,25 +1,27 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { clearAuthError, loginThunk } from '@/store/slices/authSlice';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginValues } from '@/lib/validation';
 import { useToast } from '@/components/ui/Toast';
+import { useLoginMutation, useMe } from '@/lib/authQuery';
+import {
+  getUserFacingErrorMessage,
+  logErrorForDev,
+} from '@/lib/userFacingError';
 
 export default function LoginPage() {
   const router = useRouter();
-
-  const dispatch = useAppDispatch();
-  const { loading, error, user, hydrated } = useAppSelector((s) => s.auth);
   const { toast } = useToast();
+
+  const meQuery = useMe();
+  const loginMutation = useLoginMutation();
 
   const {
     register,
@@ -34,19 +36,18 @@ export default function LoginPage() {
     mode: 'onTouched',
   });
 
-  useEffect(() => {
-    dispatch(clearAuthError());
-  }, [dispatch]);
-
   const onSubmit = handleSubmit(async (values) => {
-    dispatch(clearAuthError());
-    const res = await dispatch(loginThunk(values));
-    if ((res as any)?.meta?.requestStatus === 'fulfilled') {
+    try {
+      await loginMutation.mutateAsync(values);
       toast('Logged in successfully.', {
         title: 'Success',
         variant: 'success',
       });
       router.push('/welcome');
+    } catch (err: any) {
+      logErrorForDev(err);
+      const msg = getUserFacingErrorMessage(err, 'Login failed');
+      toast(msg, { title: 'Login failed', variant: 'error' });
     }
   });
 
@@ -118,7 +119,7 @@ export default function LoginPage() {
                 Enter your credentials to continue.
               </div>
             </div>
-            {hydrated && user && (
+            {meQuery.data?.user && (
               <div className='rounded-full border border-white/35 bg-emerald-500/15 px-3 py-1 text-xs font-extrabold text-emerald-900'>
                 Signed
               </div>
@@ -160,22 +161,22 @@ export default function LoginPage() {
               )}
             </div>
 
-            {error && (
+            {loginMutation.error && (
               <motion.div
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 className='rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold text-rose-900'
               >
-                {error}
+                {getUserFacingErrorMessage(loginMutation.error, 'Login failed')}
               </motion.div>
             )}
 
             <Button
               type='submit'
               className='w-full'
-              disabled={loading || isSubmitting}
+              disabled={loginMutation.isPending || isSubmitting}
             >
-              {loading || isSubmitting ? (
+              {loginMutation.isPending || isSubmitting ? (
                 <span className='inline-flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
                   Signing in...

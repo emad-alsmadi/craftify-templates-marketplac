@@ -1,50 +1,39 @@
 'use client';
-import { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Pencil, Save, Info } from 'lucide-react';
-import { useAppSelector } from '@/store/hooks';
+import { ArrowLeft, Pencil, Save } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { editProfileSchema, type EditProfileValues } from '@/lib/validation';
+import { useMe, useUpdateProfile } from '@/lib/authQuery';
+import {
+  getUserFacingErrorMessage,
+  logErrorForDev,
+} from '@/lib/userFacingError';
 
 export default function EditProfilePage() {
-  const router = useRouter();
   const { toast } = useToast();
-  const { user, hydrated } = useAppSelector((s) => s.auth);
+  const meQuery = useMe();
+  const updateProfile = useUpdateProfile();
+  const user = meQuery.data?.user || null;
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<EditProfileValues>({
     resolver: zodResolver(editProfileSchema),
-    defaultValues: {
+    values: {
       username: user?.username || '',
       email: user?.email || '',
     },
     mode: 'onTouched',
   });
 
-  useEffect(() => {
-    if (hydrated && !user) {
-      router.replace('/login');
-    }
-  }, [hydrated, user, router]);
-
-  useEffect(() => {
-    reset({
-      username: user?.username || '',
-      email: user?.email || '',
-    });
-  }, [user?.username, user?.email, reset]);
-
-  if (!hydrated) return null;
+  if (meQuery.isLoading) return null;
   if (!user) return null;
 
   return (
@@ -85,31 +74,30 @@ export default function EditProfilePage() {
                 Update your info
               </h1>
               <p className='mt-2 text-sm font-semibold text-indigo-950/80'>
-                This is a UI placeholder. You can connect it to your backend
-                update endpoint later.
+                Update your profile information below.
               </p>
             </div>
           </div>
 
-          <div className='mt-6 rounded-2xl border border-white/35 bg-white/40 p-4 text-sm font-semibold text-indigo-950/80'>
-            <div className='flex items-start gap-2'>
-              <Info className='mt-0.5 h-4 w-4 text-fuchsia-700' />
-              <div>
-                Saving is not wired to the backend yet. When you create the
-                update endpoint, we can connect this form in minutes.
-              </div>
-            </div>
-          </div>
-
           <form
-            onSubmit={handleSubmit(async () => {
-              toast(
-                'Edit profile request is ready. Backend endpoint is not connected yet.',
-                {
-                  title: 'Not wired yet',
-                  variant: 'info',
-                },
-              );
+            onSubmit={handleSubmit(async (data) => {
+              try {
+                await updateProfile.mutateAsync({
+                  username: data.username || '',
+                  email: data.email || '',
+                });
+                toast('Profile updated successfully!', {
+                  title: 'Success',
+                  variant: 'success',
+                });
+              } catch (error: any) {
+                logErrorForDev(error);
+                const msg = getUserFacingErrorMessage(
+                  error,
+                  'Failed to update profile',
+                );
+                toast(msg, { title: 'Error', variant: 'error' });
+              }
             })}
             className='mt-6 space-y-4'
           >
@@ -146,7 +134,7 @@ export default function EditProfilePage() {
 
             <Button
               type='submit'
-              className='w-full'
+              className='w-full rounded-full bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-cyan-500 text-white shadow-md transition hover:brightness-110 active:brightness-95 disabled:opacity-60'
               size='lg'
               disabled={isSubmitting}
             >
