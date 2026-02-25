@@ -1,31 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { authorsApi } from '@/lib/api';
-import { Author } from '@/types';
+import { useMemo, useState } from 'react';
+import { Author, AuthorsQuery } from '@/types';
 import { Loader2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { AuthorCard } from '@/components/cards/AuthorCard';
+import { useAuthors } from '@/lib/authorsQuery';
+import { Pagination } from '@/components/ui/Pagination';
 
 export default function AuthorsPage() {
-  const [authors, setAuthors] = useState<Author[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState<AuthorsQuery>({
+    page: 1,
+    limit: 9,
+  });
 
-  useEffect(() => {
-    const fetchAuthors = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await authorsApi.getAuthors();
-        setAuthors(data as Author[]);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch authors');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAuthors();
-  }, []);
+  const stableQuery = useMemo(() => query, [query]);
+  const authorsQuery = useAuthors(stableQuery);
+  const data = authorsQuery.data;
+  const authors = data?.data || [];
+  const loading = authorsQuery.isLoading;
+  const fetching = authorsQuery.isFetching;
+  const error = (authorsQuery.error as any)?.message || null;
+
+  const handlePageChange = (page: number) => {
+    setQuery((q) => ({ ...q, page }));
+  };
 
   if (loading) {
     return (
@@ -43,6 +42,41 @@ export default function AuthorsPage() {
     );
   }
 
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.06,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.12,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.28,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -6,
+      transition: {
+        duration: 0.12,
+      },
+    },
+  };
+
   return (
     <div className='space-y-6'>
       <div className='rounded-3xl border border-white/40 bg-white/55 p-6 shadow-sm backdrop-blur-xl'>
@@ -54,14 +88,51 @@ export default function AuthorsPage() {
         </p>
       </div>
 
-      <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-        {authors.map((a) => (
-          <AuthorCard
-            key={a._id}
-            author={a}
+      {!loading && !error && data && (
+        <div className='rounded-3xl border border-white/40 bg-white/50 p-5 shadow-sm backdrop-blur-xl'>
+          <div className='flex items-center justify-between gap-3'>
+            <p className='text-sm font-semibold text-indigo-950/80'>
+              Showing {data.data.length} of {data.meta.total} authors
+            </p>
+            {fetching && (
+              <div className='inline-flex items-center gap-2 text-xs font-extrabold text-indigo-950/70'>
+                <Loader2 className='h-4 w-4 animate-spin text-indigo-600' />
+                Loading...
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <AnimatePresence mode='wait'>
+        <motion.div
+          key={data?.meta.page ?? query.page ?? 1}
+          variants={gridVariants}
+          initial='hidden'
+          animate='show'
+          exit='exit'
+          className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'
+        >
+          {authors.map((a: Author) => (
+            <motion.div
+              key={a._id}
+              variants={itemVariants}
+            >
+              <AuthorCard author={a} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+
+      {data && data.meta.pages > 1 && (
+        <div className='mt-8 flex justify-center'>
+          <Pagination
+            currentPage={data.meta.page}
+            totalPages={data.meta.pages}
+            onPageChange={handlePageChange}
           />
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
