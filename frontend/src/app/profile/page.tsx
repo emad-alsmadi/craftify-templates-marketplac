@@ -1,25 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { User, ShieldCheck, LogOut, KeyRound, Pencil } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Button } from '@/components/ui/Button';
-import { logout } from '@/store/slices/authSlice';
+import { useLogout, useMe } from '@/lib/authQuery';
 
 export default function ProfilePage() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { user, hydrated } = useAppSelector((s) => s.auth);
+  const meQuery = useMe();
+  const logout = useLogout();
+  const user = meQuery.data?.user || null;
 
-  useEffect(() => {
-    if (hydrated && !user) {
-      router.replace('/login');
-    }
-  }, [hydrated, user, router]);
-
-  if (!hydrated) return null;
+  if (meQuery.isLoading) return null;
   if (!user) return null;
 
   return (
@@ -98,7 +91,7 @@ export default function ProfilePage() {
 
           <div className='mt-6 grid gap-3 sm:grid-cols-3'>
             <Button
-              className='w-full bg-white/40 text-indigo-950 hover:bg-white/55'
+              className='w-full rounded-full border border-white/35 bg-white/45 text-indigo-950 shadow-sm backdrop-blur-xl transition hover:bg-white/65'
               size='lg'
               onClick={() => router.push('/')}
             >
@@ -106,7 +99,7 @@ export default function ProfilePage() {
             </Button>
 
             <Button
-              className='w-full bg-white/40 text-indigo-950 hover:bg-white/55'
+              className='w-full rounded-full bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-cyan-500 text-white shadow-md transition hover:brightness-110 active:brightness-95'
               size='lg'
               onClick={() => router.push('/profile/edit')}
             >
@@ -116,10 +109,10 @@ export default function ProfilePage() {
               </span>
             </Button>
             <Button
-              className='w-full'
+              className='w-full rounded-full bg-gradient-to-r from-rose-600 via-fuchsia-600 to-amber-500 text-white shadow-md transition hover:brightness-110 active:brightness-95'
               size='lg'
               onClick={() => {
-                dispatch(logout());
+                logout();
                 router.push('/');
               }}
             >

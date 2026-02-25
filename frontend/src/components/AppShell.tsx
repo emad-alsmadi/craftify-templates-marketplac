@@ -6,14 +6,16 @@ import Link from 'next/link';
 import { navItems, Navbar } from '@/components/navigation/Navbar';
 import { cn } from '@/lib/utils';
 import { LogIn, LogOut, User } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { logout } from '@/store/slices/authSlice';
+import { useLogout, useMe } from '@/lib/authQuery';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { user, loading, hydrated } = useAppSelector((s) => s.auth);
+  const meQuery = useMe();
+  const logout = useLogout();
+  const user = meQuery.data?.user || null;
+  const loading = meQuery.isLoading;
+  const hydrated = true;
 
   return (
     <div className='min-h-screen bg-[radial-gradient(1100px_500px_at_10%_0%,rgba(245,158,11,0.22),transparent_55%),radial-gradient(1000px_460px_at_95%_15%,rgba(217,70,239,0.20),transparent_55%),radial-gradient(900px_520px_at_40%_120%,rgba(34,211,238,0.22),transparent_55%)]'>
@@ -100,7 +102,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <button
                 type='button'
                 onClick={() => {
-                  dispatch(logout());
+                  logout();
                   router.push('/');
                 }}
                 className='flex flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold text-indigo-700/70'

@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Mail, Sparkles } from 'lucide-react';
 
-export default function CheckYourEmailPage() {
+function CheckYourEmailContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
 
@@ -92,5 +93,17 @@ export default function CheckYourEmailPage() {
         </motion.section>
       </div>
     </div>
+  );
+}
+
+export default function CheckYourEmailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/25 bg-white/20 p-4 backdrop-blur-xl sm:p-6' />
+      }
+    >
+      <CheckYourEmailContent />
+    </Suspense>
   );
 }

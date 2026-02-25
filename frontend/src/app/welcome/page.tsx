@@ -1,26 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, User, LogOut } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Button } from '@/components/ui/Button';
-import { logout } from '@/store/slices/authSlice';
+import { useLogout, useMe } from '@/lib/authQuery';
 
 export default function WelcomePage() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { user, hydrated } = useAppSelector((s) => s.auth);
+  const meQuery = useMe();
+  const logout = useLogout();
 
-  useEffect(() => {
-    if (hydrated && !user) {
-      router.replace('/login');
-    }
-  }, [hydrated, user, router]);
+  const user = meQuery.data?.user || null;
 
-  if (!hydrated) return null;
+  if (meQuery.isLoading) return null;
   if (!user) return null;
 
   return (
@@ -128,7 +122,7 @@ export default function WelcomePage() {
           <button
             type='button'
             onClick={() => {
-              dispatch(logout());
+              logout();
               router.push('/');
             }}
             className='mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-rose-700 hover:underline'
