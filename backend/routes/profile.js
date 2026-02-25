@@ -1,35 +1,25 @@
 const express = require('express');
 const router = express.Router();
-
 const { verfiyToken } = require('../middlewares/verfiyToken');
-const { User } = require('../models/User');
+const {
+  getProfile,
+  updateProfile,
+} = require('../controllers/profile.controller');
+
 /**
  * @desc Get current user profile
  * @route /api/auth/profile
- * @method Get
+ * @method GET
  * @access private
  */
-router.get('/auth/profile', verfiyToken, (req, res) => {
-  const userId = req.user?.id ?? req.user?._id;
-  if (!userId) {
-    return res.status(401).json({ message: 'Token is not valid!' });
-  }
+router.get('/auth/profile', verfiyToken, getProfile);
 
-  User.findById(userId)
-    .select('-password')
-    .lean()
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ message: 'User not Found' });
-      }
-      res.status(200).json({
-        user,
-        permissions: req.userPermissions || [],
-      });
-    })
-    .catch(() => {
-      res.status(500).json({ message: 'Server error' });
-    });
-});
+/**
+ * @desc Update current user profile (username, email)
+ * @route /api/auth/profile
+ * @method PUT
+ * @access private
+ */
+router.put('/auth/profile', verfiyToken, updateProfile);
 
 module.exports = router;
