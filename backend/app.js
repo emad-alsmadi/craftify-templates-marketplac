@@ -29,6 +29,7 @@ app.use('/api/', require('./routes/auth'));
 app.use('/api/', require('./routes/profile'));
 app.use('/api/', require('./routes/users'));
 app.use('/api/', require('./routes/password'));
+app.use('/api/', require('./routes/orders'));
 
 //Error Handler Middlewares
 app.use((req, res, next) => {
