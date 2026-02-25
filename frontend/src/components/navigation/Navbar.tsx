@@ -8,6 +8,7 @@ import {
   LayoutGrid,
   Users,
   Info,
+  ShoppingCart,
   LogIn,
   User,
   LogOut,
@@ -15,12 +16,13 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { logout } from '@/store/slices/authSlice';
+import { useLogout, useMe } from '@/lib/authQuery';
+import { useCart } from '@/lib/cartStore';
 
 export const navItems = [
   { href: '/', label: 'Books', icon: LayoutGrid },
   { href: '/authors', label: 'Authors', icon: Users },
+  { href: '/cart', label: 'Cart', icon: ShoppingCart },
   { href: '/about', label: 'About', icon: Info },
 ];
 
@@ -77,8 +79,12 @@ function pickAvatarStyle(key?: string) {
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { user, loading, hydrated } = useAppSelector((s) => s.auth);
+  const meQuery = useMe();
+  const logout = useLogout();
+  const cart = useCart();
+  const user = meQuery.data?.user || null;
+  const loading = meQuery.isLoading;
+  const hydrated = true;
 
   const avatarKey = user?.username || user?.email || 'user';
   const initials = getInitials(user?.username || user?.email);
@@ -118,7 +124,21 @@ export function Navbar() {
                 )}
               >
                 <Icon className='h-4 w-4' />
-                {item.label}
+                <span className='relative'>
+                  {item.label}
+                  {item.href === '/cart' && cart.count > 0 && (
+                    <span
+                      className={cn(
+                        'ml-2 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-extrabold',
+                        active
+                          ? 'bg-white/20 text-white'
+                          : 'bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-cyan-500 text-white',
+                      )}
+                    >
+                      {cart.count}
+                    </span>
+                  )}
+                </span>
               </Link>
             );
           })}
@@ -218,7 +238,7 @@ export function Navbar() {
                       <DropdownMenu.Item
                         onSelect={(e) => {
                           e.preventDefault();
-                          dispatch(logout());
+                          logout();
                           router.push('/');
                         }}
                         className='flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-extrabold text-indigo-950 outline-none transition hover:bg-rose-500/10'

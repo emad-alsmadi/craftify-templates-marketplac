@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { BooksResponse, BooksQuery, Book } from '@/types';
+import {
+  BooksResponse,
+  BooksQuery,
+  Book,
+  AuthorsResponse,
+  AuthorsQuery,
+  Order,
+} from '@/types';
 import { getAuthToken } from '@/lib/authCookies';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
@@ -31,8 +38,8 @@ export const booksApi = {
 };
 
 export const authorsApi = {
-  getAuthors: async (): Promise<any[]> => {
-    const { data } = await api.get('/authers');
+  getAuthors: async (params: AuthorsQuery = {}): Promise<AuthorsResponse> => {
+    const { data } = await api.get('/authers', { params });
     return data;
   },
   getAuthorById: async (id: string): Promise<any> => {
@@ -58,6 +65,10 @@ export const authApi = {
     const { data } = await api.get('/auth/profile');
     return data;
   },
+  updateProfile: async (payload: { username: string; email: string }) => {
+    const { data } = await api.put('/auth/profile', payload);
+    return data;
+  },
 };
 
 export const passwordApi = {
@@ -70,6 +81,33 @@ export const passwordApi = {
       `/password/reset-password/${userId}/${token}`,
       { password },
     );
+    return data;
+  },
+};
+
+export const ordersApi = {
+  createOrder: async (payload: {
+    items: { book: string; qty: number }[];
+    shippingAddress: {
+      name: string;
+      phone: string;
+      address: string;
+      city: string;
+      zip: string;
+      notes?: string;
+    };
+    shippingPrice?: number;
+    taxPrice?: number;
+  }): Promise<Order> => {
+    const { data } = await api.post('/orders', payload);
+    return data;
+  },
+  getMyOrders: async (): Promise<Order[]> => {
+    const { data } = await api.get('/orders/my');
+    return data;
+  },
+  getOrderById: async (id: string): Promise<Order> => {
+    const { data } = await api.get(`/orders/${id}`);
     return data;
   },
 };

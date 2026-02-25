@@ -1,30 +1,35 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { BookCard } from '@/components/BookCard';
 import { FilterSidebar } from '@/components/FilterSidebar';
 import { Pagination } from '@/components/ui/Pagination';
 import { Loader2 } from 'lucide-react';
 import { Book } from '@/types';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchBooks, setQuery } from '@/store/slices/booksSlice';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import type { BooksQuery } from '@/types';
+import { useBooks } from '@/lib/booksQuery';
 
 export default function HomePage() {
-  const dispatch = useAppDispatch();
-  const { query, data, loading, error } = useAppSelector((s) => s.books);
+  const [query, setQuery] = useState<BooksQuery>({
+    page: 1,
+    limit: 9,
+    sort: 'createdAt',
+  });
 
-  useEffect(() => {
-    dispatch(fetchBooks(query));
-  }, [dispatch, query]);
+  const stableQuery = useMemo(() => query, [query]);
+  const booksQuery = useBooks(stableQuery);
+  const data = booksQuery.data;
+  const loading = booksQuery.isLoading;
+  const error = (booksQuery.error as any)?.message || null;
 
   const handlePageChange = (page: number) => {
-    dispatch(setQuery({ page }));
+    setQuery((q) => ({ ...q, page }));
   };
 
   const handleFiltersChange = (newFilters: any) => {
-    dispatch(setQuery({ ...newFilters, page: 1 }));
+    setQuery((q) => ({ ...q, ...newFilters, page: 1 }));
   };
 
   const gridVariants = {
@@ -112,7 +117,7 @@ export default function HomePage() {
             <div className='rounded-3xl border border-rose-200 bg-rose-50 p-6 text-rose-900'>
               <p className='font-semibold'>{error}</p>
               <button
-                onClick={() => dispatch(fetchBooks(query))}
+                onClick={() => booksQuery.refetch()}
                 className='mt-2 underline'
               >
                 Try again

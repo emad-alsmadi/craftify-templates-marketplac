@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { passwordApi } from '@/lib/api';
 import { Loader2, ArrowLeft, Mail, Sparkles, Copy, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/components/ui/Toast';
@@ -15,14 +14,20 @@ import {
   type ForgotPasswordValues,
 } from '@/lib/validation';
 import { useRouter } from 'next/navigation';
+import { useForgotPasswordMutation } from '@/lib/passwordQuery';
+import {
+  getUserFacingErrorMessage,
+  logErrorForDev,
+} from '@/lib/userFacingError';
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resetLink, setResetLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  const forgotMutation = useForgotPasswordMutation();
 
   const {
     register,
@@ -37,12 +42,11 @@ export default function ForgotPasswordPage() {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    setLoading(true);
     setError(null);
     setResetLink(null);
     setCopied(false);
     try {
-      await passwordApi.forgotPassword(values.email);
+      const res = await forgotMutation.mutateAsync(values.email);
       toast('Reset link generated successfully.', {
         title: 'Success',
         variant: 'success',
@@ -50,20 +54,15 @@ export default function ForgotPasswordPage() {
       router.push(
         `/password/check-email?email=${encodeURIComponent(values.email)}`,
       );
+
+      if (res?.resetPasswordLink) {
+        setResetLink(String(res.resetPasswordLink));
+      }
     } catch (err: any) {
-      const status = err?.response?.status;
-      const apiMessage = err?.response?.data?.message;
-      const msg =
-        apiMessage ||
-        (status
-          ? status >= 500
-            ? 'We couldn’t send the reset email right now. Please try again later.'
-            : 'Please check your email address and try again.'
-          : 'Unable to reach the server. Please check your connection and try again.');
+      logErrorForDev(err);
+      const msg = getUserFacingErrorMessage(err, 'Request failed');
       setError(msg);
       toast(msg, { title: 'Request failed', variant: 'error' });
-    } finally {
-      setLoading(false);
     }
   });
 
@@ -203,9 +202,9 @@ export default function ForgotPasswordPage() {
             <Button
               type='submit'
               className='w-full'
-              disabled={loading || isSubmitting}
+              disabled={forgotMutation.isPending || isSubmitting}
             >
-              {loading || isSubmitting ? (
+              {forgotMutation.isPending || isSubmitting ? (
                 <span className='inline-flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
                   Sending...

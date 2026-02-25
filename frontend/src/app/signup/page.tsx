@@ -1,25 +1,27 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { clearAuthError, registerThunk } from '@/store/slices/authSlice';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, type SignupValues } from '@/lib/validation';
 import { useToast } from '@/components/ui/Toast';
+import { useMe, useRegisterMutation } from '@/lib/authQuery';
+import {
+  getUserFacingErrorMessage,
+  logErrorForDev,
+} from '@/lib/userFacingError';
 
 export default function SignupPage() {
   const router = useRouter();
-
-  const dispatch = useAppDispatch();
-  const { loading, error, user, hydrated } = useAppSelector((s) => s.auth);
   const { toast } = useToast();
+
+  const meQuery = useMe();
+  const registerMutation = useRegisterMutation();
 
   const {
     register,
@@ -35,19 +37,18 @@ export default function SignupPage() {
     mode: 'onTouched',
   });
 
-  useEffect(() => {
-    dispatch(clearAuthError());
-  }, [dispatch]);
-
   const onSubmit = handleSubmit(async (values) => {
-    dispatch(clearAuthError());
-    const res = await dispatch(registerThunk(values));
-    if ((res as any)?.meta?.requestStatus === 'fulfilled') {
+    try {
+      await registerMutation.mutateAsync(values);
       toast('Account created successfully.', {
         title: 'Success',
         variant: 'success',
       });
       router.push('/welcome');
+    } catch (err: any) {
+      logErrorForDev(err);
+      const msg = getUserFacingErrorMessage(err, 'Signup failed');
+      toast(msg, { title: 'Signup failed', variant: 'error' });
     }
   });
 
@@ -80,7 +81,7 @@ export default function SignupPage() {
                 Join the bookstore experience with a modern UI.
               </div>
             </div>
-            {hydrated && user && (
+            {meQuery.data?.user && (
               <div className='rounded-full border border-white/35 bg-emerald-500/15 px-3 py-1 text-xs font-extrabold text-emerald-900'>
                 Signed
               </div>
@@ -136,22 +137,25 @@ export default function SignupPage() {
               )}
             </div>
 
-            {error && (
+            {registerMutation.error && (
               <motion.div
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 className='rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold text-rose-900'
               >
-                {error}
+                {getUserFacingErrorMessage(
+                  registerMutation.error,
+                  'Signup failed',
+                )}
               </motion.div>
             )}
 
             <Button
               type='submit'
               className='w-full'
-              disabled={loading || isSubmitting}
+              disabled={registerMutation.isPending || isSubmitting}
             >
-              {loading || isSubmitting ? (
+              {registerMutation.isPending || isSubmitting ? (
                 <span className='inline-flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
                   Creating...

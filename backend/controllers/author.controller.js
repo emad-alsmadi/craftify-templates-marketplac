@@ -15,8 +15,28 @@ const {
  * @returns {Promise<void>} JSON array of authors
  */
 const getAllAuthers = asyncHandler(async (req, res) => {
-  const autherList = await Auther.find();
-  res.status(200).json(autherList);
+  const { page = 1, limit = 12 } = req.query;
+
+  const pageNum = Math.max(1, parseInt(page, 10));
+  const limitNum = Math.max(1, parseInt(limit, 10));
+  const skip = (pageNum - 1) * limitNum;
+
+  const [authers, total] = await Promise.all([
+    Auther.find().sort({ createdAt: -1 }).skip(skip).limit(limitNum).lean(),
+    Auther.countDocuments(),
+  ]);
+
+  const pages = Math.ceil(total / limitNum);
+
+  res.status(200).json({
+    data: authers,
+    meta: {
+      total,
+      page: pageNum,
+      pages,
+      limit: limitNum,
+    },
+  });
 });
 
 /**

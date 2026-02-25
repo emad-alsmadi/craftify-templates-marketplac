@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { authorsApi } from '@/lib/api';
 import { Author } from '@/types';
 import {
   Loader2,
@@ -14,32 +12,15 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuthorById } from '@/lib/authorsQuery';
 
 export default function AuthorDetailPage() {
   const params = useParams();
-  const [author, setAuthor] = useState<Author | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const id = params.id as string | undefined;
-    if (!id) return;
-
-    const fetchAuthor = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await authorsApi.getAuthorById(id);
-        setAuthor(data as Author);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch author');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAuthor();
-  }, [params.id]);
+  const id = params.id as string | undefined;
+  const authorQuery = useAuthorById(id);
+  const author: Author | null = authorQuery.data || null;
+  const loading = authorQuery.isLoading;
+  const error = (authorQuery.error as any)?.message || null;
 
   if (loading) {
     return (

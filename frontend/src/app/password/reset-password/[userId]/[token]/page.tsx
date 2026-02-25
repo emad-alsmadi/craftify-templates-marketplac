@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ArrowLeft, Lock, Sparkles, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { passwordApi } from '@/lib/api';
 import { useToast } from '@/components/ui/Toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +14,11 @@ import {
   resetPasswordSchema,
   type ResetPasswordValues,
 } from '@/lib/validation';
+import { useResetPasswordMutation } from '@/lib/passwordQuery';
+import {
+  getUserFacingErrorMessage,
+  logErrorForDev,
+} from '@/lib/userFacingError';
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -22,9 +26,9 @@ export default function ResetPasswordPage() {
   const params = useParams();
   const userId = params.userId as string;
   const token = params.token as string;
-
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const resetMutation = useResetPasswordMutation();
 
   const {
     register,
@@ -42,13 +46,12 @@ export default function ResetPasswordPage() {
 
   const onSubmit = handleSubmit(async (values) => {
     setSuccess(null);
-    setLoading(true);
     try {
-      const res = await passwordApi.resetPassword(
+      const res = await resetMutation.mutateAsync({
         userId,
         token,
-        values.password,
-      );
+        password: values.password,
+      });
       const msg = res?.message || 'Password updated successfully';
       setSuccess(msg);
       reset();
@@ -62,11 +65,9 @@ export default function ResetPasswordPage() {
         router.push('/login');
       }, 2200);
     } catch (err: any) {
-      const msg =
-        err?.response?.data?.message || err?.message || 'Reset failed';
+      logErrorForDev(err);
+      const msg = getUserFacingErrorMessage(err, 'Reset failed');
       toast(msg, { title: 'Reset failed', variant: 'error' });
-    } finally {
-      setLoading(false);
     }
   });
 
@@ -179,9 +180,9 @@ export default function ResetPasswordPage() {
             <Button
               type='submit'
               className='w-full'
-              disabled={loading || isSubmitting}
+              disabled={resetMutation.isPending || isSubmitting}
             >
-              {loading || isSubmitting ? (
+              {resetMutation.isPending || isSubmitting ? (
                 <span className='inline-flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
                   Saving...
