@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { booksApi } from '@/lib/api';
 import { Book } from '@/types';
 import { Button } from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toast';
 import {
   Loader2,
   ArrowLeft,
@@ -17,31 +16,20 @@ import {
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useBookById } from '@/lib/booksQuery';
+import { useCart } from '@/lib/cartStore';
 
 export default function BookDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const [book, setBook] = useState<Book | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+  const cart = useCart();
 
-  useEffect(() => {
-    if (params.id) {
-      const fetchBook = async () => {
-        try {
-          setLoading(true);
-          setError(null);
-          const data = await booksApi.getBookById(params.id as string);
-          setBook(data);
-        } catch (err: any) {
-          setError(err.message || 'Failed to fetch book');
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchBook();
-    }
-  }, [params.id]);
+  const id = params.id as string | undefined;
+  const bookQuery = useBookById(id);
+  const book: Book | null = bookQuery.data || null;
+  const loading = bookQuery.isLoading;
+  const error = (bookQuery.error as any)?.message || null;
 
   if (loading) {
     return (
@@ -175,8 +163,21 @@ export default function BookDetailPage() {
 
               <div className='mt-6 grid gap-3 sm:grid-cols-2'>
                 <Button
-                  className='w-full'
+                  className='w-full rounded-full bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-cyan-500 text-white shadow-md transition hover:brightness-110 active:brightness-95'
                   size='lg'
+                  onClick={() => {
+                    cart.addToCart({
+                      bookId: book._id,
+                      title: book.title,
+                      price: book.price,
+                      cover: book.cover,
+                      qty: 1,
+                    });
+                    toast('Added to cart.', {
+                      title: 'Cart',
+                      variant: 'success',
+                    });
+                  }}
                 >
                   Add to Cart
                 </Button>
