@@ -21,11 +21,11 @@ export function setAuthCookies(opts: {
   days?: number;
 }) {
   const expires = opts.days ?? 7;
-  Cookies.set(AUTH_TOKEN_COOKIE, opts.token, { expires });
-  Cookies.set(AUTH_ROLE_COOKIE, opts.role, { expires });
+  Cookies.set(AUTH_TOKEN_COOKIE, opts.token, { expires, path: '/' });
+  Cookies.set(AUTH_ROLE_COOKIE, opts.role, { expires, path: '/' });
 }
 
 export function clearAuthCookies() {
-  Cookies.remove(AUTH_TOKEN_COOKIE);
-  Cookies.remove(AUTH_ROLE_COOKIE);
+  Cookies.remove(AUTH_TOKEN_COOKIE, { path: '/' });
+  Cookies.remove(AUTH_ROLE_COOKIE, { path: '/' });
 }

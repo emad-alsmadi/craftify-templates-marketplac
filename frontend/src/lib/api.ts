@@ -14,6 +14,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 export const api = axios.create({
   baseURL: API_BASE,
 });
+
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = getAuthToken();
@@ -24,6 +25,38 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Global error handler for 401 responses
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear any existing auth data
+      if (typeof window !== 'undefined') {
+        document.cookie =
+          'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+        document.cookie =
+          'userRole=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+
+        // Show toast message
+        const toastEvent = new CustomEvent('showAuthToast', {
+          detail: {
+            message: 'Please sign in to access this feature.',
+            title: 'Authentication Required',
+            variant: 'error',
+          },
+        });
+        window.dispatchEvent(toastEvent);
+
+        // Redirect to login after a short delay
+        setTimeout(() => {
+          window.location.href = '/auth/login';
+        }, 1000);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 export const booksApi = {
   getBooks: async (params: BooksQuery = {}): Promise<BooksResponse> => {

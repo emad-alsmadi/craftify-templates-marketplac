@@ -3,22 +3,27 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
+  'inline-flex items-center justify-center rounded-xl text-sm font-extrabold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none shadow-lg hover:shadow-xl transform hover:-translate-y-0.5',
   {
     variants: {
       variant: {
-        default: 'bg-blue-600 text-white hover:bg-blue-700',
-        destructive: 'bg-red-600 text-white hover:bg-red-700',
-        outline: 'border border-gray-300 hover:bg-gray-50',
-        secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
-        ghost: 'hover:bg-gray-100',
-        link: 'underline-offset-4 hover:underline text-blue-600',
+        default:
+          'bg-gradient-to-r from-fuchsia-600 via-indigo-600 to-cyan-500 text-white hover:from-fuchsia-700 hover:via-indigo-700 hover:to-cyan-600',
+        destructive:
+          'bg-gradient-to-r from-rose-600 via-red-600 to-pink-600 text-white hover:from-rose-700 hover:via-red-700 hover:to-pink-700',
+        outline:
+          'border-2 border-fuchsia-300 bg-white/80 text-fuchsia-700 hover:bg-fuchsia-50 hover:border-fuchsia-400 hover:text-fuchsia-800',
+        secondary:
+          'bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 text-indigo-800 hover:from-indigo-200 hover:via-purple-200 hover:to-pink-200',
+        ghost:
+          'bg-white/40 text-indigo-700 hover:bg-white/60 hover:text-indigo-800 backdrop-blur-sm',
+        link: 'underline-offset-4 hover:underline text-fuchsia-600 font-extrabold',
       },
       size: {
-        default: 'h-10 py-2 px-4',
-        sm: 'h-9 px-3 rounded-md',
-        lg: 'h-11 px-8 rounded-md',
-        icon: 'h-10 w-10',
+        default: 'h-12 py-3 px-6',
+        sm: 'h-10 px-4 rounded-lg',
+        lg: 'h-14 px-10 rounded-2xl',
+        icon: 'h-12 w-12 rounded-xl',
       },
     },
     defaultVariants: {

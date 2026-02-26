@@ -8,29 +8,30 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, type LoginValues } from '@/lib/validation';
+import { signupSchema, type SignupValues } from '@/lib/validation';
 import { useToast } from '@/components/ui/Toast';
-import { useLoginMutation, useMe } from '@/lib/authQuery';
+import { useMe, useRegisterMutation } from '@/lib/authQuery';
 import {
   getUserFacingErrorMessage,
   logErrorForDev,
 } from '@/lib/userFacingError';
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
 
   const meQuery = useMe();
-  const loginMutation = useLoginMutation();
+  const registerMutation = useRegisterMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignupValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       email: '',
+      username: '',
       password: '',
     },
     mode: 'onTouched',
@@ -38,16 +39,16 @@ export default function LoginPage() {
 
   const onSubmit = handleSubmit(async (values) => {
     try {
-      await loginMutation.mutateAsync(values);
-      toast('Logged in successfully.', {
+      await registerMutation.mutateAsync(values);
+      toast('Account created successfully.', {
         title: 'Success',
         variant: 'success',
       });
-      router.push('/welcome');
+      router.push('/');
     } catch (err: any) {
       logErrorForDev(err);
-      const msg = getUserFacingErrorMessage(err, 'Login failed');
-      toast(msg, { title: 'Login failed', variant: 'error' });
+      const msg = getUserFacingErrorMessage(err, 'Signup failed');
+      toast(msg, { title: 'Signup failed', variant: 'error' });
     }
   });
 
@@ -56,11 +57,11 @@ export default function LoginPage() {
       <motion.div
         aria-hidden
         className='pointer-events-none absolute -inset-24 opacity-70'
-        animate={{ rotate: [0, 8, 0], scale: [1, 1.03, 1] }}
+        animate={{ rotate: [0, -8, 0], scale: [1, 1.03, 1] }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         style={{
           background:
-            'radial-gradient(closest-side, rgba(236,72,153,0.25), transparent 70%), radial-gradient(closest-side, rgba(99,102,241,0.25), transparent 70%), radial-gradient(closest-side, rgba(34,211,238,0.20), transparent 70%)',
+            'radial-gradient(closest-side, rgba(245,158,11,0.22), transparent 70%), radial-gradient(closest-side, rgba(236,72,153,0.22), transparent 70%), radial-gradient(closest-side, rgba(99,102,241,0.20), transparent 70%)',
         }}
       />
 
@@ -69,54 +70,15 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
-          className='hidden overflow-hidden rounded-3xl border border-white/30 bg-gradient-to-br from-fuchsia-600/80 via-indigo-600/80 to-cyan-500/80 p-10 text-white shadow-sm lg:block'
-        >
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div className='inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-extrabold'>
-              <Sparkles className='h-4 w-4' />
-              Welcome back
-            </div>
-            <h1 className='mt-4 text-4xl font-extrabold tracking-tight'>
-              Sign in to your account
-            </h1>
-            <p className='mt-3 text-sm text-white/90'>
-              Access your profile and continue exploring books with a modern
-              experience.
-            </p>
-
-            <div className='mt-8 grid gap-3'>
-              {[
-                'Animated, vibrant UI with smooth transitions',
-                'Catalog filters, pagination and detail pages',
-                'Auth flows ready to plug into your backend',
-              ].map((t) => (
-                <div
-                  key={t}
-                  className='rounded-2xl bg-white/12 p-4 text-sm font-semibold'
-                >
-                  {t}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: 'easeOut', delay: 0.05 }}
-          className='rounded-3xl border border-white/30 bg-white/35 p-6 shadow-sm backdrop-blur-xl sm:p-8'
+          className='order-2 rounded-3xl border border-white/30 bg-white/35 p-6 shadow-sm backdrop-blur-xl sm:p-8 lg:order-1'
         >
           <div className='flex items-start justify-between gap-3'>
             <div>
               <div className='text-2xl font-extrabold tracking-tight text-indigo-950'>
-                Login
+                Create Account
               </div>
               <div className='mt-1 text-sm font-semibold text-indigo-950/80'>
-                Enter your credentials to continue.
+                Join the templates marketplace experience with a modern UI.
               </div>
             </div>
             {meQuery.data?.user && (
@@ -130,6 +92,20 @@ export default function LoginPage() {
             onSubmit={onSubmit}
             className='mt-6 space-y-4'
           >
+            <div>
+              <label className='mb-2 block text-sm font-extrabold text-indigo-950/80'>
+                Username
+              </label>
+              <Input
+                placeholder='Your name'
+                {...register('username')}
+              />
+              {errors.username?.message && (
+                <div className='mt-2 text-sm font-semibold text-rose-700'>
+                  {errors.username.message}
+                </div>
+              )}
+            </div>
             <div>
               <label className='mb-2 block text-sm font-extrabold text-indigo-950/80'>
                 Email
@@ -161,46 +137,83 @@ export default function LoginPage() {
               )}
             </div>
 
-            {loginMutation.error && (
+            {registerMutation.error && (
               <motion.div
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 className='rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold text-rose-900'
               >
-                {getUserFacingErrorMessage(loginMutation.error, 'Login failed')}
+                {getUserFacingErrorMessage(
+                  registerMutation.error,
+                  'Signup failed',
+                )}
               </motion.div>
             )}
 
             <Button
               type='submit'
               className='w-full'
-              disabled={loginMutation.isPending || isSubmitting}
+              disabled={registerMutation.isPending || isSubmitting}
             >
-              {loginMutation.isPending || isSubmitting ? (
+              {registerMutation.isPending || isSubmitting ? (
                 <span className='inline-flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
-                  Signing in...
+                  Creating...
                 </span>
               ) : (
-                'Sign in'
+                'Create account'
               )}
             </Button>
 
-            <div className='flex items-center justify-between text-sm'>
+            <div className='text-sm font-semibold text-indigo-950/80'>
+              Already have an account?{' '}
               <Link
                 className='font-extrabold text-indigo-700 hover:underline'
-                href='/signup'
+                href='/auth/login'
               >
-                Create account
-              </Link>
-              <Link
-                className='font-extrabold text-fuchsia-700 hover:underline'
-                href='/password/forgot-password'
-              >
-                Forgot password?
+                Login
               </Link>
             </div>
           </form>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: 'easeOut', delay: 0.05 }}
+          className='order-1 hidden overflow-hidden rounded-3xl border border-white/30 bg-gradient-to-br from-amber-500/80 via-rose-500/80 to-fuchsia-600/80 p-10 text-white shadow-sm lg:block lg:order-2'
+        >
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <div className='inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-extrabold'>
+              <Sparkles className='h-4 w-4' />
+              New here
+            </div>
+            <h1 className='mt-4 text-4xl font-extrabold tracking-tight'>
+              Create your profile
+            </h1>
+            <p className='mt-3 text-sm text-white/90'>
+              Register in seconds and enjoy a colorful, modern templates
+              marketplace.
+            </p>
+
+            <div className='mt-8 grid gap-3'>
+              {[
+                'Premium colors with motion layers',
+                'Professional sections and transitions',
+                'Designed to scale with your backend',
+              ].map((t) => (
+                <div
+                  key={t}
+                  className='rounded-2xl bg-white/12 p-4 text-sm font-semibold'
+                >
+                  {t}
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </motion.section>
       </div>
     </div>

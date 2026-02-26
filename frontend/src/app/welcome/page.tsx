@@ -93,7 +93,7 @@ export default function WelcomePage() {
               className='w-full'
             >
               <Button
-                className='w-full'
+                className='w-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
                 size='lg'
               >
                 <span className='inline-flex items-center gap-2'>
@@ -108,7 +108,8 @@ export default function WelcomePage() {
               className='w-full'
             >
               <Button
-                className='w-full bg-white/40 text-indigo-950 hover:bg-white/55'
+                variant='secondary'
+                className='w-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
                 size='lg'
               >
                 <span className='inline-flex items-center gap-2'>

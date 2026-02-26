@@ -149,7 +149,7 @@ export function Navbar() {
 
           {!hydrated || !user ? (
             <Link
-              href='/login'
+              href='/auth/login'
               className='ml-2 inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/60 px-4 py-2 text-sm font-bold text-gray-900 shadow-sm transition hover:bg-white'
             >
               <LogIn className='h-4 w-4' />
