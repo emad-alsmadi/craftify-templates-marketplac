@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const { Order, validateCreateOrder } = require('../models/Order');
-const { Book } = require('../models/Book');
+const { Template } = require('../models/Template');
 
 const createOrder = asyncHandler(async (req, res) => {
   const userId = req.user?.id ?? req.user?._id;
@@ -17,28 +17,30 @@ const createOrder = asyncHandler(async (req, res) => {
   const shippingPrice = Number(req.body.shippingPrice ?? 0);
   const taxPrice = Number(req.body.taxPrice ?? 0);
 
-  const bookIds = items.map((i) => i.book);
-  const books = await Book.find({ _id: { $in: bookIds } }).lean();
-  const booksById = new Map(books.map((b) => [String(b._id), b]));
+  const templateIds = items.map((i) => i.book);
+  const templates = await Template.find({ _id: { $in: templateIds } }).lean();
+  const templatesById = new Map(templates.map((t) => [String(t._id), t]));
 
   const normalizedItems = items.map((i) => {
-    const b = booksById.get(String(i.book));
-    if (!b) {
+    const t = templatesById.get(String(i.book));
+    if (!t) {
       return null;
     }
 
     return {
-      book: b._id,
-      title: b.title,
-      price: Number(b.price),
+      book: t._id,
+      title: t.title,
+      price: Number(t.price),
       qty: Number(i.qty),
-      cover: b.cover,
+      cover: t.cover,
     };
   });
 
   const missing = normalizedItems.find((x) => !x);
   if (missing) {
-    return res.status(404).json({ message: 'One or more books were not found' });
+    return res
+      .status(404)
+      .json({ message: 'One or more templates were not found' });
   }
 
   const finalItems = normalizedItems;

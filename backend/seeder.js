@@ -1,17 +1,17 @@
-const { Book } = require('./models/Book');
-const { Auther } = require('./models/Auther');
-const { authers, books } = require('./data');
+const { Template } = require('./models/Template');
+const { Creator } = require('./models/Creator');
+const { creators, templates } = require('./data');
 const { connectToDB } = require('./config/db');
 require('dotenv').config();
 
-// Import Books & Authers
+// Import Templates & Creators
 const importData = async () => {
   try {
     await connectToDB();
-    await Auther.deleteMany({});
-    await Book.deleteMany({});
-    await Auther.insertMany(authers);
-    await Book.insertMany(books);
+    await Creator.deleteMany({});
+    await Template.deleteMany({});
+    await Creator.insertMany(creators);
+    await Template.insertMany(templates);
     console.log('Data imported');
     process.exit();
   } catch (error) {
@@ -20,12 +20,12 @@ const importData = async () => {
   }
 };
 
-// Remove Books & Authers
+// Remove Templates & Creators
 const removeData = async () => {
   try {
     await connectToDB();
-    await Book.deleteMany({});
-    await Auther.deleteMany({});
+    await Template.deleteMany({});
+    await Creator.deleteMany({});
     console.log('Data removed');
     process.exit();
   } catch (error) {

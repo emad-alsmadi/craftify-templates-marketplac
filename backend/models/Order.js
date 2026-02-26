@@ -5,7 +5,7 @@ const OrderItemSchema = new mongoose.Schema(
   {
     book: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Book',
+      ref: 'Template',
       required: true,
     },
     title: {

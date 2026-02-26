@@ -4,18 +4,24 @@ const ROLE_PERMISSIONS = {
   user: [
     'authers:read',
     'books:read',
-    'users:read:own'
+    'creators:read',
+    'templates:read',
+    'users:read:own',
   ],
-  
+
   // Moderator permissions - can read/write most things
   moderator: [
     'authers:read',
     'authers:write',
     'books:read',
     'books:write',
-    'users:read'
+    'creators:read',
+    'creators:write',
+    'templates:read',
+    'templates:write',
+    'users:read',
   ],
-  
+
   // Admin permissions - can do everything
   admin: [
     'authers:read',
@@ -24,15 +30,23 @@ const ROLE_PERMISSIONS = {
     'books:read',
     'books:write',
     'books:delete',
+    'creators:read',
+    'creators:write',
+    'creators:delete',
+    'templates:read',
+    'templates:write',
+    'templates:delete',
     'users:read',
     'users:write',
-    'users:delete'
-  ]
+    'users:delete',
+  ],
 };
 
 // Check if user has specific permission
 const hasPermission = (userPermissions, requiredPermission) => {
-  return userPermissions.some(permission => permission === requiredPermission);
+  return userPermissions.some(
+    (permission) => permission === requiredPermission,
+  );
 };
 
 // Get all permissions for a role
@@ -43,12 +57,12 @@ const getRolePermissions = (role) => {
 // Get all permissions for user roles (array)
 const getUserPermissions = (userRoles) => {
   const allPermissions = new Set();
-  
-  userRoles.forEach(role => {
+
+  userRoles.forEach((role) => {
     const rolePerms = getRolePermissions(role);
-    rolePerms.forEach(perm => allPermissions.add(perm));
+    rolePerms.forEach((perm) => allPermissions.add(perm));
   });
-  
+
   return Array.from(allPermissions);
 };
 
@@ -56,5 +70,5 @@ module.exports = {
   ROLE_PERMISSIONS,
   hasPermission,
   getRolePermissions,
-  getUserPermissions
+  getUserPermissions,
 };

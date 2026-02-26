@@ -100,11 +100,10 @@ export default function SignupPage() {
                 placeholder='Your name'
                 {...register('username')}
               />
-              {errors.username?.message && (
-                <div className='mt-2 text-sm font-semibold text-rose-700'>
-                  {errors.username.message}
-                </div>
-              )}
+              {/* TODO: التمرين 1 - أضف عرض رسائل الخطأ لكل حقل (username, email, password)
+                   - استخدم errors.username?.message, errors.email?.message, errors.password?.message
+                   - استخدم نفس التنسيق الموجود في الأعلى: div مع class 'mt-2 text-sm font-semibold text-rose-700'
+              */}
             </div>
             <div>
               <label className='mb-2 block text-sm font-extrabold text-indigo-950/80'>
@@ -115,11 +114,7 @@ export default function SignupPage() {
                 placeholder='you@example.com'
                 {...register('email')}
               />
-              {errors.email?.message && (
-                <div className='mt-2 text-sm font-semibold text-rose-700'>
-                  {errors.email.message}
-                </div>
-              )}
+              {/* TODO: أضف عرض خطأ الإيميل هنا */}
             </div>
             <div>
               <label className='mb-2 block text-sm font-extrabold text-indigo-950/80'>
@@ -130,25 +125,13 @@ export default function SignupPage() {
                 placeholder='••••••••'
                 {...register('password')}
               />
-              {errors.password?.message && (
-                <div className='mt-2 text-sm font-semibold text-rose-700'>
-                  {errors.password.message}
-                </div>
-              )}
+              {/* TODO: أضف عرض خطأ كلمة المرور هنا */}
             </div>
 
-            {registerMutation.error && (
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className='rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold text-rose-900'
-              >
-                {getUserFacingErrorMessage(
-                  registerMutation.error,
-                  'Signup failed',
-                )}
-              </motion.div>
-            )}
+            {/* TODO: التمرين 2 - أضف عرض خطأ الـ registerMutation.error
+                 - استخدم registerMutation.error مع getUserFacingErrorMessage
+                 - استخدم motion.div مع نفس التنسيق المحذوف
+            */}
 
             <Button
               type='submit'

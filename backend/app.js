@@ -23,8 +23,8 @@ app.use(
 app.use(logger);
 
 //Routers
-app.use('/api/', require('./routes/book'));
-app.use('/api/', require('./routes/authers'));
+app.use('/api/', require('./routes/templates'));
+app.use('/api/', require('./routes/creators'));
 app.use('/api/', require('./routes/auth'));
 app.use('/api/', require('./routes/profile'));
 app.use('/api/', require('./routes/users'));
