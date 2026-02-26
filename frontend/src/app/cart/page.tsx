@@ -33,7 +33,7 @@ export default function CartPage() {
   return (
     <div className='space-y-6'>
       <div className='rounded-3xl border border-white/40 bg-white/55 p-6 shadow-sm backdrop-blur-xl'>
-        <div className='flex items-start justify-between gap-4'>
+        <div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
           <div>
             <div className='inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/40 px-3 py-1 text-xs font-extrabold text-indigo-950'>
               <ShoppingCart className='h-4 w-4 text-fuchsia-700' />
@@ -47,10 +47,10 @@ export default function CartPage() {
             </p>
           </div>
 
-          <div className='flex flex-col items-end gap-2'>
+          <div className='flex w-full flex-col gap-2 sm:w-auto sm:items-end'>
             <Button
               size='sm'
-              className='rounded-full border border-white/35 bg-white/45 text-indigo-950 shadow-sm backdrop-blur-xl transition hover:bg-white/65'
+              className='w-full rounded-full border border-white/35 bg-white/45 text-indigo-950 shadow-sm backdrop-blur-xl transition hover:bg-white/65 sm:w-auto'
               onClick={() => router.push('/')}
             >
               <span className='inline-flex items-center gap-2'>
@@ -61,7 +61,7 @@ export default function CartPage() {
             {items.length > 0 && (
               <Button
                 size='sm'
-                className='rounded-full bg-gradient-to-r from-rose-600 via-fuchsia-600 to-amber-500 text-white shadow-md transition hover:brightness-110 active:brightness-95'
+                className='w-full rounded-full bg-gradient-to-r from-rose-600 via-fuchsia-600 to-amber-500 text-white shadow-md transition hover:brightness-110 active:brightness-95 sm:w-auto'
                 onClick={() => clearCart()}
               >
                 Clear cart
@@ -80,14 +80,14 @@ export default function CartPage() {
             Your cart is empty
           </div>
           <div className='mt-2 text-sm font-semibold text-indigo-950/75'>
-            Browse books and add something you like.
+            Browse templates and add something you like.
           </div>
           <div className='mt-6 flex justify-center'>
             <Link
               href='/'
               className='inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-cyan-500 px-5 py-3 text-sm font-extrabold text-white shadow-md transition hover:brightness-110'
             >
-              Browse books
+              Browse templates
             </Link>
           </div>
         </div>
@@ -109,14 +109,14 @@ export default function CartPage() {
                   exit='exit'
                   className='rounded-3xl border border-white/30 bg-white/35 p-4 shadow-sm backdrop-blur-xl sm:p-5'
                 >
-                  <div className='flex gap-4'>
-                    <div className='relative h-24 w-20 overflow-hidden rounded-2xl border border-white/30 bg-white/20'>
+                  <div className='flex flex-col gap-4 sm:flex-row'>
+                    <div className='relative h-28 w-24 overflow-hidden rounded-2xl border border-white/30 bg-white/20 sm:h-24 sm:w-20'>
                       <Image
                         src={item.cover}
                         alt={item.title}
                         fill
                         className='object-cover'
-                        sizes='80px'
+                        sizes='(max-width: 640px) 96px, 80px'
                       />
                     </div>
 
@@ -142,13 +142,15 @@ export default function CartPage() {
                         </Button>
                       </div>
 
-                      <div className='mt-4 flex flex-wrap items-center justify-between gap-3'>
-                        <div className='inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/40 p-1 backdrop-blur-xl'>
+                      <div className='mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
+                        <div className='inline-flex w-full items-center justify-between gap-2 rounded-full border border-white/30 bg-white/40 p-1 backdrop-blur-xl sm:w-auto sm:justify-start'>
                           <Button
                             type='button'
                             size='icon'
                             className='h-9 w-9 rounded-full bg-white/60 text-indigo-950 transition hover:bg-white'
-                            onClick={() => setCartQty(item.bookId, item.qty - 1)}
+                            onClick={() =>
+                              setCartQty(item.bookId, item.qty - 1)
+                            }
                             disabled={item.qty <= 1}
                             aria-label='Decrease'
                           >
@@ -161,14 +163,16 @@ export default function CartPage() {
                             type='button'
                             size='icon'
                             className='h-9 w-9 rounded-full bg-white/60 text-indigo-950 transition hover:bg-white'
-                            onClick={() => setCartQty(item.bookId, item.qty + 1)}
+                            onClick={() =>
+                              setCartQty(item.bookId, item.qty + 1)
+                            }
                             aria-label='Increase'
                           >
                             <Plus className='h-4 w-4' />
                           </Button>
                         </div>
 
-                        <div className='text-sm font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-700 via-indigo-700 to-cyan-700'>
+                        <div className='text-right text-sm font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-700 via-indigo-700 to-cyan-700 sm:text-left'>
                           ${(item.price * item.qty).toFixed(2)}
                         </div>
                       </div>
@@ -179,8 +183,10 @@ export default function CartPage() {
             </AnimatePresence>
           </motion.div>
 
-          <div className='rounded-3xl border border-white/30 bg-white/35 p-6 shadow-sm backdrop-blur-xl'>
-            <div className='text-sm font-extrabold text-indigo-950'>Summary</div>
+          <div className='rounded-3xl border border-white/30 bg-white/35 p-6 shadow-sm backdrop-blur-xl lg:sticky lg:top-6 lg:self-start'>
+            <div className='text-sm font-extrabold text-indigo-950'>
+              Summary
+            </div>
             <div className='mt-4 space-y-3'>
               <div className='flex items-center justify-between text-sm font-semibold text-indigo-950/80'>
                 <span>Subtotal</span>

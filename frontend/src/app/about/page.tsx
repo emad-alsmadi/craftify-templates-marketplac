@@ -42,7 +42,7 @@ export default function AboutPage() {
                 About the experience
               </div>
               <h1 className='mt-4 text-4xl font-extrabold tracking-tight text-indigo-950 sm:text-5xl'>
-                A modern Bookstore UI that feels alive
+                A modern templates marketplace UI that feels alive
               </h1>
               <p className='mt-4 max-w-2xl text-sm font-semibold text-indigo-950/80'>
                 This frontend is designed as a premium, vibrant and animated
@@ -97,7 +97,7 @@ export default function AboutPage() {
               <div className='rounded-3xl border border-white/35 bg-white/30 p-3 backdrop-blur-xl'>
                 <Image
                   src='/about-hero.svg'
-                  alt='Bookstore illustration'
+                  alt='Templates marketplace illustration'
                   width={1200}
                   height={900}
                   className='h-auto w-full rounded-2xl'
