@@ -20,6 +20,7 @@ const STORAGE_KEY = 'book_store_cart_v1';
 
 const emitter = new EventTarget();
 
+// system deploy and subscribers for create change all tabs web
 function emit() {
   emitter.dispatchEvent(new Event('change'));
 }
@@ -46,6 +47,8 @@ function safeParse(json: string | null): CartState {
 }
 
 function readState(): CartState {
+  //this function is called on the server and client
+  // and important in next js beacase the code load on server SSR & ISR
   if (typeof window === 'undefined') return { items: [] };
   return safeParse(window.localStorage.getItem(STORAGE_KEY));
 }
@@ -53,6 +56,7 @@ function readState(): CartState {
 let cachedClientState: CartState = { items: [] };
 let cacheInitialized = false;
 
+// Get current status of cart
 function getClientSnapshot(): CartState {
   if (typeof window === 'undefined') return SERVER_SNAPSHOT;
   if (!cacheInitialized) {
@@ -62,6 +66,7 @@ function getClientSnapshot(): CartState {
   return cachedClientState;
 }
 
+// Update current status of cart
 function writeState(next: CartState) {
   if (typeof window === 'undefined') return;
   cachedClientState = next;
@@ -69,7 +74,7 @@ function writeState(next: CartState) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   emit();
 }
-
+// Subscribe to changes
 export function subscribeCart(callback: () => void) {
   const handler = () => callback();
   emitter.addEventListener('change', handler);
@@ -138,7 +143,6 @@ export function addToCart(item: Omit<CartItem, 'qty'> & { qty?: number }) {
     ],
   });
 }
-
 export function getCartCount(state: CartState) {
   return state.items.reduce((sum, i) => sum + i.qty, 0);
 }

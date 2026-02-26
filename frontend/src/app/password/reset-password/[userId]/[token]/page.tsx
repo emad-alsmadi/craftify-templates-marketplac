@@ -171,7 +171,7 @@ export default function ResetPasswordPage() {
                     className='w-full bg-white/40 text-indigo-950 hover:bg-white/55 sm:w-auto'
                     onClick={() => router.push('/')}
                   >
-                    Browse books
+                    Browse templates
                   </Button>
                 </div>
               </motion.div>

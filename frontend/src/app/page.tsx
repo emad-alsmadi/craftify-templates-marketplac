@@ -14,7 +14,7 @@ import { useBooks } from '@/lib/booksQuery';
 export default function HomePage() {
   const [query, setQuery] = useState<BooksQuery>({
     page: 1,
-    limit: 9,
+    limit: 8,
     sort: 'createdAt',
   });
 
@@ -61,11 +61,11 @@ export default function HomePage() {
 
         <div className='relative rounded-3xl border border-white/40 bg-white/50 p-6 shadow-sm backdrop-blur-xl'>
           <h1 className='text-3xl font-extrabold tracking-tight text-indigo-950 sm:text-4xl'>
-            Discover books with a modern experience
+            Discover templates with a modern experience
           </h1>
           <p className='mt-2 max-w-2xl text-sm font-semibold text-indigo-900/80'>
-            Search, sort, and explore your next read with smooth animations and
-            a colorful UI.
+            Search, sort, and explore ready-to-use templates with smooth
+            animations and a colorful UI.
           </p>
 
           <div className='mt-5 flex flex-col gap-3 sm:flex-row'>
@@ -73,7 +73,7 @@ export default function HomePage() {
               href='/authors'
               className='inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-600 via-indigo-600 to-cyan-500 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:opacity-95'
             >
-              Explore authors
+              Explore creators
             </Link>
             <Link
               href='/about'
@@ -99,7 +99,7 @@ export default function HomePage() {
               <div className='flex items-center gap-3'>
                 <Loader2 className='h-5 w-5 animate-spin text-fuchsia-600' />
                 <div className='text-sm font-semibold text-indigo-950/80'>
-                  Loading books...
+                  Loading templates...
                 </div>
               </div>
               <div className='mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
@@ -129,7 +129,7 @@ export default function HomePage() {
             <>
               <div className='rounded-3xl border border-white/40 bg-white/50 p-5 shadow-sm backdrop-blur-xl'>
                 <p className='text-sm font-semibold text-indigo-950/80'>
-                  Showing {data.data.length} of {data.meta.total} books
+                  Showing {data.data.length} of {data.meta.total} templates
                 </p>
               </div>
 

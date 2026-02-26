@@ -78,7 +78,7 @@ export default function SignupPage() {
                 Create Account
               </div>
               <div className='mt-1 text-sm font-semibold text-indigo-950/80'>
-                Join the bookstore experience with a modern UI.
+                Join the templates marketplace experience with a modern UI.
               </div>
             </div>
             {meQuery.data?.user && (
@@ -100,10 +100,11 @@ export default function SignupPage() {
                 placeholder='Your name'
                 {...register('username')}
               />
-              {/* TODO: التمرين 1 - أضف عرض رسائل الخطأ لكل حقل (username, email, password)
-                   - استخدم errors.username?.message, errors.email?.message, errors.password?.message
-                   - استخدم نفس التنسيق الموجود في الأعلى: div مع class 'mt-2 text-sm font-semibold text-rose-700'
-              */}
+              {errors.username?.message && (
+                <div className='mt-2 text-sm font-semibold text-rose-700'>
+                  {errors.username.message}
+                </div>
+              )}
             </div>
             <div>
               <label className='mb-2 block text-sm font-extrabold text-indigo-950/80'>
@@ -114,7 +115,11 @@ export default function SignupPage() {
                 placeholder='you@example.com'
                 {...register('email')}
               />
-              {/* TODO: أضف عرض خطأ الإيميل هنا */}
+              {errors.email?.message && (
+                <div className='mt-2 text-sm font-semibold text-rose-700'>
+                  {errors.email.message}
+                </div>
+              )}
             </div>
             <div>
               <label className='mb-2 block text-sm font-extrabold text-indigo-950/80'>
@@ -125,13 +130,25 @@ export default function SignupPage() {
                 placeholder='••••••••'
                 {...register('password')}
               />
-              {/* TODO: أضف عرض خطأ كلمة المرور هنا */}
+              {errors.password?.message && (
+                <div className='mt-2 text-sm font-semibold text-rose-700'>
+                  {errors.password.message}
+                </div>
+              )}
             </div>
 
-            {/* TODO: التمرين 2 - أضف عرض خطأ الـ registerMutation.error
-                 - استخدم registerMutation.error مع getUserFacingErrorMessage
-                 - استخدم motion.div مع نفس التنسيق المحذوف
-            */}
+            {registerMutation.error && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                className='rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold text-rose-900'
+              >
+                {getUserFacingErrorMessage(
+                  registerMutation.error,
+                  'Signup failed',
+                )}
+              </motion.div>
+            )}
 
             <Button
               type='submit'
@@ -178,7 +195,8 @@ export default function SignupPage() {
               Create your profile
             </h1>
             <p className='mt-3 text-sm text-white/90'>
-              Register in seconds and enjoy a colorful, modern bookstore.
+              Register in seconds and enjoy a colorful, modern templates
+              marketplace.
             </p>
 
             <div className='mt-8 grid gap-3'>

@@ -22,6 +22,7 @@ type CheckoutValues = {
   city: string;
   zip: string;
   notes: string;
+  delivery: boolean;
 };
 
 export default function CheckoutPage() {
@@ -36,6 +37,7 @@ export default function CheckoutPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutValues>({
     defaultValues: {
@@ -45,9 +47,14 @@ export default function CheckoutPage() {
       city: '',
       zip: '',
       notes: '',
+      delivery: false,
     },
     mode: 'onTouched',
   });
+
+  const deliverySelected = Boolean(watch('delivery'));
+  const shippingPrice = deliverySelected ? 5 : 0;
+  const total = subtotal + shippingPrice;
 
   const onSubmit = handleSubmit(async (values) => {
     const token = getAuthToken();
@@ -77,7 +84,7 @@ export default function CheckoutPage() {
           zip: values.zip,
           notes: values.notes,
         },
-        shippingPrice: 0,
+        shippingPrice: values.delivery ? 5 : 0,
         taxPrice: 0,
       });
 
@@ -206,6 +213,17 @@ export default function CheckoutPage() {
               />
             </div>
 
+            <div>
+              <label className='inline-flex items-center gap-2 text-sm font-extrabold text-indigo-950/80'>
+                <input
+                  type='checkbox'
+                  className='h-4 w-4'
+                  {...register('delivery')}
+                />
+                Add local delivery (optional)
+              </label>
+            </div>
+
             <Button
               type='submit'
               size='lg'
@@ -246,7 +264,7 @@ export default function CheckoutPage() {
             </div>
             <div className='flex items-center justify-between text-sm font-semibold text-indigo-950/70'>
               <span>Shipping</span>
-              <span>$0.00</span>
+              <span>${shippingPrice.toFixed(2)}</span>
             </div>
             <div className='flex items-center justify-between text-sm font-semibold text-indigo-950/70'>
               <span>Tax</span>
@@ -255,7 +273,7 @@ export default function CheckoutPage() {
             <div className='h-px bg-indigo-900/10' />
             <div className='flex items-center justify-between text-base font-extrabold text-indigo-950'>
               <span>Total</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>${total.toFixed(2)}</span>
             </div>
           </div>
         </motion.aside>

@@ -95,7 +95,7 @@ export default function ProfilePage() {
               size='lg'
               onClick={() => router.push('/')}
             >
-              Browse Books
+              Browse Templates
             </Button>
 
             <Button

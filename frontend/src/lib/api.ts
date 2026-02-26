@@ -14,7 +14,6 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 export const api = axios.create({
   baseURL: API_BASE,
 });
-
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = getAuthToken();
@@ -28,22 +27,22 @@ api.interceptors.request.use((config) => {
 
 export const booksApi = {
   getBooks: async (params: BooksQuery = {}): Promise<BooksResponse> => {
-    const { data } = await api.get('/books', { params });
+    const { data } = await api.get('/templates', { params });
     return data;
   },
   getBookById: async (id: string): Promise<Book> => {
-    const { data } = await api.get(`/books/${id}`);
+    const { data } = await api.get(`/templates/${id}`);
     return data;
   },
 };
 
 export const authorsApi = {
   getAuthors: async (params: AuthorsQuery = {}): Promise<AuthorsResponse> => {
-    const { data } = await api.get('/authers', { params });
+    const { data } = await api.get('/creators', { params });
     return data;
   },
   getAuthorById: async (id: string): Promise<any> => {
-    const { data } = await api.get(`/authers/${id}`);
+    const { data } = await api.get(`/creators/${id}`);
     return data;
   },
 };

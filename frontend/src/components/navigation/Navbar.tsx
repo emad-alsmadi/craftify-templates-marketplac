@@ -9,6 +9,7 @@ import {
   Users,
   Info,
   ShoppingCart,
+  Receipt,
   LogIn,
   User,
   LogOut,
@@ -20,9 +21,10 @@ import { useLogout, useMe } from '@/lib/authQuery';
 import { useCart } from '@/lib/cartStore';
 
 export const navItems = [
-  { href: '/', label: 'Books', icon: LayoutGrid },
-  { href: '/authors', label: 'Authors', icon: Users },
+  { href: '/', label: 'Templates', icon: LayoutGrid },
+  { href: '/creators', label: 'Creators', icon: Users },
   { href: '/cart', label: 'Cart', icon: ShoppingCart },
+  { href: '/orders', label: 'Orders', icon: Receipt },
   { href: '/about', label: 'About', icon: Info },
 ];
 
@@ -102,9 +104,11 @@ export function Navbar() {
           </span>
           <div className='leading-tight'>
             <div className='text-lg font-extrabold tracking-tight text-gray-900'>
-              Bookstore
+              Templates
             </div>
-            <div className='text-xs text-gray-600'>Discover your next read</div>
+            <div className='text-xs text-gray-600'>
+              Digital templates marketplace
+            </div>
           </div>
         </Link>
 

@@ -45,7 +45,7 @@ export default function WelcomePage() {
           <h1 className='mt-5 text-4xl font-extrabold tracking-tight text-indigo-950 sm:text-5xl'>
             {user?.username
               ? `Welcome, ${user.username}`
-              : 'Welcome to Bookstore'}
+              : 'Welcome to Templates'}
           </h1>
 
           <p className='mt-4 text-sm font-semibold leading-7 text-indigo-950/80'>
@@ -56,12 +56,12 @@ export default function WelcomePage() {
           <div className='mt-8 grid gap-3 sm:grid-cols-3'>
             {[
               {
-                title: 'Browse books',
+                title: 'Browse templates',
                 text: 'Explore the catalog with filters and pagination.',
                 tone: 'from-fuchsia-500/12 via-indigo-500/10 to-cyan-500/12',
               },
               {
-                title: 'Meet authors',
+                title: 'Meet creators',
                 text: 'Discover profiles with rich sections and motion.',
                 tone: 'from-amber-500/12 via-rose-500/10 to-fuchsia-500/12',
               },

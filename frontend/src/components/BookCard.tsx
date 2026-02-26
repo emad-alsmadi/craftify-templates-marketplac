@@ -88,7 +88,7 @@ export function BookCard({ book }: BookCardProps) {
             </div>
 
             <Link href={`/books/${book._id}`}>
-              <Button className='w-full'>Open book</Button>
+              <Button className='w-full'>Open template</Button>
             </Link>
           </div>
         </div>
