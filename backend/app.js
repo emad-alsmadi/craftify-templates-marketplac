@@ -45,9 +45,11 @@ app.use((err, req, res, next) => {
 });
 
 // Running Server
-port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(
     `Server is running in ${process.env.NODE_ENV} mode on port ${port}`,
   );
 });
+
+module.exports = app;
