@@ -1,6 +1,6 @@
-# Book Store API
+# Craftify API
 
-A RESTful backend API for a simple book store built with **Node.js**, **Express**, and **MongoDB (Mongoose)**.
+A RESTful backend API for Craftify built with **Node.js**, **Express**, and **MongoDB (Mongoose)**.
 
 This project follows a clean structure with **Routes** for HTTP definitions, **Controllers** for business logic, and **Middleware** for authentication/authorization.
 
@@ -12,8 +12,8 @@ This project follows a clean structure with **Routes** for HTTP definitions, **C
 - Role-based access control (RBAC)
   - Roles stored on the user as `roles: ['user', 'admin', 'moderator']`
   - Permission checks via middleware
-- Books CRUD
-- Authors CRUD
+- Templates CRUD
+- Creators CRUD
 - Users management
 
 ## Tech Stack
@@ -100,7 +100,7 @@ Base path: `/api`
 If you have existing data using `isAdmin`, you can migrate to the new `roles` system:
 
 - Migrate users:
-  
+
 ```
 npm run migrate:users
 ```

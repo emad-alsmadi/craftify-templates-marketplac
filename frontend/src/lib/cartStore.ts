@@ -16,7 +16,7 @@ type CartState = {
 
 const SERVER_SNAPSHOT: CartState = { items: [] };
 
-const STORAGE_KEY = 'book_store_cart_v1';
+const STORAGE_KEY = 'craftify_cart_v1';
 
 const emitter = new EventTarget();
 

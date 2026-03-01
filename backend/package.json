@@ -1,7 +1,7 @@
 {
-  "name": "book_store_api",
+  "name": "craftify_api",
   "version": "1.0.0",
-  "description": "book store backend",
+  "description": "Craftify backend",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js"

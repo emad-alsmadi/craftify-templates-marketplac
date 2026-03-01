@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://bookstore-backend-production.up.railway.app/api/:path*"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://bookstore-backend-production.up.railway.app",
+    "NEXT_PUBLIC_APP_NAME": "Craftify"
+  }
+}

@@ -104,7 +104,7 @@ export function Navbar() {
           </span>
           <div className='leading-tight'>
             <div className='text-lg font-extrabold tracking-tight text-gray-900'>
-              Templates
+              Craftify
             </div>
             <div className='text-xs text-gray-600'>
               Digital templates marketplace

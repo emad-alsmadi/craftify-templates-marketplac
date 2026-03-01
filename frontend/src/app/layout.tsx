@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Templates Marketplace',
-  description: 'Modern digital templates marketplace',
+  title: 'Craftify',
+  description: 'Craftify — a modern digital templates marketplace',
 };
 
 export default function RootLayout({

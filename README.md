@@ -1,13 +1,14 @@
-# Book Store App (Full‑Stack) — Next.js + Node.js/Express + MongoDB
+# Craftify (Full‑Stack) — Next.js + Node.js/Express + MongoDB
 
-A modern full‑stack Book Store application built with a **Next.js (App Router)** frontend and a **Node.js/Express** REST API backend.  
-The project includes a polished UI, JWT authentication, cookie-based session persistence on the client, role-based route protection via Next.js Middleware, and a complete password reset flow with email delivery (Nodemailer + SMTP).
+A modern full‑stack Craftify application built with a **Next.js (App Router)** frontend and a **Node.js/Express** REST API backend.  
+The project includes a polished UI, JWT authentication, cookie-based session persistence on the client, role-based route protection via Next.js Proxy, and a complete password reset flow with email delivery (Nodemailer + SMTP).
 
 ---
 
 ## Features
 
 ### Frontend (Next.js)
+
 - **Next.js App Router** application (dedicated [frontend/](cci:9://file:///c:/Users/Abdalmoute/OneDrive/Desktop/book_store_app/frontend:0:0-0:0) folder)
 - Modern responsive UI:
   - TailwindCSS styling
@@ -28,9 +29,10 @@ The project includes a polished UI, JWT authentication, cookie-based session per
   - Reset password page (token + userId in URL)
 - Role-based user experience:
   - Unauthorized page for blocked routes
-  - Next.js Middleware redirects based on auth & role
+  - Next.js Proxy redirects based on auth & role
 
 ### Backend (Node.js/Express)
+
 - REST API under `/api`
 - MongoDB persistence (Mongoose)
 - **JWT authentication (stateless)**
@@ -47,6 +49,7 @@ The project includes a polished UI, JWT authentication, cookie-based session per
 ## Tech Stack
 
 ### Frontend
+
 - Next.js (App Router)
 - React
 - Redux Toolkit
@@ -57,6 +60,7 @@ The project includes a polished UI, JWT authentication, cookie-based session per
 - Zod + React Hook Form
 
 ### Backend
+
 - Node.js / Express
 - MongoDB / Mongoose
 - JWT (jsonwebtoken)
@@ -69,18 +73,21 @@ The project includes a polished UI, JWT authentication, cookie-based session per
 ## Authentication Model (How it Works)
 
 ### Token delivery
+
 - The backend returns a JWT token in JSON responses (login/register).
 - The frontend stores auth state in **non-httpOnly cookies**:
   - `token` — JWT token
   - `userRole` — role string (ex: `admin`, `user`, `moderator`)
 
 ### API authorization
+
 - The frontend attaches the JWT to API requests using:
   - `Authorization: Bearer <token>`
 
-### Route protection (Next.js Middleware)
-- The Next.js [middleware.ts](cci:7://file:///c:/Users/Abdalmoute/OneDrive/Desktop/book_store_app/frontend/middleware.ts:0:0-0:0) checks the cookies on navigation:
-  - If a route is protected and `token/userRole` are missing → redirect to [/login](cci:9://file:///c:/Users/Abdalmoute/OneDrive/Desktop/book_store_app/frontend/src/app/login:0:0-0:0)
+### Route protection (Next.js Proxy)
+
+- The Next.js `proxy.ts` checks the cookies on navigation:
+  - If a route is protected and `token/userRole` are missing → redirect to `/auth/login`
   - If the user role does not match required role → redirect to [/unauthorized](cci:9://file:///c:/Users/Abdalmoute/OneDrive/Desktop/book_store_app/frontend/src/app/unauthorized:0:0-0:0)
 
 > Note: Because cookies are non-httpOnly, this approach is optimized for simple role-based UX routing and client-managed sessions.

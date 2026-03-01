@@ -42,7 +42,7 @@ export default function AboutPage() {
                 About the experience
               </div>
               <h1 className='mt-4 text-4xl font-extrabold tracking-tight text-indigo-950 sm:text-5xl'>
-                A modern templates marketplace UI that feels alive
+                Craftify — a modern templates marketplace UI that feels alive
               </h1>
               <p className='mt-4 max-w-2xl text-sm font-semibold text-indigo-950/80'>
                 This frontend is designed as a premium, vibrant and animated

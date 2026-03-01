@@ -45,7 +45,7 @@ export default function WelcomePage() {
           <h1 className='mt-5 text-4xl font-extrabold tracking-tight text-indigo-950 sm:text-5xl'>
             {user?.username
               ? `Welcome, ${user.username}`
-              : 'Welcome to Templates'}
+              : 'Welcome to Craftify'}
           </h1>
 
           <p className='mt-4 text-sm font-semibold leading-7 text-indigo-950/80'>
