@@ -16,7 +16,10 @@ function normalizeApiBase(rawBaseUrl: string | undefined) {
   return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
 }
 
-const API_BASE = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
+const API_BASE =
+  typeof window === 'undefined'
+    ? normalizeApiBase(process.env.NEXT_PUBLIC_API_URL)
+    : '/api';
 
 export const api = axios.create({
   baseURL: API_BASE,
