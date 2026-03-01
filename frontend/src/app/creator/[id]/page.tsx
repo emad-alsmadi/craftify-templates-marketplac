@@ -34,7 +34,7 @@ export default function AuthorDetailPage() {
     return (
       <div className='space-y-4'>
         <Link
-          href='/authors'
+          href='/creators'
           className='inline-flex items-center gap-2 text-sm font-extrabold text-indigo-700'
         >
           <ArrowLeft className='h-4 w-4' />
@@ -50,7 +50,7 @@ export default function AuthorDetailPage() {
   return (
     <div className='space-y-6'>
       <Link
-        href='/authors'
+        href='/creators'
         className='inline-flex items-center gap-2 text-sm font-extrabold text-indigo-700'
       >
         <ArrowLeft className='h-4 w-4' />
@@ -162,7 +162,7 @@ export default function AuthorDetailPage() {
                   Browse Templates
                 </Link>
                 <Link
-                  href='/authors'
+                  href='/creators'
                   className='inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/30 px-4 py-2 text-sm font-extrabold text-indigo-950 transition hover:bg-white/45'
                 >
                   All Creators

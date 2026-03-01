@@ -250,7 +250,7 @@ export default function BookDetailPage() {
 
                   {typeof book.author !== 'string' && (
                     <Link
-                      href={`/authors/${book.author._id}`}
+                      href={`/creators/${book.author._id}`}
                       className='inline-flex items-center justify-center rounded-full border border-white/35 bg-white/40 px-4 py-2 text-sm font-extrabold text-indigo-950 transition hover:bg-white/55'
                     >
                       Open author profile

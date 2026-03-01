@@ -70,7 +70,7 @@ export default function HomePage() {
 
           <div className='mt-5 flex flex-col gap-3 sm:flex-row'>
             <Link
-              href='/authors'
+              href='/creators'
               className='inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-600 via-indigo-600 to-cyan-500 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:opacity-95'
             >
               Explore creators

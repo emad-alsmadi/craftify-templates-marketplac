@@ -82,11 +82,11 @@ Base path: `/api`
 
 ### Authors
 
-- `GET /api/authers`
-- `GET /api/authers/:id`
-- `POST /api/authers` (protected: `authers:write`)
-- `PUT /api/authers/:id` (protected: `authers:write`)
-- `DELETE /api/authers/:id` (protected: `authers:delete`)
+- `GET /api/creators`
+- `GET /api/creators/:id`
+- `POST /api/creators` (protected: `authers:write`)
+- `PUT /api/creators/:id` (protected: `authers:write`)
+- `DELETE /api/creators/:id` (protected: `authers:delete`)
 
 ### Users
 
