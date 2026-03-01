@@ -60,10 +60,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           {!hydrated || !user ? (
             <Link
-              href='/login'
+              href='/auth/login'
               className={cn(
                 'flex flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold',
-                pathname === '/login'
+                pathname === '/auth/login'
                   ? 'text-fuchsia-700'
                   : 'text-indigo-700/70',
               )}
@@ -71,7 +71,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <LogIn
                 className={cn(
                   'h-5 w-5',
-                  pathname === '/login' && 'text-fuchsia-700',
+                  pathname === '/auth/login' && 'text-fuchsia-700',
                 )}
               />
               Login

@@ -9,7 +9,14 @@ import {
 } from '@/types';
 import { getAuthToken } from '@/lib/authCookies';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
+function normalizeApiBase(rawBaseUrl: string | undefined) {
+  if (!rawBaseUrl) return '/api';
+
+  const trimmed = rawBaseUrl.replace(/\/+$/, '');
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+}
+
+const API_BASE = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
 
 export const api = axios.create({
   baseURL: API_BASE,

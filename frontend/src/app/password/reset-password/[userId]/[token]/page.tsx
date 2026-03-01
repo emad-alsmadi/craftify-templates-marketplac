@@ -62,7 +62,7 @@ export default function ResetPasswordPage() {
         durationMs: 2400,
       });
       window.setTimeout(() => {
-        router.push('/login');
+        router.push('/auth/login');
       }, 2200);
     } catch (err: any) {
       logErrorForDev(err);
@@ -86,7 +86,7 @@ export default function ResetPasswordPage() {
 
       <div className='relative mx-auto max-w-3xl space-y-4'>
         <Link
-          href='/login'
+          href='/auth/login'
           className='inline-flex items-center gap-2 text-sm font-extrabold text-indigo-700'
         >
           <ArrowLeft className='h-4 w-4' />
@@ -161,7 +161,7 @@ export default function ResetPasswordPage() {
                     type='button'
                     size='sm'
                     className='w-full sm:w-auto'
-                    onClick={() => router.push('/login')}
+                    onClick={() => router.push('/auth/login')}
                   >
                     Go to login
                   </Button>

@@ -37,7 +37,7 @@ export default function UnauthorizedPage() {
             Back to home
           </Link>
           <Link
-            href='/login'
+            href='/auth/login'
             className='rounded-full border border-white/40 bg-white/55 px-6 py-2.5 text-sm font-extrabold text-indigo-950 shadow-sm transition hover:bg-white/70'
           >
             Login

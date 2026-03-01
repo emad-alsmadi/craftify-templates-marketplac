@@ -63,7 +63,7 @@ export default function CheckoutPage() {
         title: 'Login required',
         variant: 'info',
       });
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
 
