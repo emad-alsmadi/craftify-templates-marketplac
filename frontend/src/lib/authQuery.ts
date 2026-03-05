@@ -47,8 +47,8 @@ export function useLoginMutation() {
       const token: string | null = payload?.token || null;
       const roles: string[] = payload?.roles || [];
       const role = (roles?.[0] as UserRole) || null;
-      if (token && role) {
-        setAuthCookies({ token, role });
+      if (token) {
+        setAuthCookies({ token, role: role || 'user' });
       }
       qc.setQueryData(AUTH_ME_QUERY_KEY, {
         user: payload || null,
