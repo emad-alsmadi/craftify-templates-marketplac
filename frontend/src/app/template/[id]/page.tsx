@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { Book } from '@/types';
+import { Template } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 import {
@@ -16,20 +16,20 @@ import {
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useBookById } from '@/lib/booksQuery';
+import { useTemplateById } from '@/lib/templatesQuery';
 import { useCart } from '@/lib/cartStore';
 
-export default function BookDetailPage() {
+export default function TemplateDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
   const cart = useCart();
 
   const id = params.id as string | undefined;
-  const bookQuery = useBookById(id);
-  const book: Book | null = bookQuery.data || null;
-  const loading = bookQuery.isLoading;
-  const error = (bookQuery.error as any)?.message || null;
+  const templateQuery = useTemplateById(id);
+  const template: Template | null = templateQuery.data || null;
+  const loading = templateQuery.isLoading;
+  const error = (templateQuery.error as any)?.message || null;
 
   if (loading) {
     return (
@@ -39,7 +39,7 @@ export default function BookDetailPage() {
     );
   }
 
-  if (error || !book) {
+  if (error || !template) {
     return (
       <div className='space-y-4'>
         <Link
@@ -60,18 +60,22 @@ export default function BookDetailPage() {
   }
 
   const authorName =
-    typeof book.author === 'string' ? book.author : book.author.name;
+    typeof template.author === 'string'
+      ? template.author
+      : template.author.name;
   const authorCountry =
-    typeof book.author === 'string' ? null : book.author.country || null;
+    typeof template.author === 'string'
+      ? null
+      : template.author.country || null;
   const authorBio =
-    typeof book.author === 'string' ? null : book.author.bio || null;
+    typeof template.author === 'string' ? null : template.author.bio || null;
 
   const handleAddToCart = () => {
     cart.addToCart({
-      bookId: book._id,
-      title: book.title,
-      price: book.price,
-      cover: book.cover,
+      bookId: template._id,
+      title: template.title,
+      price: template.price,
+      cover: template.cover,
       qty: 1,
     });
     toast('Added to cart.', {
@@ -116,8 +120,8 @@ export default function BookDetailPage() {
                 transition={{ type: 'spring', stiffness: 260, damping: 20 }}
               >
                 <Image
-                  src={book.cover}
-                  alt={book.title}
+                  src={template.cover}
+                  alt={template.title}
                   fill
                   className='object-cover'
                   sizes='(max-width: 1024px) 100vw, 45vw'
@@ -146,7 +150,7 @@ export default function BookDetailPage() {
                   Updated
                 </div>
                 <div className='mt-2 text-sm font-extrabold text-indigo-950'>
-                  {new Date(book.updatedAt).toLocaleDateString()}
+                  {new Date(template.updatedAt).toLocaleDateString()}
                 </div>
               </div>
               <div className='rounded-3xl border border-white/30 bg-white/30 p-5'>
@@ -155,7 +159,7 @@ export default function BookDetailPage() {
                   Price
                 </div>
                 <div className='mt-2 text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-700 via-indigo-700 to-cyan-700'>
-                  ${book.price.toFixed(2)}
+                  ${template.price.toFixed(2)}
                 </div>
               </div>
             </div>
@@ -169,10 +173,10 @@ export default function BookDetailPage() {
               </div>
 
               <h1 className='mt-4 text-4xl font-extrabold tracking-tight text-indigo-950'>
-                {book.title}
+                {template.title}
               </h1>
               <p className='mt-3 text-sm font-semibold leading-7 text-indigo-950/80'>
-                {book.description}
+                {template.description}
               </p>
 
               <div className='mt-6 grid gap-3 sm:grid-cols-2'>
@@ -208,7 +212,7 @@ export default function BookDetailPage() {
                       Template ID
                     </div>
                     <div className='mt-1 break-all text-sm font-extrabold text-indigo-950'>
-                      {book._id}
+                      {template._id}
                     </div>
                   </div>
                   <div className='rounded-2xl border border-white/30 bg-white/25 p-4'>
@@ -216,7 +220,7 @@ export default function BookDetailPage() {
                       Created
                     </div>
                     <div className='mt-1 text-sm font-extrabold text-indigo-950'>
-                      {new Date(book.createdAt).toLocaleDateString()}
+                      {new Date(template.createdAt).toLocaleDateString()}
                     </div>
                   </div>
                 </div>
@@ -248,9 +252,9 @@ export default function BookDetailPage() {
                     </div>
                   )}
 
-                  {typeof book.author !== 'string' && (
+                  {typeof template.author !== 'string' && (
                     <Link
-                      href={`/creators/${book.author._id}`}
+                      href={`/creators/${template.author._id}`}
                       className='inline-flex items-center justify-center rounded-full border border-white/35 bg-white/40 px-4 py-2 text-sm font-extrabold text-indigo-950 transition hover:bg-white/55'
                     >
                       Open author profile

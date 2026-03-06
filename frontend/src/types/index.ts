@@ -6,7 +6,7 @@ export interface Author {
   roles: string[];
 }
 
-export interface Book {
+export interface Template {
   _id: string;
   title: string;
   author: Author | string;
@@ -17,8 +17,8 @@ export interface Book {
   updatedAt: string;
 }
 
-export interface BooksResponse {
-  data: Book[];
+export interface TemplatesResponse {
+  data: Template[];
   meta: {
     total: number;
     page: number;
@@ -80,7 +80,7 @@ export interface Order {
   updatedAt: string;
 }
 
-export interface BooksQuery {
+export interface TemplatesQuery {
   q?: string;
   minPrice?: number;
   maxPrice?: number;

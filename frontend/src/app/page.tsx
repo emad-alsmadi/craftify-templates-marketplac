@@ -1,35 +1,35 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { BookCard } from '@/components/BookCard';
+import { TemplateCard } from '@/components/TemplateCard';
 import { FilterSidebar } from '@/components/FilterSidebar';
 import { Pagination } from '@/components/ui/Pagination';
 import { Loader2 } from 'lucide-react';
-import { Book } from '@/types';
+import { Template } from '@/types';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import type { BooksQuery } from '@/types';
-import { useBooks } from '@/lib/booksQuery';
+import type { TemplatesQuery } from '@/types';
+import { useTemplates } from '@/lib/templatesQuery';
 
 export default function HomePage() {
-  const [query, setQuery] = useState<BooksQuery>({
+  const [query, setQuery] = useState<TemplatesQuery>({
     page: 1,
     limit: 8,
     sort: 'createdAt',
   });
 
   const stableQuery = useMemo(() => query, [query]);
-  const booksQuery = useBooks(stableQuery);
-  const data = booksQuery.data;
-  const loading = booksQuery.isLoading;
-  const error = (booksQuery.error as any)?.message || null;
+  const templatesQuery = useTemplates(stableQuery);
+  const data = templatesQuery.data;
+  const loading = templatesQuery.isLoading;
+  const error = (templatesQuery.error as any)?.message || null;
 
   const handlePageChange = (page: number) => {
-    setQuery((q) => ({ ...q, page }));
+    setQuery((q: TemplatesQuery) => ({ ...q, page }));
   };
 
   const handleFiltersChange = (newFilters: any) => {
-    setQuery((q) => ({ ...q, ...newFilters, page: 1 }));
+    setQuery((q: TemplatesQuery) => ({ ...q, ...newFilters, page: 1 }));
   };
 
   const gridVariants = {
@@ -117,7 +117,7 @@ export default function HomePage() {
             <div className='rounded-3xl border border-rose-200 bg-rose-50 p-6 text-rose-900'>
               <p className='font-semibold'>{error}</p>
               <button
-                onClick={() => booksQuery.refetch()}
+                onClick={() => templatesQuery.refetch()}
                 className='mt-2 underline'
               >
                 Try again
@@ -139,12 +139,12 @@ export default function HomePage() {
                 animate='show'
                 className='mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
               >
-                {data.data.map((book: Book) => (
+                {data.data.map((template: Template) => (
                   <motion.div
-                    key={book._id}
+                    key={template._id}
                     variants={itemVariants}
                   >
-                    <BookCard book={book} />
+                    <TemplateCard template={template} />
                   </motion.div>
                 ))}
               </motion.div>

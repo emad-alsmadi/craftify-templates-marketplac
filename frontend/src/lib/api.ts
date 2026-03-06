@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {
-  BooksResponse,
-  BooksQuery,
-  Book,
+  TemplatesResponse,
+  TemplatesQuery,
+  Template,
   AuthorsResponse,
   AuthorsQuery,
   Order,
@@ -68,12 +68,14 @@ api.interceptors.response.use(
   },
 );
 
-export const booksApi = {
-  getBooks: async (params: BooksQuery = {}): Promise<BooksResponse> => {
+export const templatesApi = {
+  getTemplates: async (
+    params: TemplatesQuery = {},
+  ): Promise<TemplatesResponse> => {
     const { data } = await api.get('/templates', { params });
     return data;
   },
-  getBookById: async (id: string): Promise<Book> => {
+  getTemplateById: async (id: string): Promise<Template> => {
     const { data } = await api.get(`/templates/${id}`);
     return data;
   },
@@ -154,4 +156,4 @@ export const ordersApi = {
   },
 };
 
-export type { BooksResponse, BooksQuery };
+export type { TemplatesResponse, TemplatesQuery };

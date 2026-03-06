@@ -4,8 +4,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { navItems, Navbar } from '@/components/navigation/Navbar';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { cn } from '@/lib/utils';
-import { LogIn, LogOut, User } from 'lucide-react';
+import { LogIn, LogOut, MoreHorizontal, User } from 'lucide-react';
 import { useLogout, useMe } from '@/lib/authQuery';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -39,79 +40,101 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <nav className='fixed inset-x-0 bottom-0 z-50 border-t border-white/30 bg-white/65 backdrop-blur-xl md:hidden'>
-        <div className='mx-auto flex max-w-7xl items-center justify-around px-2 py-2'>
-          {navItems.map((item) => {
-            const active = pathname === item.href;
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'flex flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold',
-                  active ? 'text-fuchsia-700' : 'text-indigo-700/70',
-                )}
-              >
-                <Icon className={cn('h-5 w-5', active && 'text-fuchsia-700')} />
-                {item.label}
-              </Link>
-            );
-          })}
-
-          {!hydrated || !user ? (
-            <Link
-              href='/auth/login'
-              className={cn(
-                'flex flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold',
-                pathname === '/auth/login'
-                  ? 'text-fuchsia-700'
-                  : 'text-indigo-700/70',
-              )}
-            >
-              <LogIn
-                className={cn(
-                  'h-5 w-5',
-                  pathname === '/auth/login' && 'text-fuchsia-700',
-                )}
-              />
-              Login
-            </Link>
-          ) : (
-            <>
-              <Link
-                href='/profile'
-                className={cn(
-                  'flex flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold',
-                  pathname === '/profile'
-                    ? 'text-fuchsia-700'
-                    : 'text-indigo-700/70',
-                )}
-              >
-                {loading && !user ? (
-                  <span className='inline-flex h-5 w-5 animate-pulse rounded-full bg-indigo-900/20' />
-                ) : (
-                  <User
-                    className={cn(
-                      'h-5 w-5',
-                      pathname === '/profile' && 'text-fuchsia-700',
-                    )}
+        <div className='mx-auto grid max-w-7xl grid-cols-5 items-stretch gap-1 px-1 py-2'>
+          {navItems
+            .filter((item) => item.href !== '/about')
+            .slice(0, 4)
+            .map((item) => {
+              const active = pathname === item.href;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-semibold',
+                    active ? 'text-fuchsia-700' : 'text-indigo-700/70',
+                  )}
+                >
+                  <Icon
+                    className={cn('h-5 w-5', active && 'text-fuchsia-700')}
                   />
-                )}
-                {user?.username || 'Profile'}
-              </Link>
+                  <span className='w-full truncate text-center'>
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
+
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
               <button
                 type='button'
-                onClick={() => {
-                  logout();
-                  router.push('/');
-                }}
-                className='flex flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold text-indigo-700/70'
+                className={cn(
+                  'flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-semibold',
+                  'text-indigo-700/70',
+                )}
               >
-                <LogOut className='h-5 w-5' />
-                Logout
+                <MoreHorizontal className='h-5 w-5' />
+                <span className='w-full truncate text-center'>More</span>
               </button>
-            </>
-          )}
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content
+                align='end'
+                side='top'
+                sideOffset={10}
+                className='z-[60] min-w-[220px] overflow-hidden rounded-2xl border border-white/40 bg-white/85 p-2 shadow-xl backdrop-blur-xl'
+              >
+                <DropdownMenu.Item asChild>
+                  <Link
+                    href='/about'
+                    className='flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-indigo-950 outline-none transition hover:bg-indigo-900/10'
+                  >
+                    About
+                  </Link>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Separator className='my-2 h-px bg-indigo-900/10' />
+
+                {!hydrated || !user ? (
+                  <DropdownMenu.Item asChild>
+                    <Link
+                      href='/auth/login'
+                      className='flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-indigo-950 outline-none transition hover:bg-indigo-900/10'
+                    >
+                      <LogIn className='h-4 w-4 text-indigo-700' />
+                      Login
+                    </Link>
+                  </DropdownMenu.Item>
+                ) : (
+                  <>
+                    <DropdownMenu.Item asChild>
+                      <Link
+                        href='/profile'
+                        className='flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-indigo-950 outline-none transition hover:bg-indigo-900/10'
+                      >
+                        <User className='h-4 w-4 text-indigo-700' />
+                        Profile
+                      </Link>
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        logout();
+                        router.push('/');
+                      }}
+                      className='flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-extrabold text-indigo-950 outline-none transition hover:bg-rose-500/10'
+                    >
+                      <LogOut className='h-4 w-4 text-rose-700' />
+                      Logout
+                    </DropdownMenu.Item>
+                  </>
+                )}
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
         </div>
       </nav>
     </div>

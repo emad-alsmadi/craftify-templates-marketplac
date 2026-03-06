@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Input } from './ui/Input';
 import { Button } from './ui/Button';
-import { BooksQuery } from '@/types';
+import { TemplatesQuery } from '@/types';
 import {
   Accordion,
   AccordionItem,
@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/Accordion';
 
 interface FilterSidebarProps {
-  filters: BooksQuery;
-  onFiltersChange: (filters: BooksQuery) => void;
+  filters: TemplatesQuery;
+  onFiltersChange: (filters: TemplatesQuery) => void;
 }
 
 export function FilterSidebar({
@@ -22,7 +22,7 @@ export function FilterSidebar({
 }: FilterSidebarProps) {
   const [local, setLocal] = useState(filters);
 
-  const handleChange = (key: keyof BooksQuery, value: any) => {
+  const handleChange = (key: keyof TemplatesQuery, value: any) => {
     const newFilters = { ...local, [key]: value };
     setLocal(newFilters);
     onFiltersChange(newFilters);
@@ -62,7 +62,7 @@ export function FilterSidebar({
             <AccordionTrigger>Search</AccordionTrigger>
             <AccordionContent>
               <Input
-                placeholder='Search books...'
+                placeholder='Search templates...'
                 value={local.q || ''}
                 onChange={(e) => handleChange('q', e.target.value)}
               />
