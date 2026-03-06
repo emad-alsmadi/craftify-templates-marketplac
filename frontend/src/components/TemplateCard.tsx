@@ -64,7 +64,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
                 In stock
               </span>
             </div>
-            <Link href={`/template/${template._id}`}>
+            <Link href={`/templates/${template._id}`}>
               <Button className='w-full'>View Details</Button>
             </Link>
           </div>
