@@ -11,7 +11,7 @@ const {
  * Supported query params:
  * - q: search term in title/description
  * - minPrice/maxPrice: price range
- * - author: creator id
+ * - creator: creator id
  * - page/limit: pagination
  * - sort: comma-separated fields, prefix with '-' for desc
  *
@@ -26,7 +26,7 @@ const getAllTemplates = asyncHandler(async (req, res) => {
     q,
     minPrice,
     maxPrice,
-    author,
+    creator,
     page = 1,
     limit = 3,
     sort = 'createdAt',
@@ -38,8 +38,8 @@ const getAllTemplates = asyncHandler(async (req, res) => {
     if (minPrice) query.price.$gte = Number(minPrice);
     if (maxPrice) query.price.$lte = Number(maxPrice);
   }
-  if (author) {
-    query.author = author;
+  if (creator) {
+    query.author = creator;
   }
   if (q) {
     query.$or = [

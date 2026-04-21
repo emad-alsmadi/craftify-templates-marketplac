@@ -1,20 +1,20 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { authorsApi } from '@/lib/api';
-import type { Author, AuthorsQuery, AuthorsResponse } from '@/types';
+import type { Creator, CreatorsQuery, CreatorsResponse } from '@/types';
 
-export const AUTHORS_LIST_KEY = ['authors', 'list'] as const;
+export const CREATORS_LIST_KEY = ['creators', 'list'] as const;
 
-export function authorsListKey(query: AuthorsQuery) {
-  return ['authors', 'list', query] as const;
+export function creatorsListKey(query: CreatorsQuery) {
+  return ['creators', 'list', query] as const;
 }
 
-export function authorByIdKey(id: string) {
-  return ['authors', 'byId', id] as const;
+export function creatorByIdKey(id: string) {
+  return ['creators', 'byId', id] as const;
 }
 
-export function useAuthors(query: AuthorsQuery) {
-  return useQuery<AuthorsResponse>({
-    queryKey: authorsListKey(query),
+export function useCreators(query: CreatorsQuery) {
+  return useQuery<CreatorsResponse>({
+    queryKey: creatorsListKey(query),
     queryFn: async () => {
       return await authorsApi.getAuthors(query);
     },
@@ -24,13 +24,13 @@ export function useAuthors(query: AuthorsQuery) {
   });
 }
 
-export function useAuthorById(id?: string) {
-  return useQuery<Author>({
-    queryKey: id ? authorByIdKey(id) : ['authors', 'byId', 'missing'],
+export function useCreatorById(id?: string) {
+  return useQuery<Creator>({
+    queryKey: id ? creatorByIdKey(id) : ['creators', 'byId', 'missing'],
     queryFn: async () => {
-      if (!id) throw new Error('Missing author id');
+      if (!id) throw new Error('Missing creator id');
       const data = await authorsApi.getAuthorById(id);
-      return data as Author;
+      return data as Creator;
     },
     enabled: Boolean(id),
     staleTime: 60_000,

@@ -1,26 +1,28 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Author, AuthorsQuery } from '@/types';
+import { Creator, CreatorsQuery } from '@/types';
 import { Loader2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthorCard } from '@/components/cards/AuthorCard';
-import { useAuthors } from '@/lib/authorsQuery';
+import { useCreators } from '@/lib/authorsQuery';
 import { Pagination } from '@/components/ui/Pagination';
 
 export default function AuthorsPage() {
-  const [query, setQuery] = useState<AuthorsQuery>({
+  const [query, setQuery] = useState<CreatorsQuery>({
     page: 1,
     limit: 8,
   });
 
   const stableQuery = useMemo(() => query, [query]);
-  const authorsQuery = useAuthors(stableQuery);
-  const data = authorsQuery.data;
-  const creators = data?.data || [];
-  const loading = authorsQuery.isLoading;
-  const fetching = authorsQuery.isFetching;
-  const error = (authorsQuery.error as any)?.message || null;
+  const creatorsQuery = useCreators({
+    page: query.page,
+    limit: 12,
+  });
+  const creators = creatorsQuery.data?.data || [];
+  const meta = creatorsQuery.data?.meta;
+  const loading = creatorsQuery.isLoading;
+  const error = (creatorsQuery.error as any)?.message || null;
 
   const handlePageChange = (page: number) => {
     setQuery((q) => ({ ...q, page }));
@@ -88,13 +90,13 @@ export default function AuthorsPage() {
         </p>
       </div>
 
-      {!loading && !error && data && (
+      {!loading && !error && meta && (
         <div className='rounded-3xl border border-white/40 bg-white/50 p-5 shadow-sm backdrop-blur-xl'>
           <div className='flex items-center justify-between gap-3'>
             <p className='text-sm font-semibold text-indigo-950/80'>
-              Showing {data.data.length} of {data.meta.total} creators
+              Showing {creators.length} of {meta.total} creators
             </p>
-            {fetching && (
+            {creatorsQuery.isFetching && (
               <div className='inline-flex items-center gap-2 text-xs font-extrabold text-indigo-950/70'>
                 <Loader2 className='h-4 w-4 animate-spin text-indigo-600' />
                 Loading...
@@ -106,14 +108,14 @@ export default function AuthorsPage() {
 
       <AnimatePresence mode='wait'>
         <motion.div
-          key={data?.meta.page ?? query.page ?? 1}
+          key={meta?.page ?? query.page ?? 1}
           variants={gridVariants}
           initial='hidden'
           animate='show'
           exit='exit'
           className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'
         >
-          {creators.map((a: Author) => (
+          {creators.map((a: Creator) => (
             <motion.div
               key={a._id}
               variants={itemVariants}
@@ -124,11 +126,11 @@ export default function AuthorsPage() {
         </motion.div>
       </AnimatePresence>
 
-      {data && data.meta.pages > 1 && (
+      {meta && meta.pages > 1 && (
         <div className='mt-8 flex justify-center'>
           <Pagination
-            currentPage={data.meta.page}
-            totalPages={data.meta.pages}
+            currentPage={meta.page}
+            totalPages={meta.pages}
             onPageChange={handlePageChange}
           />
         </div>

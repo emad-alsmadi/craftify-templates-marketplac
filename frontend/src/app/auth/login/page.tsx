@@ -85,7 +85,7 @@ export default function LoginPage() {
               Sign in to your account
             </h1>
             <p className='mt-3 text-sm text-white/90'>
-              Access your profile and continue exploring books with a modern
+              Access your profile and continue exploring templates with a modern
               experience.
             </p>
 

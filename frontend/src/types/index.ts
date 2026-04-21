@@ -1,4 +1,4 @@
-export interface Author {
+export interface Creator {
   _id: string;
   name: string;
   country: string;
@@ -9,7 +9,7 @@ export interface Author {
 export interface Template {
   _id: string;
   title: string;
-  author: Author | string;
+  author: Creator | string;
   description: string;
   price: number;
   cover: string;
@@ -27,8 +27,8 @@ export interface TemplatesResponse {
   };
 }
 
-export interface AuthorsResponse {
-  data: Author[];
+export interface CreatorsResponse {
+  data: Creator[];
   meta: {
     total: number;
     page: number;
@@ -37,7 +37,7 @@ export interface AuthorsResponse {
   };
 }
 
-export interface AuthorsQuery {
+export interface CreatorsQuery {
   page?: number;
   limit?: number;
 }
@@ -50,7 +50,7 @@ export type OrderStatus =
   | 'canceled';
 
 export interface OrderItem {
-  book: string;
+  templateId: string;
   title: string;
   price: number;
   qty: number;
@@ -84,7 +84,7 @@ export interface TemplatesQuery {
   q?: string;
   minPrice?: number;
   maxPrice?: number;
-  author?: string;
+  creator?: string;
   page?: number;
   limit?: number;
   sort?: string;

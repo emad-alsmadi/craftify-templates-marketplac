@@ -3,8 +3,8 @@ import {
   TemplatesResponse,
   TemplatesQuery,
   Template,
-  AuthorsResponse,
-  AuthorsQuery,
+  CreatorsResponse,
+  CreatorsQuery,
   Order,
 } from '@/types';
 import { getAuthToken } from '@/lib/authCookies';
@@ -82,7 +82,7 @@ export const templatesApi = {
 };
 
 export const authorsApi = {
-  getAuthors: async (params: AuthorsQuery = {}): Promise<AuthorsResponse> => {
+  getAuthors: async (params: CreatorsQuery = {}): Promise<CreatorsResponse> => {
     const { data } = await api.get('/creators', { params });
     return data;
   },
@@ -131,7 +131,7 @@ export const passwordApi = {
 
 export const ordersApi = {
   createOrder: async (payload: {
-    items: { book: string; qty: number }[];
+    items: { templateId: string; qty: number }[];
     shippingAddress: {
       name: string;
       phone: string;

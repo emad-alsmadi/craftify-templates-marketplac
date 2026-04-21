@@ -17,18 +17,24 @@ const createOrder = asyncHandler(async (req, res) => {
   const shippingPrice = Number(req.body.shippingPrice ?? 0);
   const taxPrice = Number(req.body.taxPrice ?? 0);
 
-  const templateIds = items.map((i) => i.book);
-  const templates = await Template.find({ _id: { $in: templateIds } }).lean();
+  // Validate that all template items exist
+  const templateIds = items.map((i) => i.template);
+  const templates = await Template.find({ _id: { $in: templateIds } });
+  if (templates.length !== templateIds.length) {
+    res.status(400);
+    throw new Error('One or more templates not found');
+  }
+
   const templatesById = new Map(templates.map((t) => [String(t._id), t]));
 
   const normalizedItems = items.map((i) => {
-    const t = templatesById.get(String(i.book));
+    const t = templatesById.get(String(i.template));
     if (!t) {
       return null;
     }
 
     return {
-      book: t._id,
+      template: t._id,
       title: t.title,
       price: Number(t.price),
       qty: Number(i.qty),

@@ -18,7 +18,7 @@ export function useCreateOrderMutation() {
 
   return useMutation({
     mutationFn: async (payload: {
-      items: { book: string; qty: number }[];
+      items: { templateId: string; qty: number }[];
       shippingAddress: {
         name: string;
         phone: string;

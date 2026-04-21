@@ -27,7 +27,8 @@ This project follows a clean structure with **Routes** for HTTP definitions, **C
 ## Project Structure
 
 ```
-BOOK_STORE_API/
+
+craftify-templates-marketplac/
   controllers/
   middlewares/
   models/
@@ -72,21 +73,21 @@ Base path: `/api`
 - `POST /api/auth/login`
 - `GET /api/auth/profile` (protected)
 
-### Books
+### Templates
 
-- `GET /api/books`
-- `GET /api/books/:id`
-- `POST /api/books` (protected: `books:write`)
-- `PUT /api/books/:id` (protected: `books:write`)
-- `DELETE /api/books/:id` (protected: `books:delete`)
+- `GET /api/templates`
+- `GET /api/templates/:id`
+- `POST /api/templates` (protected: `templates:write`)
+- `PUT /api/templates/:id` (protected: `templates:write`)
+- `DELETE /api/templates/:id` (protected: `templates:delete`)
 
-### Authors
+### Creators
 
 - `GET /api/creators`
 - `GET /api/creators/:id`
-- `POST /api/creators` (protected: `authers:write`)
-- `PUT /api/creators/:id` (protected: `authers:write`)
-- `DELETE /api/creators/:id` (protected: `authers:delete`)
+- `POST /api/creators` (protected: `creators:write`)
+- `PUT /api/creators/:id` (protected: `creators:write`)
+- `DELETE /api/creators/:id` (protected: `creators:delete`)
 
 ### Users
 
@@ -105,10 +106,10 @@ If you have existing data using `isAdmin`, you can migrate to the new `roles` sy
 npm run migrate:users
 ```
 
-- Migrate authors:
+- Migrate creators:
 
 ```
-npm run migrate:authers
+npm run migrate:creators
 ```
 
 - Migrate all:

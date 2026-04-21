@@ -3,7 +3,7 @@
 import { useCallback, useSyncExternalStore } from 'react';
 
 export type CartItem = {
-  bookId: string;
+  templateId: string;
   title: string;
   price: number;
   cover: string;
@@ -30,11 +30,16 @@ function safeParse(json: string | null): CartState {
   try {
     const parsed = JSON.parse(json) as CartState;
     if (!parsed || !Array.isArray(parsed.items)) return { items: [] };
+    // Migrate old templateId to templateId for compatibility
+    const items = parsed.items.map((item: any) => ({
+      ...item,
+      templateId: item.templateId,
+    }));
     return {
-      items: parsed.items
-        .filter((x: any) => x && typeof x.bookId === 'string')
+      items: items
+        .filter((x: any) => x && typeof x.templateId === 'string')
         .map((x: any) => ({
-          bookId: String(x.bookId),
+          templateId: String(x.templateId),
           title: String(x.title ?? ''),
           price: Number(x.price ?? 0),
           cover: String(x.cover ?? ''),
@@ -74,6 +79,7 @@ function writeState(next: CartState) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   emit();
 }
+
 // Subscribe to changes
 export function subscribeCart(callback: () => void) {
   const handler = () => callback();
@@ -103,16 +109,18 @@ export function clearCart() {
   writeState({ items: [] });
 }
 
-export function removeFromCart(bookId: string) {
+export function removeFromCart(templateId: string) {
   const state = readState();
-  writeState({ items: state.items.filter((i) => i.bookId !== bookId) });
+  writeState({ items: state.items.filter((i) => i.templateId !== templateId) });
 }
 
-export function setCartQty(bookId: string, qty: number) {
+export function setCartQty(templateId: string, qty: number) {
   const q = Math.max(1, Math.floor(qty));
   const state = readState();
   writeState({
-    items: state.items.map((i) => (i.bookId === bookId ? { ...i, qty: q } : i)),
+    items: state.items.map((i) =>
+      i.templateId === templateId ? { ...i, qty: q } : i,
+    ),
   });
 }
 
@@ -120,11 +128,11 @@ export function addToCart(item: Omit<CartItem, 'qty'> & { qty?: number }) {
   const state = readState();
   const qty = Math.max(1, Math.floor(item.qty ?? 1));
 
-  const existing = state.items.find((i) => i.bookId === item.bookId);
+  const existing = state.items.find((i) => i.templateId === item.templateId);
   if (existing) {
     writeState({
       items: state.items.map((i) =>
-        i.bookId === item.bookId ? { ...i, qty: i.qty + qty } : i,
+        i.templateId === item.templateId ? { ...i, qty: i.qty + qty } : i,
       ),
     });
     return;
@@ -134,7 +142,7 @@ export function addToCart(item: Omit<CartItem, 'qty'> & { qty?: number }) {
     items: [
       ...state.items,
       {
-        bookId: item.bookId,
+        templateId: item.templateId,
         title: item.title,
         price: item.price,
         cover: item.cover,
@@ -143,6 +151,7 @@ export function addToCart(item: Omit<CartItem, 'qty'> & { qty?: number }) {
     ],
   });
 }
+
 export function getCartCount(state: CartState) {
   return state.items.reduce((sum, i) => sum + i.qty, 0);
 }

@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Author } from '@/types';
+import { Creator } from '@/types';
 import { User, MapPin } from 'lucide-react';
 
-export function AuthorCard({ author }: { author: Author }) {
+export function AuthorCard({ author }: { author: Creator }) {
   return (
     <motion.div
       whileHover={{ y: -6, rotateX: 2, rotateY: 2 }}

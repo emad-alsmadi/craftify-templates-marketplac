@@ -3,7 +3,7 @@ const Joi = require('joi');
 
 const OrderItemSchema = new mongoose.Schema(
   {
-    book: {
+    template: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Template',
       required: true,
@@ -131,7 +131,7 @@ const validateCreateOrder = (obj) => {
     items: Joi.array()
       .items(
         Joi.object({
-          book: Joi.string().required(),
+          template: Joi.string().hex().length(24).required(),
           qty: Joi.number().integer().min(1).required(),
           title: Joi.string().trim().min(1).max(300).optional(),
           price: Joi.number().min(0).optional(),

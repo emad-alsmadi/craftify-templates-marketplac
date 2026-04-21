@@ -158,7 +158,4 @@ function buildSeed(multiplier = 4) {
 
 const { creators, templates } = buildSeed(4);
 
-const authers = creators;
-const books = templates;
-
-module.exports = { creators, templates, authers, books };
+module.exports = { creators, templates };

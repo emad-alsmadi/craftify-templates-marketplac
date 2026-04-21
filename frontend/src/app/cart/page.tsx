@@ -102,7 +102,7 @@ export default function CartPage() {
             <AnimatePresence initial={false}>
               {items.map((item) => (
                 <motion.div
-                  key={item.bookId}
+                  key={item.templateId}
                   variants={itemVariants}
                   initial='hidden'
                   animate='show'
@@ -135,7 +135,7 @@ export default function CartPage() {
                           type='button'
                           size='icon'
                           className='h-10 w-10 rounded-2xl border border-white/35 bg-white/45 text-rose-700 shadow-sm backdrop-blur-xl transition hover:bg-white/70'
-                          onClick={() => removeFromCart(item.bookId)}
+                          onClick={() => removeFromCart(item.templateId)}
                           aria-label='Remove'
                         >
                           <Trash2 className='h-4 w-4' />
@@ -149,7 +149,7 @@ export default function CartPage() {
                             size='icon'
                             className='h-9 w-9 rounded-full bg-white/60 text-indigo-950 transition hover:bg-white'
                             onClick={() =>
-                              setCartQty(item.bookId, item.qty - 1)
+                              setCartQty(item.templateId, item.qty - 1)
                             }
                             disabled={item.qty <= 1}
                             aria-label='Decrease'
@@ -164,7 +164,7 @@ export default function CartPage() {
                             size='icon'
                             className='h-9 w-9 rounded-full bg-white/60 text-indigo-950 transition hover:bg-white'
                             onClick={() =>
-                              setCartQty(item.bookId, item.qty + 1)
+                              setCartQty(item.templateId, item.qty + 1)
                             }
                             aria-label='Increase'
                           >

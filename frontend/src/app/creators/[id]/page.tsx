@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Author } from '@/types';
+import type { Creator } from '@/types';
 import {
   Loader2,
   ArrowLeft,
@@ -12,15 +12,15 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuthorById } from '@/lib/authorsQuery';
+import { useCreatorById } from '@/lib/authorsQuery';
 
-export default function AuthorDetailPage() {
+export default function CreatorDetailPage() {
   const params = useParams();
   const id = params.id as string | undefined;
-  const authorQuery = useAuthorById(id);
-  const author: Author | null = authorQuery.data || null;
-  const loading = authorQuery.isLoading;
-  const error = (authorQuery.error as any)?.message || null;
+  const creatorQuery = useCreatorById(id);
+  const creator: Creator | null = creatorQuery.data || null;
+  const loading = creatorQuery.isLoading;
+  const error = (creatorQuery.error as any)?.message || null;
 
   if (loading) {
     return (
@@ -30,7 +30,7 @@ export default function AuthorDetailPage() {
     );
   }
 
-  if (error || !author) {
+  if (error || !creator) {
     return (
       <div className='space-y-4'>
         <Link
@@ -91,11 +91,11 @@ export default function AuthorDetailPage() {
 
               <div className='min-w-0'>
                 <h1 className='text-4xl font-extrabold tracking-tight text-indigo-950'>
-                  {author.name}
+                  {creator.name}
                 </h1>
                 <div className='mt-3 inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/40 px-3 py-1 text-sm font-extrabold text-indigo-950/90'>
                   <MapPin className='h-4 w-4 text-cyan-700' />
-                  {author.country}
+                  {creator.country}
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function AuthorDetailPage() {
                 Biography
               </div>
               <p className='mt-3 text-sm font-semibold leading-7 text-indigo-950/80'>
-                {author.bio}
+                {creator.bio}
               </p>
             </motion.div>
           </motion.div>
@@ -128,8 +128,8 @@ export default function AuthorDetailPage() {
               </div>
               <div className='mt-4 grid gap-3'>
                 {[
-                  { label: 'Country', value: author.country },
-                  { label: 'Author ID', value: author._id },
+                  { label: 'Country', value: creator.country },
+                  { label: 'Creator ID', value: creator._id },
                 ].map((x) => (
                   <div
                     key={x.label}

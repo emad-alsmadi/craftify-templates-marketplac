@@ -14,7 +14,10 @@ import {
   Package,
 } from 'lucide-react';
 import { useOrderById } from '@/lib/ordersQuery';
-import { getUserFacingErrorMessage, logErrorForDev } from '@/lib/userFacingError';
+import {
+  getUserFacingErrorMessage,
+  logErrorForDev,
+} from '@/lib/userFacingError';
 
 function formatDate(value: string) {
   try {
@@ -96,7 +99,7 @@ export default function OrderDetailPage() {
           <div className='mt-4 space-y-3'>
             {order.items.map((it) => (
               <div
-                key={`${it.book}-${it.title}`}
+                key={`${it.templateId}-${it.title}`}
                 className='flex items-center gap-4 rounded-3xl border border-white/30 bg-white/30 p-4'
               >
                 <div className='relative h-20 w-16 overflow-hidden rounded-2xl border border-white/30 bg-white/20'>
@@ -154,7 +157,9 @@ export default function OrderDetailPage() {
           </div>
 
           <div className='rounded-3xl border border-white/30 bg-white/35 p-6 shadow-sm backdrop-blur-xl'>
-            <div className='text-sm font-extrabold text-indigo-950'>Shipping</div>
+            <div className='text-sm font-extrabold text-indigo-950'>
+              Shipping
+            </div>
             <div className='mt-4 space-y-3'>
               <div className='flex items-center gap-2 text-sm font-extrabold text-indigo-950'>
                 <User className='h-4 w-4 text-indigo-700' />

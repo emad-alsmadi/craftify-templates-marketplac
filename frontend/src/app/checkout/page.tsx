@@ -75,7 +75,7 @@ export default function CheckoutPage() {
 
     try {
       const order = await createOrder.mutateAsync({
-        items: items.map((i) => ({ book: i.bookId, qty: i.qty })),
+        items: items.map((i) => ({ templateId: i.templateId, qty: i.qty })),
         shippingAddress: {
           name: values.name,
           phone: values.phone,

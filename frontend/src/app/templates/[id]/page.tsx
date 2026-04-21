@@ -59,20 +59,20 @@ export default function TemplateDetailPage() {
     );
   }
 
-  const authorName =
+  const creatorName =
     typeof template.author === 'string'
       ? template.author
       : template.author.name;
-  const authorCountry =
+  const creatorCountry =
     typeof template.author === 'string'
       ? null
       : template.author.country || null;
-  const authorBio =
+  const creatorBio =
     typeof template.author === 'string' ? null : template.author.bio || null;
 
   const handleAddToCart = () => {
     cart.addToCart({
-      bookId: template._id,
+      templateId: template._id,
       title: template.title,
       price: template.price,
       cover: template.cover,
@@ -169,7 +169,7 @@ export default function TemplateDetailPage() {
             <div className='rounded-3xl border border-white/30 bg-white/35 p-6 shadow-sm backdrop-blur-xl sm:p-8'>
               <div className='inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/40 px-3 py-1 text-xs font-extrabold text-indigo-950'>
                 <User className='h-4 w-4 text-cyan-700' />
-                {authorName}
+                {creatorName}
               </div>
 
               <h1 className='mt-4 text-4xl font-extrabold tracking-tight text-indigo-950'>
@@ -232,23 +232,23 @@ export default function TemplateDetailPage() {
                 className='rounded-3xl border border-white/30 bg-gradient-to-br from-amber-500/12 via-rose-500/10 to-fuchsia-500/12 p-6'
               >
                 <div className='text-sm font-extrabold text-indigo-950'>
-                  About the author
+                  About the creator
                 </div>
                 <div className='mt-4 space-y-3'>
-                  {authorBio ? (
+                  {creatorBio ? (
                     <div className='rounded-2xl border border-white/30 bg-white/25 p-4 text-sm font-semibold leading-7 text-indigo-950/80'>
-                      {authorBio}
+                      {creatorBio}
                     </div>
                   ) : (
                     <div className='rounded-2xl border border-white/30 bg-white/25 p-4 text-sm font-semibold text-indigo-950/80'>
-                      Author information is not available.
+                      Creator information is not available.
                     </div>
                   )}
 
-                  {authorCountry && (
+                  {creatorCountry && (
                     <div className='inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/35 px-4 py-2 text-sm font-extrabold text-indigo-950'>
                       <Globe className='h-4 w-4 text-emerald-700' />
-                      {authorCountry}
+                      {creatorCountry}
                     </div>
                   )}
 
@@ -257,7 +257,7 @@ export default function TemplateDetailPage() {
                       href={`/creators/${template.author._id}`}
                       className='inline-flex items-center justify-center rounded-full border border-white/35 bg-white/40 px-4 py-2 text-sm font-extrabold text-indigo-950 transition hover:bg-white/55'
                     >
-                      Open author profile
+                      Open creator profile
                     </Link>
                   )}
                 </div>

@@ -1,20 +1,10 @@
 // Role-based permission configuration
 const ROLE_PERMISSIONS = {
   // User permissions - can read only
-  user: [
-    'authers:read',
-    'books:read',
-    'creators:read',
-    'templates:read',
-    'users:read:own',
-  ],
+  user: ['creators:read', 'templates:read', 'users:read:own'],
 
   // Moderator permissions - can read/write most things
   moderator: [
-    'authers:read',
-    'authers:write',
-    'books:read',
-    'books:write',
     'creators:read',
     'creators:write',
     'templates:read',
@@ -24,12 +14,6 @@ const ROLE_PERMISSIONS = {
 
   // Admin permissions - can do everything
   admin: [
-    'authers:read',
-    'authers:write',
-    'authers:delete',
-    'books:read',
-    'books:write',
-    'books:delete',
     'creators:read',
     'creators:write',
     'creators:delete',
