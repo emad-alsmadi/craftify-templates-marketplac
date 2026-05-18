@@ -20,8 +20,7 @@ function serializeOrder(order) {
   return {
     ...plain,
     items,
-    paymentStatus:
-      plain.paymentStatus ?? (plain.stripeSessionId ? 'pending' : 'paid'),
+    paymentStatus: plain.paymentStatus ?? 'pending',
     stripeSessionId: plain.stripeSessionId ?? '',
     paymentIntentId: plain.paymentIntentId ?? '',
   };

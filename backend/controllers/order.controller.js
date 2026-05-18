@@ -73,13 +73,12 @@ const createOrder = asyncHandler(async (req, res) => {
       ...shippingAddress,
       notes: shippingAddress.notes || '',
     },
-    status: 'paid',
+    status: 'pending',
     itemsPrice,
     shippingPrice,
     taxPrice,
     totalPrice,
-    paymentStatus: 'paid',
-    paidAt: new Date(),
+    paymentStatus: 'unpaid',
   });
 
   res.status(201).json(serializeOrder(order));
