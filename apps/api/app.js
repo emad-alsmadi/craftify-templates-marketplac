@@ -37,7 +37,7 @@ app.use('/api/', require('./routes/password'));
 app.use('/api/', require('./routes/orders'));
 app.use('/api/', require('./routes/payments'));
 app.use('/api/', require('./routes/subscriptions'));
-
+app.use('/api/', require('./routes/wishlist'));
 
 // Friendly roots (this process is API-only; the Next.js app is a separate server)
 app.get('/', (req, res) => {
@@ -46,8 +46,7 @@ app.get('/', (req, res) => {
     message:
       'This is the backend only. Open your Next.js frontend (usually another port) for the website.',
     apiOverview: '/api/',
-    tip:
-      'If the frontend also tries to use port 3000, set PORT=5000 in backend/.env or change NEXT_PUBLIC_API_URL on the frontend.',
+    tip: 'If the frontend also tries to use port 3000, set PORT=5000 in backend/.env or change NEXT_PUBLIC_API_URL on the frontend.',
   });
 });
 
@@ -76,7 +75,9 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   const statusCode =
-    err.statusCode && Number(err.statusCode) >= 400 && Number(err.statusCode) < 600
+    err.statusCode &&
+    Number(err.statusCode) >= 400 &&
+    Number(err.statusCode) < 600
       ? Number(err.statusCode)
       : res.statusCode === 200
         ? 500
