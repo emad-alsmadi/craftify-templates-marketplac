@@ -136,7 +136,7 @@ export function Navbar() {
                 )}
               >
                 <Icon className='h-4 w-4' />
-                <span className='relative'>
+                <span className='flex'>
                   {item.label}
                   {item.href === '/cart' && cart.count > 0 && (
                     <span
