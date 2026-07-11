@@ -10,6 +10,7 @@ import { LogIn, LogOut, MoreHorizontal, User } from 'lucide-react';
 import { useLogout, useMe } from '@/hooks/auth/authQuery';
 import { useConfirm } from '@/components/confirm/ConfirmProvider';
 import { Footer } from '@/components/Footer';
+import HomePage from '@/app/page';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,8 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className='min-h-screen bg-gray-50'>
       <Navbar />
-
-      <div className='mx-auto max-w-8xl gap-6 px-4 py-6 sm:px-6 lg:px-8'>
+      <div className='gap-6 py-6'>
         <main className='min-w-0 pb-20 md:pb-0'>
           <AnimatePresence mode='wait'>
             <motion.div
