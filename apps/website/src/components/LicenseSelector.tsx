@@ -62,11 +62,16 @@ export function LicenseSelector({
                 </div>
               </div>
 
-              <p className='text-sm text-gray-600 mb-4'>{license.description}</p>
+              <p className='text-sm text-gray-600 mb-4'>
+                {license.description}
+              </p>
 
               <div className='space-y-2 mb-4'>
                 {license.features.map((feature) => (
-                  <div key={feature} className='flex items-start gap-2'>
+                  <div
+                    key={feature}
+                    className='flex items-start gap-2'
+                  >
                     <Check className='h-4 w-4 text-green-500 mt-0.5 flex-shrink-0' />
                     <span className='text-sm text-gray-700'>{feature}</span>
                   </div>
@@ -76,9 +81,14 @@ export function LicenseSelector({
               {license.restrictions.length > 0 && (
                 <div className='space-y-2 mb-4'>
                   {license.restrictions.map((restriction) => (
-                    <div key={restriction} className='flex items-start gap-2'>
+                    <div
+                      key={restriction}
+                      className='flex items-start gap-2'
+                    >
                       <X className='h-4 w-4 text-red-500 mt-0.5 flex-shrink-0' />
-                      <span className='text-sm text-gray-700'>{restriction}</span>
+                      <span className='text-sm text-gray-700'>
+                        {restriction}
+                      </span>
                     </div>
                   ))}
                 </div>

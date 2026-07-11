@@ -128,11 +128,13 @@ export function Navbar() {
   };
 
   return (
-    <header className='sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm'>
+    <header className='sticky top-0 z-50 bg-slate-900 border-b border-slate-800 shadow-sm'>
       {/* Top bar */}
       <div className='bg-gray-900 text-white text-xs py-6 px-4'>
         <div className='max-w-7xl mx-auto flex justify-between items-center'>
-          <span className='text-[15px]'>Premium digital templates marketplace</span>
+          <span className='text-[15px]'>
+            Premium digital templates marketplace
+          </span>
           <div className='flex items-center gap-4'>
             <Link
               href='/about'
@@ -168,7 +170,7 @@ export function Navbar() {
               <BookOpen className='h-5 w-5' />
             </span>
             <div className='leading-tight'>
-              <div className='text-xl font-extrabold tracking-tight text-gray-900'>
+              <div className='text-xl font-extrabold tracking-tight text-white'>
                 Craftify
               </div>
             </div>
@@ -185,7 +187,7 @@ export function Navbar() {
                 placeholder='Search templates...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent'
+                className='w-full pl-10 pr-4 py-2 border border-slate-600 bg-slate-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-400'
               />
               <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400' />
             </form>
@@ -195,7 +197,7 @@ export function Navbar() {
           <nav className='hidden md:flex items-center gap-6'>
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
-                <button className='flex items-center gap-1 text-gray-700 hover:text-gray-900 font-medium transition-colors'>
+                <button className='flex items-center gap-1 text-white hover:text-slate-200 font-medium transition-colors'>
                   Categories
                   <ChevronDown className='h-4 w-4' />
                 </button>
@@ -225,14 +227,14 @@ export function Navbar() {
 
             <Link
               href='/templates'
-              className='text-gray-700 hover:text-gray-900 font-medium transition-colors'
+              className='text-white hover:text-slate-200 font-medium transition-colors'
             >
               Templates
             </Link>
 
             <Link
               href='/creators'
-              className='text-gray-700 hover:text-gray-900 font-medium transition-colors'
+              className='text-white hover:text-slate-200 font-medium transition-colors'
             >
               Creators
             </Link>
@@ -243,7 +245,7 @@ export function Navbar() {
             {/* Cart */}
             <Link
               href='/cart'
-              className='relative p-2 text-gray-700 hover:text-gray-900 transition-colors'
+              className='relative p-2 text-white hover:text-slate-200 transition-colors'
             >
               <ShoppingCart className='h-5 w-5' />
               {cart.count > 0 && (
@@ -256,7 +258,7 @@ export function Navbar() {
             {/* Wishlist */}
             <Link
               href='/wishlist'
-              className='hidden sm:block p-2 text-gray-700 hover:text-gray-900 transition-colors'
+              className='hidden sm:block p-2 text-white hover:text-slate-200 transition-colors'
             >
               <Heart className='h-5 w-5' />
             </Link>
@@ -425,34 +427,32 @@ export function Navbar() {
                 placeholder='Search templates...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                className='w-full pl-10 pr-4 py-2 border border-slate-600 bg-slate-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-slate-400'
               />
-              <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400' />
+              <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400' />
             </form>
 
             {/* Mobile nav */}
             <nav className='space-y-2'>
               <Link
                 href='/templates'
-                className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
               >
                 Templates
               </Link>
               <Link
                 href='/creators'
-                className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
               >
                 Creators
               </Link>
-              <div className='px-4 py-2 text-medium text-gray-700'>
-                Categories
-              </div>
+              <div className='px-4 py-2 text-medium text-white'>Categories</div>
               <div className='pl-8 space-y-2'>
                 {categories.map((category) => (
                   <Link
                     key={category.href}
                     href={category.href}
-                    className='block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg'
+                    className='block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg'
                   >
                     {category.name}
                   </Link>
@@ -468,41 +468,41 @@ export function Navbar() {
                 Sign In
               </Link>
             ) : (
-              <nav className='space-y-2 pt-4 border-t border-gray-200'>
+              <nav className='space-y-2 pt-4 border-t border-slate-700'>
                 <Link
                   href='/profile'
-                  className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                  className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
                 >
                   Profile
                 </Link>
                 <Link
                   href='/orders'
-                  className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                  className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
                 >
                   Orders
                 </Link>
                 <Link
                   href='/downloads'
-                  className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                  className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
                 >
                   Downloads
                 </Link>
                 <Link
                   href='/reviews'
-                  className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                  className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
                 >
                   Reviews
                 </Link>
                 <Link
                   href='/wishlist'
-                  className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                  className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
                 >
                   Wishlist
                 </Link>
                 {getUserRole() === 'admin' || user?.roles?.includes('admin') ? (
                   <Link
                     href='/admin/dashboard'
-                    className='block px-4 py-2 text-medium text-gray-700 hover:bg-gray-100 rounded-lg'
+                    className='block px-4 py-2 text-medium text-white hover:bg-slate-800 rounded-lg'
                   >
                     Admin Dashboard
                   </Link>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, LayoutGrid, ShoppingCart, Sparkles, Users, Heart } from 'lucide-react';
+import { Search, LayoutGrid, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 
 interface HeroSectionProps {
@@ -9,7 +9,11 @@ interface HeroSectionProps {
   onSearchSubmit: (e: React.FormEvent) => void;
 }
 
-export function HeroSection({ searchQuery, onSearchChange, onSearchSubmit }: HeroSectionProps) {
+export function HeroSection({
+  searchQuery,
+  onSearchChange,
+  onSearchSubmit,
+}: HeroSectionProps) {
   return (
     <div className='relative overflow-hidden'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative'>
@@ -21,8 +25,7 @@ export function HeroSection({ searchQuery, onSearchChange, onSearchSubmit }: Her
             </h1>
             <p className='text-base sm:text-lg'>
               Discover thousands of professionally designed templates for
-              websites, apps, and more. Start your next project with
-              confidence.
+              websites, apps, and more. Start your next project with confidence.
             </p>
 
             {/* Search Box */}
@@ -83,27 +86,37 @@ export function HeroSection({ searchQuery, onSearchChange, onSearchSubmit }: Her
           {/* Right Side - Images */}
           <div className='hidden lg:grid grid-cols-2 gap-4'>
             <div className='space-y-4'>
-              <div className='aspect-[4/3] rounded-lg bg-white/10 backdrop-blur-sm overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
-                <div className='w-full h-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center'>
-                  <LayoutGrid className='h-16 w-16 text-white/60' />
-                </div>
+              <div className='aspect-[4/3] rounded-lg overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
+                <div
+                  className='w-full h-full bg-cover bg-center'
+                  style={{
+                    backgroundImage: 'url(/images/4.webp)',
+                  }}
+                />
               </div>
-              <div className='aspect-[4/3] rounded-lg bg-white/10 backdrop-blur-sm overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
-                <div className='w-full h-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center'>
-                  <Sparkles className='h-16 w-16 text-white/60' />
-                </div>
+              <div className='aspect-[4/3] rounded-lg overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
+                <div
+                  className='w-full h-full bg-cover bg-center'
+                  style={{
+                    backgroundImage: 'url(/images/1.webp)',
+                  }}
+                />
               </div>
             </div>
             <div className='space-y-4 mt-8'>
-              <div className='aspect-[4/3] rounded-lg bg-white/10 backdrop-blur-sm overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
-                <div className='w-full h-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center'>
-                  <Users className='h-16 w-16 text-white/60' />
-                </div>
+              <div className='aspect-[4/3] rounded-lg overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
+                <div
+                  className='w-full h-full bg-cover bg-center'
+                  style={{ backgroundImage: 'url(/images/2.webp)' }}
+                />
               </div>
-              <div className='aspect-[4/3] rounded-lg bg-white/10 backdrop-blur-sm overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
-                <div className='w-full h-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center'>
-                  <Heart className='h-16 w-16 text-white/60' />
-                </div>
+              <div className='aspect-[4/3] rounded-lg overflow-hidden shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300'>
+                <div
+                  className='w-full h-full bg-cover bg-center'
+                  style={{
+                    backgroundImage: 'url(/images/3.webp)',
+                  }}
+                />
               </div>
             </div>
           </div>

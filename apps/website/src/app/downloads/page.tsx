@@ -50,8 +50,8 @@ export default function DownloadsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-white mb-8">My Downloads</h1>
-          <div className="text-white">Loading...</div>
+          <h1 className="text-3xl font-bold  mb-8">My Downloads</h1>
+          <div className="">Loading...</div>
         </div>
       </div>
     );
@@ -61,7 +61,7 @@ export default function DownloadsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-white mb-8">My Downloads</h1>
+          <h1 className="text-3xl font-bold  mb-8">My Downloads</h1>
           <div className="text-red-400">Failed to load downloads</div>
         </div>
       </div>
@@ -70,12 +70,12 @@ export default function DownloadsPage() {
 
   if (!downloads || downloads.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
+      <div className="min-h-screen p-8">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-white mb-8">My Downloads</h1>
+          <h1 className="text-3xl font-bold  mb-8">My Downloads</h1>
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 text-center">
             <DownloadIcon className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-            <h2 className="text-xl text-white mb-2">No downloads yet</h2>
+            <h2 className="text-xl  mb-2">No downloads yet</h2>
             <p className="text-gray-300">
               After purchasing templates, they will appear here for download.
             </p>
@@ -88,7 +88,7 @@ export default function DownloadsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">My Downloads</h1>
+        <h1 className="text-3xl font-bold  mb-8">My Downloads</h1>
 
         <div className="grid gap-6">
           {downloads.map((download) => {
@@ -112,7 +112,7 @@ export default function DownloadsPage() {
 
                   {/* Template Info */}
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-white mb-2">
+                    <h3 className="text-xl font-semibold  mb-2">
                       {download.template.title}
                     </h3>
                     <p className="text-gray-300 text-sm mb-4 line-clamp-2">
@@ -150,7 +150,7 @@ export default function DownloadsPage() {
                       className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                         isLimitReached
                           ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700'
+                          : 'bg-gradient-to-r from-purple-600 to-cyan-600  hover:from-purple-700 hover:to-cyan-700'
                       }`}
                     >
                       <DownloadIcon className="w-5 h-5" />
@@ -160,7 +160,7 @@ export default function DownloadsPage() {
                     <button
                       onClick={() => handleDelete(download._id)}
                       disabled={deleteDownload.isPending}
-                      className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+                      className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-gray-400 hover: hover:bg-white/10 transition-all"
                     >
                       <Trash2 className="w-5 h-5" />
                       Remove

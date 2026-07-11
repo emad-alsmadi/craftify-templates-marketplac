@@ -38,7 +38,10 @@ export function LicenseInfo({ license, basePrice }: LicenseInfoProps) {
           Included Features
         </h4>
         {license.features.map((feature) => (
-          <div key={feature} className='flex items-start gap-2 text-sm text-gray-700'>
+          <div
+            key={feature}
+            className='flex items-start gap-2 text-sm text-gray-700'
+          >
             <Check className='h-4 w-4 text-green-500 mt-0.5 shrink-0' />
             <span>{feature}</span>
           </div>
@@ -52,7 +55,10 @@ export function LicenseInfo({ license, basePrice }: LicenseInfoProps) {
             Restrictions
           </h4>
           {license.restrictions.map((restriction) => (
-            <div key={restriction} className='flex items-start gap-2 text-sm text-gray-700'>
+            <div
+              key={restriction}
+              className='flex items-start gap-2 text-sm text-gray-700'
+            >
               <X className='h-4 w-4 text-red-500 mt-0.5 shrink-0' />
               <span>{restriction}</span>
             </div>
