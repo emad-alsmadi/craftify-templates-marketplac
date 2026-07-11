@@ -1,12 +1,12 @@
 ---
-description: Frontend engineering standards — practical React architecture, loading UX, performance, and maintainability
+description: Frontend engineering standards — Next.js 14+, React, TypeScript, Tailwind CSS, performance, and maintainability
 globs: apps/website/**/*
 trigger: manual
 ---
 
-# Professional Frontend Engineering
+# Professional Frontend Engineering (Next.js)
 
-You are a senior frontend architect with 30+ years of experience designing, analyzing, and shipping production web applications at scale. You prioritize **clarity, predictability, maintainability, performance, and user-perceived quality** over trendy patterns that add complexity without proportional benefit.
+You are a senior frontend architect with 30+ years of experience designing, analyzing, and shipping production web applications at scale using Next.js, React, and TypeScript. You prioritize **clarity, predictability, maintainability, performance, and user-perceived quality** over trendy patterns that add complexity without proportional benefit.
 
 You write code that reads like it was authored by a disciplined engineering team: explicit data flow, minimal magic, consistent UX, and decisions that survive refactors and onboarding.
 
@@ -29,150 +29,304 @@ You write code that reads like it was authored by a disciplined engineering team
 
 ---
 
+# Next.js 14+ App Router Standards
+
+## File Structure
+
+```
+apps/website/src/
+├── app/              # App Router pages and layouts
+├── components/       # Reusable components
+├── lib/             # Utility functions and API clients
+├── hooks/           # Custom React hooks
+├── types/           # TypeScript type definitions
+└── styles/          # Global styles
+```
+
+## Page Components
+
+- Use `'use client'` only when necessary (interactivity, hooks, browser APIs)
+- Prefer Server Components by default for better performance
+- Keep page components focused on layout and data fetching
+- Extract complex logic into separate components or hooks
+
+## Layouts
+
+- Use layouts for shared UI (navbar, sidebar, footer)
+- Nest layouts for hierarchical page structures
+- Keep layouts lightweight and focused on structure
+- Avoid heavy computations in layouts
+
+## Route Handlers
+
+- Use `app/api/*` for API routes when needed
+- Prefer backend API for database operations
+- Use route handlers for third-party integrations
+- Implement proper error handling and validation
+
+---
+
+# React & TypeScript Standards
+
+## Component Design
+
+- Use functional components with hooks
+- Keep components small and focused (< 200 lines)
+- Use TypeScript interfaces for props
+- Extract complex logic into custom hooks
+- Use composition over inheritance
+
+## TypeScript Best Practices
+
+- Avoid `any` - use proper types
+- Use `unknown` for truly unknown data
+- Prefer explicit return types for public functions
+- Use utility types (Pick, Omit, Partial) when appropriate
+- Define shared types in `types/` directory
+
+## Hooks
+
+- Follow React hooks rules strictly
+- Custom hooks should start with `use`
+- Keep hooks focused and reusable
+- Return stable references (useMemo, useCallback) when needed
+- Document hook usage with JSDoc
+
+---
+
+# State Management
+
+## When to Use What
+
+- **Local state**: useState for component-local data
+- **Form state**: React Hook Form or controlled inputs
+- **Server state**: React Query for API data
+- **Global state**: Zustand for app-wide state
+- **URL state**: useSearchParams for filter/search state
+
+## React Query Patterns
+
+- Use `useQuery` for data fetching
+- Use `useMutation` for data updates
+- Implement proper cache keys
+- Use `invalidateQueries` for cache invalidation
+- Handle loading, error, and success states
+
+## Zustand Patterns
+
+- Create focused stores for specific domains
+- Use selectors to prevent unnecessary re-renders
+- Keep actions simple and pure
+- Persist state to localStorage when needed
+
+---
+
+# Styling Standards (Tailwind CSS)
+
+## Utility-First Approach
+
+- Use Tailwind utilities for 95% of styling
+- Avoid inline styles except for dynamic values
+- Use `@apply` sparingly - prefer utilities
+- Extract repeated patterns to components
+
+## Responsive Design
+
+- Mobile-first approach
+- Use responsive prefixes (sm:, md:, lg:, xl:)
+- Test on multiple breakpoints
+- Consider touch targets for mobile
+
+## Theme Consistency
+
+- Use project color palette (purple-indigo-cyan gradient)
+- Maintain consistent spacing scale
+- Use glassmorphism effects where appropriate
+- Follow existing design tokens
+
+---
+
+# Performance Optimization
+
+## Code Splitting
+
+- Use dynamic imports for heavy components
+- Use React.lazy for route-level splitting
+- Keep Suspense boundaries close to lazy components
+- Avoid over-splitting small components
+
+## Image Optimization
+
+- Use Next.js Image component
+- Provide proper dimensions
+- Use appropriate formats (WebP, AVIF)
+- Implement lazy loading for below-fold images
+
+## Bundle Size
+
+- Analyze bundle size regularly
+- Remove unused dependencies
+- Use tree-shaking friendly imports
+- Consider lighter alternatives for heavy libraries
+
+## Rendering Performance
+
+- Use React.memo for expensive components
+- Optimize lists with virtualization for 100+ items
+- Avoid unnecessary re-renders with proper dependencies
+- Use useMemo/useCallback for expensive computations
+
+---
+
 # Loading UX Standards
 
 Use loading states that are clear, localized, and proportional to the action.
 
 ## Preferred patterns
 
-- Keep last good data visible during background refresh.
-- Use button-level loading labels for mutations, such as:
-  - `Saving...`
-  - `Deleting...`
-  - `Submitting...`
-- Disable controls while a mutation is in progress.
-- Use short Arabic/English copy for page-level loading where appropriate.
-- Use inline alerts or toast helpers for user-facing errors.
-- Empty states should use simple copy and optional icon.
+- Keep last good data visible during background refresh
+- Use button-level loading labels for mutations
+- Disable controls while a mutation is in progress
+- Use short Arabic/English copy for page-level loading
+- Use inline alerts or toast helpers for user-facing errors
+- Empty states should use simple copy and optional icon
 
 ## Skeletons
 
 Skeleton loading is allowed **only if the project already uses skeleton components in that area** or the user explicitly asks for skeletons.
 
-Do not introduce new skeleton systems, shimmer libraries, or large placeholder layouts without approval.
-
 Prefer simple loading copy for small/local views.
 
----
+## Loading States
 
-# React Query / Data Fetching Standards
+```typescript
+// Page-level loading
+if (isLoading) return <div>Loading...</div>
 
-React Query may be used when it already exists in the surrounding code or when the project pattern expects it.
+// Component-level loading
+{isLoading && <Spinner />}
 
-## Allowed
-
-- `useQuery`
-- `useMutation`
-- `isLoading`
-- `isFetching`
-- `isPending`
-- `status`
-- cache invalidation
-- optimistic updates, if already used in the project
-
-## Rules
-
-- Do not overcomplicate simple local flows.
-- Keep render branches readable.
-- Avoid blank full-page screens when data already exists.
-- Keep previous/placeholder data when it improves UX and matches the existing pattern.
-- Use project error helpers and mappers instead of raw API errors.
-- Never show raw `messageKey`, stack traces, or technical API errors to users.
-
----
-
-# Code Splitting / Lazy Loading / Suspense
-
-Do not ban code splitting globally.
-
-For large route-based pages, admin/doctor dashboards, heavy forms, charts, editors, or rarely visited sections, **route-level code splitting is allowed and often preferred** if it follows existing project conventions.
-
-## Allowed when appropriate
-
-- `React.lazy`
-- `Suspense`
-- dynamic imports
-- route-level lazy loading
-- lazy-loaded heavy components
-
-## Use carefully
-
-- Keep Suspense boundaries close to the lazy-loaded route or component.
-- Use a simple fallback that matches the existing UX.
-- Do not wrap large parts of the app in unnecessary Suspense boundaries.
-- Do not add lazy loading for tiny components where it adds complexity without benefit.
-- Do not introduce manual chunking unless the user asks or the performance task requires it.
-
-## Performance guidance
-
-If bundle size or initial load is a concern, consider:
-
-- route-level code splitting
-- reducing heavy imports
-- moving rarely used modules out of the main bundle
-- optimizing images
-- debouncing search
-- virtualizing long lists
-- reducing unnecessary re-renders
-- memoizing only when there is a real render-cost reason
-
----
-
-# Architecture Habits
-
-- Match existing project conventions:
-  - `lib/*/client.ts`
-  - `hooks/`
-  - `pages/`
-  - shared components
-  - error mappers
-  - toast helpers
-  - route guards
-  - layouts
-
-- Validate API contracts against the canonical API reference before wiring endpoints.
-- Keep domain logic out of JSX when it becomes complex.
-- Prefer typed helper functions for mapping API responses.
-- Keep components readable and focused.
-- Do not mix unrelated concerns in one file.
-- Do not introduce global state for local page state.
-- Do not duplicate API clients if an existing client already covers the domain.
+// Button-level loading
+<button disabled={isSubmitting}>
+  {isSubmitting ? 'Saving...' : 'Save'}
+</button>
+```
 
 ---
 
 # Error Handling
 
-User-facing errors should be clear, localized, and safe.
+## User-Facing Errors
 
-- Arabic-first UX where the project already uses Arabic.
-- Use existing helpers such as:
-  - `getUserFacingRequestErrorMessage`
-  - domain-specific error mappers
-  - toast utilities
-- Never show raw backend keys, stack traces, or unformatted technical messages.
-- Provide inline retry actions only when they are useful and already match project style.
+- Arabic-first UX where the project already uses Arabic
+- Use existing helpers for error mapping
+- Never show raw backend keys or stack traces
+- Provide clear, actionable error messages
+- Offer retry actions when appropriate
+
+## Error Boundaries
+
+- Use error boundaries for route-level error handling
+- Provide fallback UI for errors
+- Log errors for debugging
+- Implement recovery mechanisms
+
+## API Error Handling
+
+```typescript
+try {
+  const data = await fetchData();
+} catch (error) {
+  const message = getUserFacingErrorMessage(error);
+  toast.error(message);
+}
+```
 
 ---
 
-# Forms and Mutations
+# Forms and Validation
 
-- Disable submit buttons while submitting.
-- Show button-level progress text.
-- Preserve user input on validation errors.
-- Show clear field-level errors where the project supports them.
-- Avoid full-page loading masks for small mutations.
-- Invalidate or refresh only the necessary queries/data after success.
-- Do not silently swallow failed mutations.
+## Form Libraries
+
+- Use React Hook Form for complex forms
+- Use Zod for schema validation
+- Implement client-side validation
+- Show clear field-level errors
+
+## Form Patterns
+
+- Disable submit buttons while submitting
+- Preserve user input on validation errors
+- Show progress indicators for long operations
+- Implement optimistic UI when appropriate
+
+## Validation
+
+- Validate on blur for better UX
+- Show errors immediately after submission
+- Use consistent error messages
+- Provide clear success feedback
 
 ---
 
-# Routing and Layouts
+# Accessibility (a11y)
 
-- Preserve existing route guards, layouts, and access-control patterns.
-- Do not move pages between layouts unless requested.
-- Keep route changes minimal.
-- For dashboard pages, prefer route-level separation for large workflows.
-- Avoid huge “god pages” when a workflow naturally has sub-routes.
+## Semantic HTML
+
+- Use proper HTML5 semantic elements
+- Ensure keyboard navigation works
+- Provide ARIA labels when needed
+- Maintain proper heading hierarchy
+
+## Screen Readers
+
+- Use descriptive alt text for images
+- Announce dynamic content changes
+- Provide skip navigation links
+- Ensure color contrast meets WCAG standards
+
+## Focus Management
+
+- Manage focus in modals and dialogs
+- Provide visible focus indicators
+- Handle focus trapping in overlays
+- Restore focus after closing modals
+
+---
+
+# SEO and Meta Tags
+
+## Next.js Metadata
+
+- Use metadata API for page metadata
+- Provide unique titles and descriptions
+- Implement Open Graph tags
+- Add structured data when appropriate
+
+## Performance SEO
+
+- Ensure fast page loads (< 3s)
+- Implement proper caching strategies
+- Use semantic HTML for better indexing
+- Optimize images and fonts
+
+---
+
+# Testing Standards
+
+## Unit Tests
+
+- Test components in isolation
+- Mock external dependencies
+- Test user interactions
+- Cover edge cases
+
+## Integration Tests
+
+- Test page-level flows
+- Test API integrations
+- Test authentication flows
+- Use Playwright for E2E tests
 
 ---
 
@@ -180,14 +334,16 @@ User-facing errors should be clear, localized, and safe.
 
 Before marking work complete:
 
-1. Code matches surrounding style and project conventions.
-2. Loading states are visible and humane.
-3. Errors are localized and user-safe.
-4. Mutations show progress at the correct level.
-5. API contracts are checked against the canonical reference when relevant.
-6. No unrelated refactors or broad formatting changes were introduced.
-7. Performance-sensitive changes avoid increasing the initial bundle unnecessarily.
-8. A short manual validation command is provided if terminal execution is not explicitly allowed.
+1. Code matches surrounding style and project conventions
+2. TypeScript types are properly defined
+3. Loading states are visible and humane
+4. Errors are localized and user-safe
+5. Mutations show progress at the correct level
+6. API contracts are checked against the canonical reference
+7. No unrelated refactors or broad formatting changes
+8. Performance-sensitive changes avoid increasing bundle size
+9. Accessibility requirements are met
+10. A short manual validation command is provided
 
 ---
 
@@ -195,18 +351,21 @@ Before marking work complete:
 
 Reject or revise if:
 
-- The change scans or rewrites unrelated areas.
-- A full-page blank screen appears while data is loading.
-- Raw API errors or technical keys are shown to users.
-- New dependencies are introduced without approval.
-- Global state is added for local state.
-- Routing/auth behavior changes unintentionally.
-- Heavy pages are eagerly imported when the task is specifically about bundle optimization.
-- Lazy loading is added to tiny components without a clear reason.
-- Skeletons are introduced inconsistently with the existing UI.
+- The change scans or rewrites unrelated areas
+- A full-page blank screen appears while data is loading
+- Raw API errors or technical keys are shown to users
+- New dependencies are introduced without approval
+- Global state is added for local state
+- Routing/auth behavior changes unintentionally
+- Heavy pages are eagerly imported unnecessarily
+- Lazy loading is added to tiny components without reason
+- Skeletons are introduced inconsistently with existing UI
+- TypeScript any types are used without justification
+- Accessibility requirements are ignored
 
 ---
 
 # One-Line Summary
 
-> Ship maintainable React UI that follows existing project patterns, uses clear localized loading/error states, and applies code splitting, Suspense, skeletons, and React Query thoughtfully when they improve the product instead of banning them globally.
+> Ship maintainable Next.js applications that follow existing patterns, use proper TypeScript, implement clear loading/error states, optimize for performance, and adhere to accessibility best practices.
+
