@@ -18,6 +18,7 @@ import {
   ReviewUpdatePayload,
 } from '@/types';
 import { getAuthToken } from '@/lib/authCookies';
+import { endpoints } from '@/lib/endpoints';
 
 function normalizeApiBase(rawBaseUrl: string | undefined) {
   if (!rawBaseUrl) return '/api';
@@ -82,22 +83,22 @@ export const templatesApi = {
   getTemplates: async (
     params: TemplatesQuery = {},
   ): Promise<TemplatesResponse> => {
-    const { data } = await api.get('/templates', { params });
+    const { data } = await api.get(endpoints.templates.list, { params });
     return data;
   },
   getTemplateById: async (id: string): Promise<Template> => {
-    const { data } = await api.get(`/templates/${id}`);
+    const { data } = await api.get(endpoints.templates.details(id));
     return data;
   },
 };
 
 export const authorsApi = {
   getAuthors: async (params: CreatorsQuery = {}): Promise<CreatorsResponse> => {
-    const { data } = await api.get('/creators', { params });
+    const { data } = await api.get(endpoints.creators.list, { params });
     return data;
   },
   getAuthorById: async (id: string): Promise<any> => {
-    const { data } = await api.get(`/creators/${id}`);
+    const { data } = await api.get(endpoints.creators.details(id));
     return data;
   },
 };
@@ -108,33 +109,32 @@ export const authApi = {
     username: string;
     password: string;
   }) => {
-    const { data } = await api.post('/auth/register', payload);
+    const { data } = await api.post(endpoints.auth.register, payload);
     return data;
   },
   login: async (payload: { email: string; password: string }) => {
-    const { data } = await api.post('/auth/login', payload);
+    const { data } = await api.post(endpoints.auth.login, payload);
     return data;
   },
   profile: async () => {
-    const { data } = await api.get('/auth/profile');
+    const { data } = await api.get(endpoints.auth.profile);
     return data;
   },
   updateProfile: async (payload: { username: string; email: string }) => {
-    const { data } = await api.put('/auth/profile', payload);
+    const { data } = await api.put(endpoints.auth.profile, payload);
     return data;
   },
 };
 
 export const passwordApi = {
   forgotPassword: async (email: string) => {
-    const { data } = await api.post('/password/forgot-password', { email });
+    const { data } = await api.post(endpoints.password.forgot, { email });
     return data;
   },
   resetPassword: async (userId: string, token: string, password: string) => {
-    const { data } = await api.post(
-      `/password/reset-password/${userId}/${token}`,
-      { password },
-    );
+    const { data } = await api.post(endpoints.password.reset(userId, token), {
+      password,
+    });
     return data;
   },
 };
@@ -155,28 +155,31 @@ export type OrderCheckoutPayload = {
 
 export const ordersApi = {
   createOrder: async (payload: OrderCheckoutPayload): Promise<Order> => {
-    const { data } = await api.post('/orders', payload);
+    const { data } = await api.post(endpoints.orders.create, payload);
     return data;
   },
   getMyOrders: async (): Promise<Order[]> => {
-    const { data } = await api.get('/orders/my');
+    const { data } = await api.get(endpoints.orders.my);
     return data;
   },
   getOrderById: async (id: string): Promise<Order> => {
-    const { data } = await api.get(`/orders/${id}`);
+    const { data } = await api.get(endpoints.orders.details(id));
     return data;
   },
 };
 
 export const paymentsApi = {
   getSetupStatus: async (): Promise<{ ready: boolean }> => {
-    const { data } = await api.get('/payments/setup-status');
+    const { data } = await api.get(endpoints.payments.setupStatus);
     return data;
   },
   createCheckoutSession: async (
     payload: OrderCheckoutPayload,
   ): Promise<{ url: string; orderId: string; sessionId: string }> => {
-    const { data } = await api.post('/payments/checkout-session', payload);
+    const { data } = await api.post(
+      endpoints.payments.checkoutSession,
+      payload,
+    );
     return data;
   },
   verifyPaymentStatus: async (
@@ -187,7 +190,9 @@ export const paymentsApi = {
     alreadyPaid?: boolean;
     sessionStatus?: string;
   }> => {
-    const { data } = await api.post('/payments/verify-payment', { orderId });
+    const { data } = await api.post(endpoints.payments.verifyPayment, {
+      orderId,
+    });
     return data;
   },
 };
@@ -200,19 +205,19 @@ export type SubscriptionSetupStatus = {
 
 export const subscriptionsApi = {
   getSetupStatus: async (): Promise<SubscriptionSetupStatus> => {
-    const { data } = await api.get('/subscriptions/setup-status');
+    const { data } = await api.get(endpoints.subscriptions.setupStatus);
     return data;
   },
   createCheckoutSession: async (): Promise<{ url: string }> => {
-    const { data } = await api.post('/subscriptions/checkout-session');
+    const { data } = await api.post(endpoints.subscriptions.checkoutSession);
     return data;
   },
   createPortalSession: async (): Promise<{ url: string }> => {
-    const { data } = await api.post('/subscriptions/portal');
+    const { data } = await api.post(endpoints.subscriptions.portal);
     return data;
   },
   getMine: async (): Promise<SubscriptionRecord | null> => {
-    const { data } = await api.get('/subscriptions/me');
+    const { data } = await api.get(endpoints.subscriptions.mine);
     return data;
   },
 };
@@ -221,119 +226,125 @@ export const adminApi = {
   getTemplates: async (
     params: TemplatesQuery = {},
   ): Promise<TemplatesResponse> => {
-    const { data } = await api.get('/templates', {
+    const { data } = await api.get(endpoints.admin.templates.list, {
       params: { limit: 100, sort: '-createdAt', ...params },
     });
     return data;
   },
   createTemplate: async (payload: TemplatePayload): Promise<Template> => {
-    const { data } = await api.post('/templates', payload);
+    const { data } = await api.post(endpoints.admin.templates.create, payload);
     return data;
   },
   updateTemplate: async (
     id: string,
     payload: Partial<TemplatePayload>,
   ): Promise<Template> => {
-    const { data } = await api.put(`/templates/${id}`, payload);
+    const { data } = await api.put(
+      endpoints.admin.templates.update(id),
+      payload,
+    );
     return data;
   },
   deleteTemplate: async (id: string): Promise<{ message: string }> => {
-    const { data } = await api.delete(`/templates/${id}`);
+    const { data } = await api.delete(endpoints.admin.templates.delete(id));
     return data;
   },
   getCreators: async (
     params: CreatorsQuery = {},
   ): Promise<CreatorsResponse> => {
-    const { data } = await api.get('/creators', {
+    const { data } = await api.get(endpoints.admin.creators.list, {
       params: { limit: 100, ...params },
     });
     return data;
   },
   createCreator: async (payload: CreatorPayload): Promise<Creator> => {
-    const { data } = await api.post('/creators', payload);
+    const { data } = await api.post(endpoints.admin.creators.create, payload);
     return data;
   },
   updateCreator: async (
     id: string,
     payload: Partial<CreatorPayload>,
   ): Promise<Creator> => {
-    const { data } = await api.put(`/creators/${id}`, payload);
+    const { data } = await api.put(
+      endpoints.admin.creators.update(id),
+      payload,
+    );
     return data;
   },
   deleteCreator: async (id: string): Promise<{ message: string }> => {
-    const { data } = await api.delete(`/creators/${id}`);
+    const { data } = await api.delete(endpoints.admin.creators.delete(id));
     return data;
   },
   getUsers: async (): Promise<AdminUser[]> => {
-    const { data } = await api.get('/users');
+    const { data } = await api.get(endpoints.admin.users.list);
     return data;
   },
   getUserById: async (id: string): Promise<AdminUser> => {
-    const { data } = await api.get(`/users/${id}`);
+    const { data } = await api.get(endpoints.admin.users.details(id));
     return data;
   },
   updateUser: async (
     id: string,
     payload: UserUpdatePayload,
   ): Promise<{ message: string; updatedUser: AdminUser }> => {
-    const { data } = await api.put(`/users/${id}`, payload);
+    const { data } = await api.put(endpoints.admin.users.update(id), payload);
     return data;
   },
   deleteUser: async (id: string): Promise<{ message: string }> => {
-    const { data } = await api.delete(`/users/${id}`);
+    const { data } = await api.delete(endpoints.admin.users.delete(id));
     return data;
   },
 };
 
 export const wishlistApi = {
   addToWishlist: async (templateId: string): Promise<{ message: string }> => {
-    const { data } = await api.post(`/wishlist/${templateId}`);
+    const { data } = await api.post(endpoints.wishlist.add(templateId));
     return data;
   },
   removeFromWishlist: async (
     templateId: string,
   ): Promise<{ message: string }> => {
-    const { data } = await api.delete(`/wishlist/${templateId}`);
+    const { data } = await api.delete(endpoints.wishlist.remove(templateId));
     return data;
   },
   getMyWishlist: async (): Promise<WishlistItem[]> => {
-    const { data } = await api.get('/wishlist/my');
+    const { data } = await api.get(endpoints.wishlist.my);
     return data;
   },
   checkWishlist: async (
     templateId: string,
   ): Promise<{ isWishlisted: boolean }> => {
-    const { data } = await api.get(`/wishlist/check/${templateId}`);
+    const { data } = await api.get(endpoints.wishlist.check(templateId));
     return data;
   },
 };
 
 export const reviewsApi = {
   createReview: async (payload: ReviewPayload): Promise<Review> => {
-    const { data } = await api.post('/reviews', payload);
+    const { data } = await api.post(endpoints.reviews.create, payload);
     return data;
   },
   updateReview: async (
     reviewId: string,
     payload: ReviewUpdatePayload,
   ): Promise<Review> => {
-    const { data } = await api.put(`/reviews/${reviewId}`, payload);
+    const { data } = await api.put(endpoints.reviews.update(reviewId), payload);
     return data;
   },
   deleteReview: async (reviewId: string): Promise<{ message: string }> => {
-    const { data } = await api.delete(`/reviews/${reviewId}`);
+    const { data } = await api.delete(endpoints.reviews.delete(reviewId));
     return data;
   },
   getTemplateReviews: async (templateId: string): Promise<Review[]> => {
-    const { data } = await api.get(`/reviews/template/${templateId}`);
+    const { data } = await api.get(endpoints.reviews.template(templateId));
     return data;
   },
   getMyReview: async (templateId: string): Promise<Review | null> => {
-    const { data } = await api.get(`/reviews/my/${templateId}`);
+    const { data } = await api.get(endpoints.reviews.my(templateId));
     return data;
   },
   getMyReviews: async (): Promise<Review[]> => {
-    const { data } = await api.get('/reviews/my');
+    const { data } = await api.get(endpoints.reviews.myReviews);
     return data;
   },
 };
