@@ -259,19 +259,17 @@ export function Navbar() {
             <nav className='hidden md:flex items-center gap-6'>
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
-                  <button className='flex items-center gap-1 text-gray-700 hover:text-gray-900 font-medium transition-colors group relative'>
-                    <span className='relative'>
-                      Categories
-                      <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-300 group-hover:w-full'></span>
-                    </span>
-                    <ChevronDown className='h-4 w-4 transition-transform duration-300 group-hover:rotate-180' />
+                  <button className='flex items-center gap-1 text-gray-700 hover:text-gray-900 font-medium transition-colors relative group'>
+                    Categories
+                    <ChevronDown className='h-4 w-4' />
+                    <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-cyan-500 transition-all duration-300 group-hover:w-full'></span>
                   </button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Portal>
                   <DropdownMenu.Content
                     align='start'
                     sideOffset={10}
-                    className='z-50 min-w-[400px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2'
+                    className='z-50 min-w-[400px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl'
                   >
                     <div className='p-4'>
                       <div className='grid grid-cols-2 gap-4'>
@@ -310,30 +308,34 @@ export function Navbar() {
 
               <Link
                 href='/templates'
-                className='text-gray-700 hover:text-gray-900 font-medium transition-colors'
+                className='text-gray-700 hover:text-gray-900 font-medium transition-colors relative group'
               >
                 Templates
+                <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-cyan-500 transition-all duration-300 group-hover:w-full'></span>
               </Link>
 
               <Link
                 href='/creators'
-                className='text-gray-700 hover:text-gray-900 font-medium transition-colors'
+                className='text-gray-700 hover:text-gray-900 font-medium transition-colors relative group'
               >
                 Creators
+                <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-cyan-500 transition-all duration-300 group-hover:w-full'></span>
               </Link>
 
               <Link
                 href='/pricing'
-                className='text-gray-700 hover:text-gray-900 font-medium transition-colors'
+                className='text-gray-700 hover:text-gray-900 font-medium transition-colors relative group'
               >
                 Pricing
+                <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-cyan-500 transition-all duration-300 group-hover:w-full'></span>
               </Link>
 
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
-                  <button className='flex items-center gap-1 text-gray-700 hover:text-gray-900 font-medium transition-colors'>
+                  <button className='flex items-center gap-1 text-gray-700 hover:text-gray-900 font-medium transition-colors relative group'>
                     More
                     <ChevronDown className='h-4 w-4' />
+                    <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-cyan-500 transition-all duration-300 group-hover:w-full'></span>
                   </button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Portal>
