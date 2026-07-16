@@ -21,7 +21,8 @@ export default function ReviewsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const getTemplateId = (template: string | any): string => {
-    return typeof template === 'string' ? template : template._id;
+    if (!template) return '';
+    return typeof template === 'string' ? template : template._id || '';
   };
 
   const handleDelete = async (reviewId: string, templateId: string) => {
@@ -163,7 +164,9 @@ export default function ReviewsPage() {
                   </Link>
 
                   <button
-                    onClick={() => handleDelete(review._id, getTemplateId(review.template))}
+                    onClick={() =>
+                      handleDelete(review._id, getTemplateId(review.template))
+                    }
                     disabled={
                       deletingId === review._id || deleteReview.isPending
                     }
