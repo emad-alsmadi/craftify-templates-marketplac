@@ -1,33 +1,37 @@
 const asyncHandler = require('express-async-handler');
-const { Review, validateCreateReview, validateUpdateReview } = require('../models/Review');
-const { Template } = require('../models/Template');
+const {
+  Review,
+  validateCreateReview,
+  validateUpdateReview,
+} = require('../models/Review');
+const { Product } = require('../models/Product');
 
 /**
- * Helper function to update template's average rating and review count
+ * Helper function to update product's average rating and review count
  */
-const updateTemplateRating = asyncHandler(async (templateId) => {
-  const reviews = await Review.find({ template: templateId });
+const updateProductRating = asyncHandler(async (productId) => {
+  const reviews = await Review.find({ product: productId });
   const reviewCount = reviews.length;
-  
+
   if (reviewCount === 0) {
-    await Template.findByIdAndUpdate(templateId, {
+    await Product.findByIdAndUpdate(productId, {
       averageRating: 0,
       reviewCount: 0,
     });
     return;
   }
-  
+
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   const averageRating = totalRating / reviewCount;
-  
-  await Template.findByIdAndUpdate(templateId, {
+
+  await Product.findByIdAndUpdate(productId, {
     averageRating: parseFloat(averageRating.toFixed(1)),
     reviewCount,
   });
 });
 
 /**
- * Create a new review for a template.
+ * Create a new review for a product.
  *
  * @route POST /api/reviews
  * @access Private
@@ -36,43 +40,45 @@ const updateTemplateRating = asyncHandler(async (templateId) => {
  * @returns {Promise<void>} JSON with created review
  */
 const createReview = asyncHandler(async (req, res) => {
-  const { template, rating, comment } = req.body;
+  const { product, rating, comment } = req.body;
   const userId = req.user.id;
 
   // Validate input
-  const error = validateCreateReview({ template, rating, comment });
+  const error = validateCreateReview({ product, rating, comment });
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
 
-  // Verify template exists
-  const templateDoc = await Template.findById(template);
-  if (!templateDoc) {
-    return res.status(404).json({ message: 'Template not found' });
+  // Verify product exists
+  const productDoc = await Product.findById(product);
+  if (!productDoc) {
+    return res.status(404).json({ message: 'Product not found' });
   }
 
-  // Check if user already reviewed this template
+  // Check if user already reviewed this product
   const existingReview = await Review.findOne({
     user: userId,
-    template,
+    product,
   });
 
   if (existingReview) {
-    return res.status(400).json({ message: 'You have already reviewed this template' });
+    return res
+      .status(400)
+      .json({ message: 'You have already reviewed this product' });
   }
 
   // Create review
   const review = new Review({
     user: userId,
-    template,
+    product,
     rating,
     comment,
   });
 
   await review.save();
 
-  // Update template's rating
-  await updateTemplateRating(template);
+  // Update product's rating
+  await updateProductRating(product);
 
   // Populate user data for response
   await review.populate('user', 'username email');
@@ -107,7 +113,9 @@ const updateReview = asyncHandler(async (req, res) => {
   }
 
   if (review.user.toString() !== userId) {
-    return res.status(403).json({ message: 'Not authorized to update this review' });
+    return res
+      .status(403)
+      .json({ message: 'Not authorized to update this review' });
   }
 
   // Update review
@@ -116,8 +124,8 @@ const updateReview = asyncHandler(async (req, res) => {
 
   await review.save();
 
-  // Update template's rating
-  await updateTemplateRating(review.template);
+  // Update product's rating
+  await updateProductRating(review.product);
 
   // Populate user data for response
   await review.populate('user', 'username email');
@@ -145,32 +153,34 @@ const deleteReview = asyncHandler(async (req, res) => {
   }
 
   if (review.user.toString() !== userId) {
-    return res.status(403).json({ message: 'Not authorized to delete this review' });
+    return res
+      .status(403)
+      .json({ message: 'Not authorized to delete this review' });
   }
 
-  const templateId = review.template;
+  const productId = review.product;
 
   await Review.findByIdAndDelete(reviewId);
 
-  // Update template's rating
-  await updateTemplateRating(templateId);
+  // Update product's rating
+  await updateProductRating(productId);
 
   res.status(200).json({ message: 'Review deleted successfully' });
 });
 
 /**
- * Get all reviews for a specific template.
+ * Get all reviews for a specific product.
  *
- * @route GET /api/reviews/template/:templateId
+ * @route GET /api/reviews/product/:productId
  * @access Public
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>} JSON array of reviews
  */
-const getTemplateReviews = asyncHandler(async (req, res) => {
-  const { templateId } = req.params;
+const getProductReviews = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
 
-  const reviews = await Review.find({ template: templateId })
+  const reviews = await Review.find({ product: productId })
     .populate('user', 'username email')
     .sort({ createdAt: -1 })
     .lean();
@@ -179,21 +189,21 @@ const getTemplateReviews = asyncHandler(async (req, res) => {
 });
 
 /**
- * Get the authenticated user's review for a specific template.
+ * Get the authenticated user's review for a specific product.
  *
- * @route GET /api/reviews/my/:templateId
+ * @route GET /api/reviews/my/:productId
  * @access Private
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>} JSON with user's review or null
  */
 const getMyReview = asyncHandler(async (req, res) => {
-  const { templateId } = req.params;
+  const { productId } = req.params;
   const userId = req.user.id;
 
   const review = await Review.findOne({
     user: userId,
-    template: templateId,
+    product: productId,
   })
     .populate('user', 'username email')
     .lean();
@@ -214,7 +224,7 @@ const getMyReviews = asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
   const reviews = await Review.find({ user: userId })
-    .populate('template')
+    .populate('product')
     .sort({ createdAt: -1 })
     .lean();
 
@@ -225,7 +235,7 @@ module.exports = {
   createReview,
   updateReview,
   deleteReview,
-  getTemplateReviews,
+  getProductReviews,
   getMyReview,
   getMyReviews,
 };

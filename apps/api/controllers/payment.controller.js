@@ -1,8 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const { Order, validateCreateOrder } = require('../models/Order');
-const { Template } = require('../models/Template');
+const { Product } = require('../models/Product');
 const StripeWebhookEvent = require('../models/StripeWebhookEvent');
-const Subscription = require('../models/Subscription');
 const {
   getStripeOrThrow,
   getFrontendBaseUrl,
@@ -13,30 +12,31 @@ function dollarsToCents(amount) {
 }
 
 async function buildNormalizedOrderLines(items) {
-  const templateIds = items.map((i) => i.template);
-  const templates = await Template.find({ _id: { $in: templateIds } });
-  if (templates.length !== templateIds.length) {
-    const err = new Error('One or more templates not found');
+  const productIds = items.map((i) => i.productId);
+  const products = await Product.find({ _id: { $in: productIds } });
+  if (products.length !== productIds.length) {
+    const err = new Error('One or more products not found');
     err.statusCode = 400;
     throw err;
   }
 
-  const templatesById = new Map(templates.map((t) => [String(t._id), t]));
+  const productsById = new Map(products.map((p) => [String(p._id), p]));
 
   const normalizedItems = items.map((i) => {
-    const t = templatesById.get(String(i.template));
-    if (!t) return null;
+    const p = productsById.get(String(i.productId));
+    if (!p) return null;
     return {
-      template: t._id,
-      title: t.title,
-      price: Number(t.price),
+      productId: p._id,
+      title: p.title,
+      price: Number(p.price),
       qty: Number(i.qty),
-      cover: t.cover,
+      cover: p.cover,
+      variant: i.variant,
     };
   });
 
   if (normalizedItems.some((x) => !x)) {
-    const err = new Error('One or more templates not found');
+    const err = new Error('One or more products not found');
     err.statusCode = 404;
     throw err;
   }
@@ -62,7 +62,7 @@ function getPaymentsSetupStatus(_req, res) {
 }
 
 /**
- * Creates order draft + Stripe Checkout Session (payment mode) for template purchases.
+ * Creates order draft + Stripe Checkout Session (payment mode) for product purchases.
  * @desc One-time cart checkout via Stripe
  * @route POST /api/payments/checkout-session
  * @method POST
@@ -216,55 +216,7 @@ async function markOrderPaidFromSession(session) {
   await order.save();
 }
 
-async function upsertSubscriptionFromStripe(subscription, fallbackUserId) {
-  let userId = subscription.metadata?.userId || fallbackUserId || null;
-  if (!userId) {
-    const existing = await Subscription.findOne({
-      stripeSubscriptionId: subscription.id,
-    })
-      .select('user')
-      .lean();
-    userId = existing?.user ? String(existing.user) : null;
-  }
-  if (!userId) {
-    console.warn(
-      'Stripe subscription event without user mapping:',
-      subscription.id,
-    );
-    return;
-  }
-
-  const priceId = subscription.items?.data?.[0]?.price?.id || '';
-
-  await Subscription.findOneAndUpdate(
-    { stripeSubscriptionId: subscription.id },
-    {
-      user: userId,
-      stripeSubscriptionId: subscription.id,
-      stripePriceId: priceId,
-      status: subscription.status,
-      currentPeriodEnd: subscription.current_period_end
-        ? new Date(subscription.current_period_end * 1000)
-        : undefined,
-    },
-    { upsert: true, new: true },
-  );
-}
-
 async function handleCheckoutSessionCompleted(session) {
-  if (session.mode === 'subscription') {
-    const subId = session.subscription;
-    if (!subId) return;
-    const stripe = getStripeOrThrow();
-    const fullSub =
-      typeof subId === 'string'
-        ? await stripe.subscriptions.retrieve(subId)
-        : subId;
-    const userId = session.metadata?.userId;
-    await upsertSubscriptionFromStripe(fullSub, userId);
-    return;
-  }
-
   if (
     session.metadata?.kind === 'order_payment' ||
     session.mode === 'payment'
@@ -274,7 +226,7 @@ async function handleCheckoutSessionCompleted(session) {
 }
 
 /**
- * Verifies Stripe webhook signatures and syncs paid orders / subscriptions.
+ * Verifies Stripe webhook signatures and syncs paid orders.
  * @desc Stripe webhook receiver (raw body)
  * @route POST /api/webhooks/stripe
  * @method POST
@@ -312,23 +264,6 @@ const stripeWebhook = asyncHandler(async (req, res) => {
       case 'checkout.session.completed':
         await handleCheckoutSessionCompleted(event.data.object);
         break;
-      case 'customer.subscription.updated':
-      case 'customer.subscription.deleted': {
-        const sub = event.data.object;
-        await upsertSubscriptionFromStripe(sub, sub.metadata?.userId);
-        break;
-      }
-      case 'invoice.payment_failed': {
-        const invoice = event.data.object;
-        const subId = invoice.subscription;
-        if (subId) {
-          await Subscription.findOneAndUpdate(
-            { stripeSubscriptionId: String(subId) },
-            { status: 'past_due' },
-          );
-        }
-        break;
-      }
       default:
         break;
     }

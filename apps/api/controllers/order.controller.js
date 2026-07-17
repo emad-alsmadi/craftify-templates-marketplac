@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const { Order, validateCreateOrder } = require('../models/Order');
-const { Template } = require('../models/Template');
+const { Product } = require('../models/Product');
 const { serializeOrder, serializeOrders } = require('../utils/serializeOrder');
 
 const createOrder = asyncHandler(async (req, res) => {
@@ -30,28 +30,29 @@ const createOrder = asyncHandler(async (req, res) => {
   const shippingPrice = Number(value.shippingPrice ?? 0);
   const taxPrice = Number(value.taxPrice ?? 0);
 
-  // Validate that all template items exist
-  const templateIds = items.map((i) => i.template);
-  const templates = await Template.find({ _id: { $in: templateIds } });
-  if (templates.length !== templateIds.length) {
+  // Validate that all product items exist
+  const productIds = items.map((i) => i.productId);
+  const products = await Product.find({ _id: { $in: productIds } });
+  if (products.length !== productIds.length) {
     res.status(400);
-    throw new Error('One or more templates not found');
+    throw new Error('One or more products not found');
   }
 
-  const templatesById = new Map(templates.map((t) => [String(t._id), t]));
+  const productsById = new Map(products.map((p) => [String(p._id), p]));
 
   const normalizedItems = items.map((i) => {
-    const t = templatesById.get(String(i.template));
-    if (!t) {
+    const p = productsById.get(String(i.productId));
+    if (!p) {
       return null;
     }
 
     return {
-      template: t._id,
-      title: t.title,
-      price: Number(t.price),
+      productId: p._id,
+      title: p.title,
+      price: Number(p.price),
       qty: Number(i.qty),
-      cover: t.cover,
+      cover: p.cover,
+      variant: i.variant,
     };
   });
 
@@ -59,7 +60,7 @@ const createOrder = asyncHandler(async (req, res) => {
   if (missing) {
     return res
       .status(404)
-      .json({ message: 'One or more templates were not found' });
+      .json({ message: 'One or more products were not found' });
   }
 
   const finalItems = normalizedItems;

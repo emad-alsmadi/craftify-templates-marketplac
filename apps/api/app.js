@@ -28,19 +28,16 @@ app.use(
 app.use(logger);
 
 //Routers
-app.use('/api/', require('./routes/templates'));
-app.use('/api/', require('./routes/creators'));
+app.use('/api/', require('./routes/products'));
+app.use('/api/', require('./routes/brands'));
 app.use('/api/', require('./routes/auth'));
 app.use('/api/', require('./routes/profile'));
 app.use('/api/', require('./routes/users'));
 app.use('/api/', require('./routes/password'));
 app.use('/api/', require('./routes/orders'));
 app.use('/api/', require('./routes/payments'));
-app.use('/api/', require('./routes/subscriptions'));
 app.use('/api/', require('./routes/wishlist'));
 app.use('/api/', require('./routes/reviews'));
-app.use('/api/', require('./routes/downloads'));
-app.use('/api/', require('./routes/licenses'));
 app.use('/api/', require('./routes/coupons'));
 
 // Friendly roots (this process is API-only; the Next.js app is a separate server)

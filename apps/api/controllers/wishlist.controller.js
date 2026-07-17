@@ -1,71 +1,71 @@
 const asyncHandler = require('express-async-handler');
 const { Wishlist } = require('../models/Wishlist');
-const { Template } = require('../models/Template');
+const { Product } = require('../models/Product');
 
 /**
- * Add a template to the authenticated user's wishlist.
+ * Add a product to the authenticated user's wishlist.
  *
- * @route POST /api/wishlist/:templateId
+ * @route POST /api/wishlist/:productId
  * @access Private
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>} JSON confirmation message
  */
 const addToWishlist = asyncHandler(async (req, res) => {
-  const { templateId } = req.params;
+  const { productId } = req.params;
   const userId = req.user.id;
 
-  // Verify template exists
-  const template = await Template.findById(templateId);
-  if (!template) {
-    return res.status(404).json({ message: 'Template not found' });
+  // Verify product exists
+  const product = await Product.findById(productId);
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
   }
 
   // Check if already in wishlist (duplicate prevention)
   const existingWishlist = await Wishlist.findOne({
     user: userId,
-    template: templateId,
+    product: productId,
   });
 
   if (existingWishlist) {
-    return res.status(400).json({ message: 'Template already in wishlist' });
+    return res.status(400).json({ message: 'Product already in wishlist' });
   }
 
   // Create wishlist item
   const wishlist = new Wishlist({
     user: userId,
-    template: templateId,
+    product: productId,
   });
 
   await wishlist.save();
 
-  res.status(201).json({ message: 'Template added to wishlist' });
+  res.status(201).json({ message: 'Product added to wishlist' });
 });
 
 /**
- * Remove a template from the authenticated user's wishlist.
+ * Remove a product from the authenticated user's wishlist.
  *
- * @route DELETE /api/wishlist/:templateId
+ * @route DELETE /api/wishlist/:productId
  * @access Private
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>} JSON confirmation message
  */
 const removeFromWishlist = asyncHandler(async (req, res) => {
-  const { templateId } = req.params;
+  const { productId } = req.params;
   const userId = req.user.id;
 
   // Find and delete wishlist item
   const wishlist = await Wishlist.findOneAndDelete({
     user: userId,
-    template: templateId,
+    product: productId,
   });
 
   if (!wishlist) {
     return res.status(404).json({ message: 'Wishlist item not found' });
   }
 
-  res.status(200).json({ message: 'Template removed from wishlist' });
+  res.status(200).json({ message: 'Product removed from wishlist' });
 });
 
 /**
@@ -75,13 +75,13 @@ const removeFromWishlist = asyncHandler(async (req, res) => {
  * @access Private
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @returns {Promise<void>} JSON array of wishlist items with populated template data
+ * @returns {Promise<void>} JSON array of wishlist items with populated product data
  */
 const getMyWishlist = asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
   const wishlist = await Wishlist.find({ user: userId })
-    .populate('template')
+    .populate('product')
     .sort({ createdAt: -1 })
     .lean();
 
@@ -89,21 +89,21 @@ const getMyWishlist = asyncHandler(async (req, res) => {
 });
 
 /**
- * Check if a template is in the authenticated user's wishlist.
+ * Check if a product is in the authenticated user's wishlist.
  *
- * @route GET /api/wishlist/check/:templateId
+ * @route GET /api/wishlist/check/:productId
  * @access Private
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>} JSON with isWishlisted boolean
  */
 const checkWishlist = asyncHandler(async (req, res) => {
-  const { templateId } = req.params;
+  const { productId } = req.params;
   const userId = req.user.id;
 
   const wishlist = await Wishlist.findOne({
     user: userId,
-    template: templateId,
+    product: productId,
   });
 
   res.status(200).json({ isWishlisted: !!wishlist });

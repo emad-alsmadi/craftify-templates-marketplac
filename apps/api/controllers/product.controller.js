@@ -1,0 +1,232 @@
+const asyncHandler = require('express-async-handler');
+const {
+  Product,
+  validateCreateProduct,
+  validateUpdateProduct,
+} = require('../models/Product');
+
+/**
+ * Get all products with filtering, sorting and pagination.
+ *
+ * Supported query params:
+ * - q: search term in title/description
+ * - minPrice/maxPrice: price range
+ * - category: product category
+ * - subcategory: product subcategory
+ * - brand: brand id
+ * - page/limit: pagination
+ * - sort: comma-separated fields, prefix with '-' for desc
+ * - featured: show only featured products
+ *
+ * @route GET /api/products
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON containing data and meta
+ */
+const getAllProducts = asyncHandler(async (req, res) => {
+  const {
+    q,
+    minPrice,
+    maxPrice,
+    category,
+    subcategory,
+    brand,
+    page = 1,
+    limit = 12,
+    sort = 'createdAt',
+    featured,
+  } = req.query;
+
+  const query = { isActive: true };
+  
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+  
+  if (category) {
+    query.category = category;
+  }
+  
+  if (subcategory) {
+    query.subcategory = subcategory;
+  }
+  
+  if (brand) {
+    query.brand = brand;
+  }
+  
+  if (featured === 'true') {
+    query.featured = true;
+  }
+  
+  if (q) {
+    query.$or = [
+      { title: { $regex: q, $options: 'i' } },
+      { description: { $regex: q, $options: 'i' } },
+    ];
+  }
+
+  const sortObj = {};
+  sort.split(',').forEach((field) => {
+    const direction = field.startsWith('-') ? -1 : 1;
+    const fieldName = field.replace(/^-/, '');
+    sortObj[fieldName] = direction;
+  });
+
+  const pageNum = Math.max(1, parseInt(page, 10));
+  const limitNum = Math.max(1, parseInt(limit, 10));
+  const skip = (pageNum - 1) * limitNum;
+
+  const [products, total] = await Promise.all([
+    Product.find(query)
+      .populate('brand', ['name', 'slug', 'logo'])
+      .sort(sortObj)
+      .skip(skip)
+      .limit(limitNum)
+      .lean(),
+    Product.countDocuments(query),
+  ]);
+
+  const pages = Math.ceil(total / limitNum);
+
+  res.status(200).json({
+    data: products,
+    meta: {
+      total,
+      page: pageNum,
+      pages,
+      limit: limitNum,
+    },
+  });
+});
+
+/**
+ * Get a single product by id.
+ *
+ * @route GET /api/products/:id
+ * @access Public
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON product document
+ */
+const getProductById = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+    .populate('brand', ['name', 'slug', 'logo', 'website', 'country']);
+
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  res.status(200).json(product);
+});
+
+/**
+ * Create a new product.
+ *
+ * @route POST /api/products
+ * @access Private (requires products:write permission)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON created product document
+ */
+const createProduct = asyncHandler(async (req, res) => {
+  const error = validateCreateProduct(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
+  const product = new Product({
+    title: req.body.title,
+    brand: req.body.brand,
+    description: req.body.description,
+    price: req.body.price,
+    cover: req.body.cover,
+    images: req.body.images || [],
+    category: req.body.category,
+    subcategory: req.body.subcategory,
+    variants: req.body.variants || [],
+    material: req.body.material,
+    weight: req.body.weight,
+    dimensions: req.body.dimensions,
+    shippingInfo: req.body.shippingInfo,
+    stock: req.body.stock || 0,
+    sku: req.body.sku,
+    isActive: req.body.isActive !== undefined ? req.body.isActive : true,
+    featured: req.body.featured || false,
+  });
+
+  const result = await product.save();
+  res.status(201).json(result);
+});
+
+/**
+ * Update a product by id.
+ *
+ * @route PUT /api/products/:id
+ * @access Private (requires products:write permission)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON updated product document
+ */
+const updateProduct = asyncHandler(async (req, res) => {
+  const error = validateUpdateProduct(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
+  const updateData = {};
+  const allowedFields = [
+    'title', 'brand', 'description', 'price', 'cover', 'images',
+    'category', 'subcategory', 'variants', 'material', 'weight',
+    'dimensions', 'shippingInfo', 'stock', 'sku', 'averageRating',
+    'reviewCount', 'isActive', 'featured'
+  ];
+  
+  allowedFields.forEach((field) => {
+    if (req.body[field] !== undefined) {
+      updateData[field] = req.body[field];
+    }
+  });
+
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    updateData,
+    { new: true },
+  );
+
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  res.status(200).json(product);
+});
+
+/**
+ * Delete a product by id.
+ *
+ * @route DELETE /api/products/:id
+ * @access Private (requires products:delete permission)
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>} JSON confirmation message
+ */
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findByIdAndDelete(req.params.id);
+
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  res.status(200).json({ message: 'Product has been deleted' });
+});
+
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
