@@ -10,7 +10,7 @@ const brandsData = [
     description: 'Professional makeup artistry cosmetics',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/MAC_Cosmetics_logo.svg/200px-MAC_Cosmetics_logo.svg.png',
     website: 'https://www.maccosmetics.com',
-    country: 'USA'
+    country: 'USA',
   },
   {
     name: 'Chanel',
@@ -18,7 +18,7 @@ const brandsData = [
     description: 'French luxury fashion house and perfumes',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Chanel_logo.svg/200px-Chanel_logo.svg.png',
     website: 'https://www.chanel.com',
-    country: 'France'
+    country: 'France',
   },
   {
     name: 'Dior',
@@ -26,15 +26,16 @@ const brandsData = [
     description: 'French luxury goods company',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Dior_logo.svg/200px-Dior_logo.svg.png',
     website: 'https://www.dior.com',
-    country: 'France'
+    country: 'France',
   },
   {
     name: 'Sephora',
     slug: 'sephora',
-    description: 'French multinational retailer of personal care and beauty products',
+    description:
+      'French multinational retailer of personal care and beauty products',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Sephora_logo.svg/200px-Sephora_logo.svg.png',
     website: 'https://www.sephora.com',
-    country: 'France'
+    country: 'France',
   },
   {
     name: 'NARS Cosmetics',
@@ -42,23 +43,24 @@ const brandsData = [
     description: 'French cosmetics and beauty brand',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/NARS_logo.svg/200px-NARS_logo.svg.png',
     website: 'https://www.narscosmetics.com',
-    country: 'USA'
+    country: 'USA',
   },
   {
     name: 'Estée Lauder',
     slug: 'estee-lauder',
-    description: 'American multinational manufacturer and marketer of prestige skincare, makeup, fragrance and hair care products',
+    description:
+      'American multinational manufacturer and marketer of prestige skincare, makeup, fragrance and hair care products',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5 5a/Estee_Lauder_logo.svg/200px-Estee_Lauder_logo.svg.png',
     website: 'https://www.esteelauder.com',
-    country: 'USA'
+    country: 'USA',
   },
   {
-    name: 'L\'Oréal Paris',
+    name: "L'Oréal Paris",
     slug: 'loreal-paris',
     description: 'French personal care company',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/L%27Oreal_logo.svg/200px-L%27Oreal_logo.svg.png',
     website: 'https://www.lorealparis.com',
-    country: 'France'
+    country: 'France',
   },
   {
     name: 'Gucci',
@@ -66,7 +68,7 @@ const brandsData = [
     description: 'Italian luxury brand of fashion and leather goods',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Gucci_logo.svg/200px-Gucci_logo.svg.png',
     website: 'https://www.gucci.com',
-    country: 'Italy'
+    country: 'Italy',
   },
   {
     name: 'Prada',
@@ -74,7 +76,7 @@ const brandsData = [
     description: 'Italian luxury fashion house',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Prada_logo.svg/200px-Prada_logo.svg.png',
     website: 'https://www.prada.com',
-    country: 'Italy'
+    country: 'Italy',
   },
   {
     name: 'Zara',
@@ -82,8 +84,8 @@ const brandsData = [
     description: 'Spanish clothing retailer',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Zara_logo.svg/200px-Zara_logo.svg.png',
     website: 'https://www.zara.com',
-    country: 'Spain'
-  }
+    country: 'Spain',
+  },
 ];
 
 const productsData = [
@@ -92,8 +94,8 @@ const productsData = [
     title: 'MAC Retro Matte Liquid Lipcolour',
     brand: 'MAC Cosmetics',
     description: 'Long-wearing liquid lipstick with a matte finish',
-    price: 24.00,
-    basePrice: 24.00,
+    price: 24.0,
+    basePrice: 24.0,
     cover: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500',
     category: 'makeup',
     subcategory: 'Lips',
@@ -103,18 +105,36 @@ const productsData = [
     weight: 0.05,
     dimensions: { length: 2, width: 2, height: 8 },
     variants: [
-      { size: 'Standard', color: 'Ruby Woo', colorCode: '#C41E3A', stock: 50, price: 24.00 },
-      { size: 'Standard', color: 'Russian Red', colorCode: '#8B0000', stock: 50, price: 24.00 },
-      { size: 'Standard', color: 'Divine Wine', colorCode: '#722F37', stock: 50, price: 24.00 }
+      {
+        size: 'Standard',
+        color: 'Ruby Woo',
+        colorCode: '#C41E3A',
+        stock: 50,
+        price: 24.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Russian Red',
+        colorCode: '#8B0000',
+        stock: 50,
+        price: 24.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Divine Wine',
+        colorCode: '#722F37',
+        stock: 50,
+        price: 24.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'MAC Studio Fix Powder Plus Foundation',
     brand: 'MAC Cosmetics',
     description: 'Professional powder foundation for all skin types',
-    price: 32.00,
-    basePrice: 32.00,
+    price: 32.0,
+    basePrice: 32.0,
     cover: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500',
     category: 'makeup',
     subcategory: 'Face',
@@ -124,20 +144,50 @@ const productsData = [
     weight: 0.1,
     dimensions: { length: 5, width: 5, height: 3 },
     variants: [
-      { size: 'Standard', color: 'NC15', colorCode: '#F5DEB3', stock: 40, price: 32.00 },
-      { size: 'Standard', color: 'NC25', colorCode: '#DEB887', stock: 40, price: 32.00 },
-      { size: 'Standard', color: 'NC35', colorCode: '#D2B48C', stock: 40, price: 32.00 },
-      { size: 'Standard', color: 'NC45', colorCode: '#C4A574', stock: 40, price: 32.00 },
-      { size: 'Standard', color: 'NW20', colorCode: '#FFE4C4', stock: 40, price: 32.00 }
+      {
+        size: 'Standard',
+        color: 'NC15',
+        colorCode: '#F5DEB3',
+        stock: 40,
+        price: 32.0,
+      },
+      {
+        size: 'Standard',
+        color: 'NC25',
+        colorCode: '#DEB887',
+        stock: 40,
+        price: 32.0,
+      },
+      {
+        size: 'Standard',
+        color: 'NC35',
+        colorCode: '#D2B48C',
+        stock: 40,
+        price: 32.0,
+      },
+      {
+        size: 'Standard',
+        color: 'NC45',
+        colorCode: '#C4A574',
+        stock: 40,
+        price: 32.0,
+      },
+      {
+        size: 'Standard',
+        color: 'NW20',
+        colorCode: '#FFE4C4',
+        stock: 40,
+        price: 32.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'MAC Eyeshadow Palette',
     brand: 'MAC Cosmetics',
     description: 'Professional eyeshadow palette with 9 shades',
-    price: 48.00,
-    basePrice: 48.00,
+    price: 48.0,
+    basePrice: 48.0,
     cover: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500',
     category: 'makeup',
     subcategory: 'Eyes',
@@ -147,18 +197,30 @@ const productsData = [
     weight: 0.15,
     dimensions: { length: 15, width: 10, height: 2 },
     variants: [
-      { size: '9-Pan', color: 'Warm Neutrals', colorCode: '#D2691E', stock: 50, price: 48.00 },
-      { size: '9-Pan', color: 'Cool Tones', colorCode: '#708090', stock: 50, price: 48.00 }
+      {
+        size: '9-Pan',
+        color: 'Warm Neutrals',
+        colorCode: '#D2691E',
+        stock: 50,
+        price: 48.0,
+      },
+      {
+        size: '9-Pan',
+        color: 'Cool Tones',
+        colorCode: '#708090',
+        stock: 50,
+        price: 48.0,
+      },
     ],
-    featured: false
+    featured: false,
   },
   // Chanel Products
   {
     title: 'Chanel No. 5 Eau de Parfum',
     brand: 'Chanel',
     description: 'Iconic floral-aldehydic fragrance',
-    price: 150.00,
-    basePrice: 150.00,
+    price: 150.0,
+    basePrice: 150.0,
     cover: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500',
     category: 'perfumes',
     subcategory: 'Women',
@@ -168,18 +230,36 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 150.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 210.00 },
-      { size: '35ml', color: 'Clear', colorCode: '#FFFFFF', stock: 20, price: 125.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 150.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 210.0,
+      },
+      {
+        size: '35ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 20,
+        price: 125.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'Chanel Coco Mademoiselle',
     brand: 'Chanel',
     description: 'Fresh oriental fragrance for women',
-    price: 135.00,
-    basePrice: 135.00,
+    price: 135.0,
+    basePrice: 135.0,
     cover: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500',
     category: 'perfumes',
     subcategory: 'Women',
@@ -189,18 +269,36 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 135.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 195.00 },
-      { size: '35ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 110.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 135.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 195.0,
+      },
+      {
+        size: '35ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 110.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'Chanel Bleu de Chanel',
     brand: 'Chanel',
     description: 'Aromatic woody fragrance for men',
-    price: 140.00,
-    basePrice: 140.00,
+    price: 140.0,
+    basePrice: 140.0,
     cover: 'https://images.unsplash.com/photo-1595425940377-c9703cf48b6d?w=500',
     category: 'perfumes',
     subcategory: 'Men',
@@ -210,19 +308,37 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 140.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 195.00 },
-      { size: '35ml', color: 'Clear', colorCode: '#FFFFFF', stock: 20, price: 115.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 140.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 195.0,
+      },
+      {
+        size: '35ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 20,
+        price: 115.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   // Dior Products
   {
     title: 'Dior Addict Lipstick',
     brand: 'Dior',
     description: 'Vibrant color and shine with a comfortable feel',
-    price: 42.00,
-    basePrice: 42.00,
+    price: 42.0,
+    basePrice: 42.0,
     cover: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500',
     category: 'makeup',
     subcategory: 'Lips',
@@ -232,18 +348,36 @@ const productsData = [
     weight: 0.05,
     dimensions: { length: 2, width: 2, height: 8 },
     variants: [
-      { size: 'Standard', color: '999 Rouge Dior', colorCode: '#8B0000', stock: 40, price: 42.00 },
-      { size: 'Standard', color: '620 Dior Addict', colorCode: '#DC143C', stock: 40, price: 42.00 },
-      { size: 'Standard', color: '560 Diorific', colorCode: '#800020', stock: 40, price: 42.00 }
+      {
+        size: 'Standard',
+        color: '999 Rouge Dior',
+        colorCode: '#8B0000',
+        stock: 40,
+        price: 42.0,
+      },
+      {
+        size: 'Standard',
+        color: '620 Dior Addict',
+        colorCode: '#DC143C',
+        stock: 40,
+        price: 42.0,
+      },
+      {
+        size: 'Standard',
+        color: '560 Diorific',
+        colorCode: '#800020',
+        stock: 40,
+        price: 42.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'Dior Sauvage Eau de Parfum',
     brand: 'Dior',
     description: 'Raw and noble fragrance for men',
-    price: 130.00,
-    basePrice: 130.00,
+    price: 130.0,
+    basePrice: 130.0,
     cover: 'https://images.unsplash.com/photo-1595425940377-c9703cf48b6d?w=500',
     category: 'perfumes',
     subcategory: 'Men',
@@ -253,18 +387,36 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '60ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 130.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 175.00 },
-      { size: '200ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 250.00 }
+      {
+        size: '60ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 130.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 175.0,
+      },
+      {
+        size: '200ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 250.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
-    title: 'Dior J\'adore Eau de Parfum',
+    title: "Dior J'adore Eau de Parfum",
     brand: 'Dior',
     description: 'Floral fragrance for women',
-    price: 145.00,
-    basePrice: 145.00,
+    price: 145.0,
+    basePrice: 145.0,
     cover: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500',
     category: 'perfumes',
     subcategory: 'Women',
@@ -274,19 +426,37 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 145.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 205.00 },
-      { size: '35ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 120.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 145.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 205.0,
+      },
+      {
+        size: '35ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 120.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   // Sephora Products
   {
     title: 'Sephora Collection Cream Lip Stain',
     brand: 'Sephora',
     description: 'Long-lasting liquid lip stain',
-    price: 14.00,
-    basePrice: 14.00,
+    price: 14.0,
+    basePrice: 14.0,
     cover: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500',
     category: 'makeup',
     subcategory: 'Lips',
@@ -296,19 +466,43 @@ const productsData = [
     weight: 0.05,
     dimensions: { length: 2, width: 2, height: 8 },
     variants: [
-      { size: 'Standard', color: 'Always Red', colorCode: '#DC143C', stock: 50, price: 14.00 },
-      { size: 'Standard', color: 'Berry Smoothie', colorCode: '#8B008B', stock: 50, price: 14.00 },
-      { size: 'Standard', color: 'Pink Nude', colorCode: '#FFB6C1', stock: 50, price: 14.00 },
-      { size: 'Standard', color: 'Coral Crush', colorCode: '#FF7F50', stock: 50, price: 14.00 }
+      {
+        size: 'Standard',
+        color: 'Always Red',
+        colorCode: '#DC143C',
+        stock: 50,
+        price: 14.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Berry Smoothie',
+        colorCode: '#8B008B',
+        stock: 50,
+        price: 14.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Pink Nude',
+        colorCode: '#FFB6C1',
+        stock: 50,
+        price: 14.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Coral Crush',
+        colorCode: '#FF7F50',
+        stock: 50,
+        price: 14.0,
+      },
     ],
-    featured: false
+    featured: false,
   },
   {
     title: 'Sephora Collection Face Palette',
     brand: 'Sephora',
     description: 'All-in-one face palette with contour, blush, and highlighter',
-    price: 25.00,
-    basePrice: 25.00,
+    price: 25.0,
+    basePrice: 25.0,
     cover: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500',
     category: 'makeup',
     subcategory: 'Face',
@@ -318,19 +512,37 @@ const productsData = [
     weight: 0.12,
     dimensions: { length: 12, width: 8, height: 2 },
     variants: [
-      { size: 'Standard', color: 'Light Medium', colorCode: '#F5DEB3', stock: 50, price: 25.00 },
-      { size: 'Standard', color: 'Medium Deep', colorCode: '#D2B48C', stock: 50, price: 25.00 },
-      { size: 'Standard', color: 'Deep', colorCode: '#8B4513', stock: 50, price: 25.00 }
+      {
+        size: 'Standard',
+        color: 'Light Medium',
+        colorCode: '#F5DEB3',
+        stock: 50,
+        price: 25.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Medium Deep',
+        colorCode: '#D2B48C',
+        stock: 50,
+        price: 25.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Deep',
+        colorCode: '#8B4513',
+        stock: 50,
+        price: 25.0,
+      },
     ],
-    featured: false
+    featured: false,
   },
   // NARS Products
   {
     title: 'NARS Orgasm Blush',
     brand: 'NARS Cosmetics',
     description: 'Iconic peachy pink blush with golden shimmer',
-    price: 32.00,
-    basePrice: 32.00,
+    price: 32.0,
+    basePrice: 32.0,
     cover: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500',
     category: 'makeup',
     subcategory: 'Face',
@@ -340,17 +552,29 @@ const productsData = [
     weight: 0.08,
     dimensions: { length: 4, width: 4, height: 2 },
     variants: [
-      { size: 'Standard', color: 'Orgasm', colorCode: '#FFB6C1', stock: 90, price: 32.00 },
-      { size: 'Standard', color: 'Super Orgasm', colorCode: '#FF69B4', stock: 90, price: 32.00 }
+      {
+        size: 'Standard',
+        color: 'Orgasm',
+        colorCode: '#FFB6C1',
+        stock: 90,
+        price: 32.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Super Orgasm',
+        colorCode: '#FF69B4',
+        stock: 90,
+        price: 32.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'NARS Audacious Lipstick',
     brand: 'NARS Cosmetics',
     description: 'High-impact lipstick with rich color',
-    price: 28.00,
-    basePrice: 28.00,
+    price: 28.0,
+    basePrice: 28.0,
     cover: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500',
     category: 'makeup',
     subcategory: 'Lips',
@@ -360,20 +584,44 @@ const productsData = [
     weight: 0.05,
     dimensions: { length: 2, width: 2, height: 8 },
     variants: [
-      { size: 'Standard', color: 'Carmen', colorCode: '#8B0000', stock: 40, price: 28.00 },
-      { size: 'Standard', color: 'Anna', colorCode: '#DC143C', stock: 40, price: 28.00 },
-      { size: 'Standard', color: 'Mona', colorCode: '#800020', stock: 40, price: 28.00 },
-      { size: 'Standard', color: 'Barbara', colorCode: '#FF1493', stock: 40, price: 28.00 }
+      {
+        size: 'Standard',
+        color: 'Carmen',
+        colorCode: '#8B0000',
+        stock: 40,
+        price: 28.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Anna',
+        colorCode: '#DC143C',
+        stock: 40,
+        price: 28.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Mona',
+        colorCode: '#800020',
+        stock: 40,
+        price: 28.0,
+      },
+      {
+        size: 'Standard',
+        color: 'Barbara',
+        colorCode: '#FF1493',
+        stock: 40,
+        price: 28.0,
+      },
     ],
-    featured: false
+    featured: false,
   },
   // Estée Lauder Products
   {
     title: 'Estée Lauder Double Wear Foundation',
     brand: 'Estée Lauder',
     description: '24-hour wear foundation with full coverage',
-    price: 44.00,
-    basePrice: 44.00,
+    price: 44.0,
+    basePrice: 44.0,
     cover: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500',
     category: 'makeup',
     subcategory: 'Face',
@@ -383,20 +631,50 @@ const productsData = [
     weight: 0.1,
     dimensions: { length: 5, width: 5, height: 4 },
     variants: [
-      { size: '30ml', color: '1W1 Bone', colorCode: '#F5DEB3', stock: 28, price: 44.00 },
-      { size: '30ml', color: '2C1 Fresco', colorCode: '#DEB887', stock: 28, price: 44.00 },
-      { size: '30ml', color: '3W1 Tawny', colorCode: '#D2B48C', stock: 28, price: 44.00 },
-      { size: '30ml', color: '4W1 Sand', colorCode: '#C4A574', stock: 28, price: 44.00 },
-      { size: '30ml', color: '5W1 Honey', colorCode: '#8B4513', stock: 28, price: 44.00 }
+      {
+        size: '30ml',
+        color: '1W1 Bone',
+        colorCode: '#F5DEB3',
+        stock: 28,
+        price: 44.0,
+      },
+      {
+        size: '30ml',
+        color: '2C1 Fresco',
+        colorCode: '#DEB887',
+        stock: 28,
+        price: 44.0,
+      },
+      {
+        size: '30ml',
+        color: '3W1 Tawny',
+        colorCode: '#D2B48C',
+        stock: 28,
+        price: 44.0,
+      },
+      {
+        size: '30ml',
+        color: '4W1 Sand',
+        colorCode: '#C4A574',
+        stock: 28,
+        price: 44.0,
+      },
+      {
+        size: '30ml',
+        color: '5W1 Honey',
+        colorCode: '#8B4513',
+        stock: 28,
+        price: 44.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'Estée Lauder Advanced Night Repair',
     brand: 'Estée Lauder',
     description: 'Recovery complex serum for skin repair',
-    price: 105.00,
-    basePrice: 105.00,
+    price: 105.0,
+    basePrice: 105.0,
     cover: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=500',
     category: 'skincare',
     subcategory: 'Serums',
@@ -406,18 +684,30 @@ const productsData = [
     weight: 0.15,
     dimensions: { length: 5, width: 5, height: 10 },
     variants: [
-      { size: '30ml', color: 'Clear', colorCode: '#FFFFFF', stock: 50, price: 105.00 },
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 50, price: 165.00 }
+      {
+        size: '30ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 105.0,
+      },
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 165.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   // L'Oréal Paris Products
   {
-    title: 'L\'Oréal Paris Infallible Foundation',
-    brand: 'L\'Oréal Paris',
+    title: "L'Oréal Paris Infallible Foundation",
+    brand: "L'Oréal Paris",
     description: '24-hour matte foundation',
-    price: 15.00,
-    basePrice: 15.00,
+    price: 15.0,
+    basePrice: 15.0,
     cover: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500',
     category: 'makeup',
     subcategory: 'Face',
@@ -427,20 +717,50 @@ const productsData = [
     weight: 0.1,
     dimensions: { length: 5, width: 5, height: 4 },
     variants: [
-      { size: '30ml', color: '102 Vanilla', colorCode: '#F5DEB3', stock: 50, price: 15.00 },
-      { size: '30ml', color: '103 Beige', colorCode: '#DEB887', stock: 50, price: 15.00 },
-      { size: '30ml', color: '104 Natural Beige', colorCode: '#D2B48C', stock: 50, price: 15.00 },
-      { size: '30ml', color: '105 Golden Beige', colorCode: '#C4A574', stock: 50, price: 15.00 },
-      { size: '30ml', color: '106 Warm Beige', colorCode: '#8B4513', stock: 50, price: 15.00 }
+      {
+        size: '30ml',
+        color: '102 Vanilla',
+        colorCode: '#F5DEB3',
+        stock: 50,
+        price: 15.0,
+      },
+      {
+        size: '30ml',
+        color: '103 Beige',
+        colorCode: '#DEB887',
+        stock: 50,
+        price: 15.0,
+      },
+      {
+        size: '30ml',
+        color: '104 Natural Beige',
+        colorCode: '#D2B48C',
+        stock: 50,
+        price: 15.0,
+      },
+      {
+        size: '30ml',
+        color: '105 Golden Beige',
+        colorCode: '#C4A574',
+        stock: 50,
+        price: 15.0,
+      },
+      {
+        size: '30ml',
+        color: '106 Warm Beige',
+        colorCode: '#8B4513',
+        stock: 50,
+        price: 15.0,
+      },
     ],
-    featured: false
+    featured: false,
   },
   {
-    title: 'L\'Oréal Paris Revitalift Serum',
-    brand: 'L\'Oréal Paris',
+    title: "L'Oréal Paris Revitalift Serum",
+    brand: "L'Oréal Paris",
     description: 'Anti-aging serum with hyaluronic acid',
-    price: 25.00,
-    basePrice: 25.00,
+    price: 25.0,
+    basePrice: 25.0,
     cover: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=500',
     category: 'skincare',
     subcategory: 'Serums',
@@ -450,18 +770,30 @@ const productsData = [
     weight: 0.12,
     dimensions: { length: 4, width: 4, height: 12 },
     variants: [
-      { size: '30ml', color: 'Clear', colorCode: '#FFFFFF', stock: 100, price: 25.00 },
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 100, price: 35.00 }
+      {
+        size: '30ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 100,
+        price: 25.0,
+      },
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 100,
+        price: 35.0,
+      },
     ],
-    featured: false
+    featured: false,
   },
   // Gucci Products
   {
     title: 'Gucci Bloom Eau de Parfum',
     brand: 'Gucci',
     description: 'Floral fragrance for women',
-    price: 135.00,
-    basePrice: 135.00,
+    price: 135.0,
+    basePrice: 135.0,
     cover: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500',
     category: 'perfumes',
     subcategory: 'Women',
@@ -471,18 +803,36 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 135.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 30, price: 185.00 },
-      { size: '30ml', color: 'Clear', colorCode: '#FFFFFF', stock: 20, price: 110.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 135.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 30,
+        price: 185.0,
+      },
+      {
+        size: '30ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 20,
+        price: 110.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'Gucci Guilty Pour Femme',
     brand: 'Gucci',
     description: 'Contemporary fragrance for women',
-    price: 125.00,
-    basePrice: 125.00,
+    price: 125.0,
+    basePrice: 125.0,
     cover: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500',
     category: 'perfumes',
     subcategory: 'Women',
@@ -492,19 +842,37 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 125.00 },
-      { size: '90ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 175.00 },
-      { size: '30ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 100.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 125.0,
+      },
+      {
+        size: '90ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 175.0,
+      },
+      {
+        size: '30ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 100.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   // Prada Products
   {
     title: 'Prada Luna Rossa Carbon',
     brand: 'Prada',
     description: 'Aromatic fougère fragrance for men',
-    price: 115.00,
-    basePrice: 115.00,
+    price: 115.0,
+    basePrice: 115.0,
     cover: 'https://images.unsplash.com/photo-1595425940377-c9703cf48b6d?w=500',
     category: 'perfumes',
     subcategory: 'Men',
@@ -514,18 +882,36 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 115.00 },
-      { size: '100ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 155.00 },
-      { size: '30ml', color: 'Clear', colorCode: '#FFFFFF', stock: 20, price: 95.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 115.0,
+      },
+      {
+        size: '100ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 155.0,
+      },
+      {
+        size: '30ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 20,
+        price: 95.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   {
     title: 'Prada Candy Eau de Parfum',
     brand: 'Prada',
     description: 'Sweet and sophisticated fragrance for women',
-    price: 120.00,
-    basePrice: 120.00,
+    price: 120.0,
+    basePrice: 120.0,
     cover: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500',
     category: 'perfumes',
     subcategory: 'Women',
@@ -535,11 +921,29 @@ const productsData = [
     weight: 0.2,
     dimensions: { length: 6, width: 6, height: 12 },
     variants: [
-      { size: '50ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 120.00 },
-      { size: '80ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 160.00 },
-      { size: '30ml', color: 'Clear', colorCode: '#FFFFFF', stock: 25, price: 100.00 }
+      {
+        size: '50ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 120.0,
+      },
+      {
+        size: '80ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 160.0,
+      },
+      {
+        size: '30ml',
+        color: 'Clear',
+        colorCode: '#FFFFFF',
+        stock: 25,
+        price: 100.0,
+      },
     ],
-    featured: true
+    featured: true,
   },
   // Zara Products
   {
@@ -557,14 +961,50 @@ const productsData = [
     weight: 0.15,
     dimensions: { length: 30, width: 25, height: 2 },
     variants: [
-      { size: 'XS', color: 'White', colorCode: '#FFFFFF', stock: 50, price: 19.99 },
-      { size: 'S', color: 'White', colorCode: '#FFFFFF', stock: 50, price: 19.99 },
-      { size: 'M', color: 'White', colorCode: '#FFFFFF', stock: 50, price: 19.99 },
-      { size: 'L', color: 'White', colorCode: '#FFFFFF', stock: 50, price: 19.99 },
-      { size: 'XL', color: 'White', colorCode: '#FFFFFF', stock: 50, price: 19.99 },
-      { size: 'XS', color: 'Black', colorCode: '#000000', stock: 50, price: 19.99 }
+      {
+        size: 'XS',
+        color: 'White',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 19.99,
+      },
+      {
+        size: 'S',
+        color: 'White',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 19.99,
+      },
+      {
+        size: 'M',
+        color: 'White',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 19.99,
+      },
+      {
+        size: 'L',
+        color: 'White',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 19.99,
+      },
+      {
+        size: 'XL',
+        color: 'White',
+        colorCode: '#FFFFFF',
+        stock: 50,
+        price: 19.99,
+      },
+      {
+        size: 'XS',
+        color: 'Black',
+        colorCode: '#000000',
+        stock: 50,
+        price: 19.99,
+      },
     ],
-    featured: false
+    featured: false,
   },
   {
     title: 'Zara Slim Fit Jeans',
@@ -581,13 +1021,43 @@ const productsData = [
     weight: 0.5,
     dimensions: { length: 35, width: 30, height: 5 },
     variants: [
-      { size: '28', color: 'Blue', colorCode: '#4169E1', stock: 40, price: 49.99 },
-      { size: '30', color: 'Blue', colorCode: '#4169E1', stock: 40, price: 49.99 },
-      { size: '32', color: 'Blue', colorCode: '#4169E1', stock: 40, price: 49.99 },
-      { size: '34', color: 'Blue', colorCode: '#4169E1', stock: 40, price: 49.99 },
-      { size: '36', color: 'Blue', colorCode: '#4169E1', stock: 40, price: 49.99 }
+      {
+        size: '28',
+        color: 'Blue',
+        colorCode: '#4169E1',
+        stock: 40,
+        price: 49.99,
+      },
+      {
+        size: '30',
+        color: 'Blue',
+        colorCode: '#4169E1',
+        stock: 40,
+        price: 49.99,
+      },
+      {
+        size: '32',
+        color: 'Blue',
+        colorCode: '#4169E1',
+        stock: 40,
+        price: 49.99,
+      },
+      {
+        size: '34',
+        color: 'Blue',
+        colorCode: '#4169E1',
+        stock: 40,
+        price: 49.99,
+      },
+      {
+        size: '36',
+        color: 'Blue',
+        colorCode: '#4169E1',
+        stock: 40,
+        price: 49.99,
+      },
     ],
-    featured: false
+    featured: false,
   },
   {
     title: 'Zara Leather Jacket',
@@ -604,19 +1074,45 @@ const productsData = [
     weight: 0.8,
     dimensions: { length: 40, width: 35, height: 8 },
     variants: [
-      { size: 'XS', color: 'Black', colorCode: '#000000', stock: 20, price: 89.99 },
-      { size: 'S', color: 'Black', colorCode: '#000000', stock: 20, price: 89.99 },
-      { size: 'M', color: 'Black', colorCode: '#000000', stock: 20, price: 89.99 },
-      { size: 'L', color: 'Black', colorCode: '#000000', stock: 20, price: 89.99 }
+      {
+        size: 'XS',
+        color: 'Black',
+        colorCode: '#000000',
+        stock: 20,
+        price: 89.99,
+      },
+      {
+        size: 'S',
+        color: 'Black',
+        colorCode: '#000000',
+        stock: 20,
+        price: 89.99,
+      },
+      {
+        size: 'M',
+        color: 'Black',
+        colorCode: '#000000',
+        stock: 20,
+        price: 89.99,
+      },
+      {
+        size: 'L',
+        color: 'Black',
+        colorCode: '#000000',
+        stock: 20,
+        price: 89.99,
+      },
     ],
-    featured: true
-  }
+    featured: true,
+  },
 ];
 
 async function seedDatabase() {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/craftify');
+    await mongoose.connect(
+      process.env.MONGO_URL || 'mongodb://localhost:27017/trendvaulta',
+    );
     console.log('Connected to MongoDB');
 
     // Clear existing data
@@ -630,16 +1126,16 @@ async function seedDatabase() {
 
     // Create brand mapping
     const brandMap = {};
-    brands.forEach(brand => {
+    brands.forEach((brand) => {
       brandMap[brand.name] = brand._id;
     });
 
     // Update products with brand IDs
-    const productsWithBrandIds = productsData.map(product => ({
+    const productsWithBrandIds = productsData.map((product) => ({
       ...product,
       brand: brandMap[product.brand],
       averageRating: 4.5,
-      reviewCount: Math.floor(Math.random() * 100) + 10
+      reviewCount: Math.floor(Math.random() * 100) + 10,
     }));
 
     // Insert products
